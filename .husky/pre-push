@@ -1,0 +1,18 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "매의 눈으로 타입 검사 중..."
+pnpm tsc --noEmit
+if [ $? -ne 0 ]; then
+  echo "타입 충돌 발생!"
+  exit 1
+fi
+
+echo "빌드 중... 시스템을 단단하게 조립합니다."
+pnpm build
+if [ $? -ne 0 ]; then
+  echo "빌드 오류 발생!"
+  exit 1
+fi
+
+echo "테스트 통과 : 온 힘을 다해 푸시합니다."
