@@ -1,4 +1,4 @@
-name: Lighthouse CI
+name: Lighthouse
 
 on:
   pull_request:
@@ -20,15 +20,15 @@ jobs:
           node-version: 20
 
       - run: npm install
-      - run: npm run build
 
-      - name: Run Lighthouse
+      - name: Run Lighthouse (Headless)
         run: |
           npx lighthouse https://example.com \
+            --chrome-flags="--headless --no-sandbox --disable-gpu" \
             --output=json \
             --output-path=./lh.json
 
-      - name: Comment Lighthouse Result
+      - name: Comment Result
         uses: actions/github-script@v7
         with:
           script: |
@@ -36,5 +36,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: "### 📊 Lighthouse Report ..."
+              body: "### 📊 Lighthouse Report\n\n✅ Lighthouse run completed"
             })
