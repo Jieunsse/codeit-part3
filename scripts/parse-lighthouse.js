@@ -14,7 +14,7 @@ const opportunities = Object.values(audits)
   .map((a) => `- ${a.title}`);
 
 const summary = `
-### 📊 Lighthouse Report
+### 📊 라이트하우스 리포트
 
 | 카테고리 | 점수 |
 |--------|-------|
@@ -22,7 +22,7 @@ const summary = `
 | SEO | ${score('seo')} |
 | 접근성 | ${score('accessibility')} |
 
-#### 🔧 Top Improvements
+#### 🔧 추가로 개선하면 좋은 포인트
 ${opportunities.join('\n') || '- 없음'}
 `;
 
