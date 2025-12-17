@@ -15,7 +15,7 @@ const opportunities = Object.values(audits)
       a.details?.type === 'opportunity' &&
       typeof a.numericValue === 'number' &&
       a.numericValue > 0 &&
-      getSeverityRank(a.title) < 3, // ✅ Info(ℹ️) audit 제거
+      getSeverityRank(a.title) < 3,
   )
   .sort((a, b) => getSeverityRank(a.title) - getSeverityRank(b.title))
   .slice(0, 5)
