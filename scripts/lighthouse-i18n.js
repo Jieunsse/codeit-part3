@@ -1,5 +1,3 @@
-// scripts/lighthouse-i18n.js
-
 const LIGHTHOUSE_TRANSLATIONS = {
   // 🚀 Performance
   'Reduce initial server response time': '초기 서버 응답 시간을 줄이세요',
@@ -35,10 +33,6 @@ const LIGHTHOUSE_TRANSLATIONS = {
   'Robots.txt is not valid': 'robots.txt 설정이 올바르지 않습니다',
 };
 
-function translateAuditTitle(title) {
+export function translateAuditTitle(title) {
   return LIGHTHOUSE_TRANSLATIONS[title] || title;
 }
-
-module.exports = {
-  translateAuditTitle,
-};
