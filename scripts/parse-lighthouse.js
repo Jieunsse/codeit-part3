@@ -12,7 +12,10 @@ const score = (key) => Math.round(categories[key].score * 100);
 const opportunities = Object.values(audits)
   .filter(
     (a) =>
-      a.details?.type === 'opportunity' && typeof a.numericValue === 'number' && a.numericValue > 0,
+      a.details?.type === 'opportunity' &&
+      typeof a.numericValue === 'number' &&
+      a.numericValue > 0 &&
+      getSeverityRank(a.title) < 3, // ✅ Info(ℹ️) audit 제거
   )
   .sort((a, b) => getSeverityRank(a.title) - getSeverityRank(b.title))
   .slice(0, 5)
