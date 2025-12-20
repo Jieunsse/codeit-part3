@@ -13,7 +13,7 @@ export function Header() {
       </Link>
 
       {isLoggedIn ? (
-        <ProfileImg src="" size={36} onClick={() => navigate('/mypage')} />
+        <ProfileImg src="" size={45} onClick={() => navigate('/mypage')} />
       ) : (
         <button className="cursor-pointer text-right font-sans text-lg font-medium text-white">
           로그인
