@@ -1,0 +1,15 @@
+@theme {
+  /* Gray */
+  --color-gray-100: #f2f4f8;
+  --color-gray-300: #cfdbeb;
+  --color-gray-500: #9facbd;
+  --color-gray-800: #2d3034;
+
+  /* Primary Purple */
+  --color-primary-purple-100: #6a42db;
+  --color-primary-purple-10: #f1edfc;
+
+  /* Black & White */
+  --color-black: #101318;
+  --color-white: #ffffff;
+}
