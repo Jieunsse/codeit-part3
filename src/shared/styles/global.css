@@ -1,4 +1,10 @@
-@import 'tailwindcss';
-@import './color.css';
-@import './font.css';
-@import './typography.css';
+/* 폰트 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* 테일윈드 */
+@import "tailwindcss";
+
+/* 디자인 시스템 */
+@import "./color.css";
+@import "./font.css";
+@import "./typography.css";
