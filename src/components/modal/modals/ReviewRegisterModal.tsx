@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { BaseModal } from './BaseModal';
+import { FlavorSliderModal } from '../../card/FlavorSlider';
 
 export type ReviewTasteKey = 'body' | 'tannin' | 'sweet' | 'acid';
 
@@ -76,16 +77,6 @@ export function ReviewRegisterModal({
     const set = new Set<string>([...DEFAULT_AROMAS, ...customAromas]);
     return Array.from(set);
   }, [customAromas]);
-
-  const tasteLabel = useMemo(
-    () => ({
-      body: ['바디감', '가벼워요', '진해요'],
-      tannin: ['타닌', '부드러워요', '떫어요'],
-      sweet: ['당도', '드라이해요', '달아요'],
-      acid: ['산미', '약해요', '많아요'],
-    }),
-    [],
-  );
 
   const toggleAroma = (tag: string) => {
     setError('');
@@ -184,37 +175,7 @@ export function ReviewRegisterModal({
         {/* taste sliders */}
         <div className="space-y-3">
           <div className="text-sm font-semibold text-gray-900">와인의 맛은 어땠나요?</div>
-
-          {(['body', 'tannin', 'sweet', 'acid'] as ReviewTasteKey[]).map((k) => {
-            const [title, left, right] = tasteLabel[k];
-            return (
-              <div key={k} className="space-y-2">
-                <div className="flex items-center gap-3 text-xs text-gray-500">
-                  <span className="min-w-10 rounded-md bg-gray-100 px-2 py-1 text-[11px] text-gray-600">
-                    {title}
-                  </span>
-                  <span>{left}</span>
-                  <div className="flex-1" />
-                  <span>{right}</span>
-                </div>
-
-                {/* 팀원 Slider로 교체 가능 */}
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={taste[k]}
-                  onChange={(e) =>
-                    setTaste((prev) => ({
-                      ...prev,
-                      [k]: Number(e.target.value),
-                    }))
-                  }
-                  className="w-full"
-                />
-              </div>
-            );
-          })}
+          <FlavorSliderModal value={taste} onChange={setTaste} />
         </div>
 
         {/* aroma chips */}
