@@ -7,20 +7,19 @@ export const chipVariants = cva(
     'gap-[10px]',
     'py-[10px] px-[18px]',
     'rounded-full',
-
     'text-sm font-medium',
     'whitespace-nowrap',
     'cursor-pointer',
   ].join(' '),
   {
     variants: {
-      color: {
-        white: 'bg-[var(--color-white)] text-[var(--color-black)]',
-        purple: 'bg-[var(--color-primary-purple-100)] text-[var(--color-white)]',
+      selected: {
+        false: 'bg-[var(--color-white)] text-[var(--color-black)]',
+        true: 'bg-[var(--color-primary-purple-100)] text-[var(--color-white)]',
       },
     },
     defaultVariants: {
-      color: 'white',
+      selected: false,
     },
   },
 );
