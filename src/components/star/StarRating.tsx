@@ -10,7 +10,7 @@ export function StarRating({ className, maxRating = 5, value }: StarRatingProps)
   const stars = Array.from({ length: maxRating }, (_, i) => maxRating - i);
 
   return (
-    <div className={clsx('flex flex-row-reverse justify-end text-2xl', className)}>
+    <div className={clsx('flex flex-row-reverse justify-end text-lg', className)}>
       {stars.map((starValue) => {
         const isSelected = starValue <= value;
 

@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-
 //composition 스타일 패턴
 
 interface CardProps {
@@ -10,13 +9,15 @@ interface CardProps {
 interface CardSubComponentProps {
   className?: string;
   children?: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
 export function Card({ className, children }: CardProps) {
   return (
     <div
       className={clsx(
-        'mt-[42px] h-[260px] w-[1140px]',
+        // 기본 스타일만
+        'mt-4 md:mt-[42px]',
         'rounded-2xl border opacity-100',
         className,
       )}
@@ -31,40 +32,53 @@ export function Card({ className, children }: CardProps) {
   );
 }
 
-Card.Header = function CardHeader({ className, children }: CardSubComponentProps) {
-  return <div className={clsx('px-6 pt-6', className)}>{children}</div>;
+Card.Title = function CardTitle({ className, children, style }: CardSubComponentProps) {
+  return (
+    <div className={clsx(className)} style={style}>
+      {children}
+    </div>
+  );
 };
 
-Card.Body = function CardBody({ className, children }: CardSubComponentProps) {
-  return <div className={clsx('flex-1 px-6 py-4', className)}>{children}</div>;
+Card.Container = function CardContainer({ className, children, style }: CardSubComponentProps) {
+  return (
+    <div className={clsx(className)} style={style}>
+      {children}
+    </div>
+  );
 };
 
-Card.Footer = function CardFooter({ className, children }: CardSubComponentProps) {
-  return <div className={clsx('px-6 pb-6', className)}>{children}</div>;
+Card.Body = function CardBody({ className, children, style }: CardSubComponentProps) {
+  return (
+    <div className={clsx(className)} style={style}>
+      {children}
+    </div>
+  );
 };
 
 interface CardImageProps extends CardSubComponentProps {
-  fit?: 'contain' | 'cover' | 'fill';
   src?: string;
   alt?: string;
 }
 
-Card.Image = function CardImage({ className, children, fit = 'cover', src, alt }: CardImageProps) {
-  const fitClasses = {
-    contain: 'object-contain',
-    cover: 'object-cover',
-    fill: 'object-fill',
-  };
+Card.Image = function CardImage({ className, src, alt }: CardImageProps) {
+  if (!src) return null;
 
-  // img 태그를 직접 사용하는 경우
-  if (src) {
-    return (
-      <div className={clsx('h-full w-full overflow-hidden', className)}>
-        <img src={src} alt={alt || ''} className={clsx('h-full w-full', fitClasses[fit])} />
-      </div>
-    );
-  }
+  return <img className={clsx(className)} src={src} alt={alt || ''} />;
+};
 
-  // children으로 커스텀 이미지를 받는 경우
-  return <div className={clsx('h-full w-full overflow-hidden', className)}>{children}</div>;
+Card.Text = function CardText({ className, children, style }: CardSubComponentProps) {
+  return (
+    <div className={clsx(className)} style={style}>
+      {children}
+    </div>
+  );
+};
+
+Card.Icon = function CardIcon({ className, children, style }: CardSubComponentProps) {
+  return (
+    <div className={clsx(className)} style={style}>
+      {children}
+    </div>
+  );
 };

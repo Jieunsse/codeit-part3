@@ -27,7 +27,7 @@ export function StarReview({
   const stars = Array.from({ length: maxRating }, (_, i) => maxRating - i);
 
   return (
-    <div className={clsx('flex flex-row-reverse justify-end text-2xl', className)}>
+    <div className={clsx('flex flex-row-reverse justify-end text-xl', className)}>
       <label htmlFor={name} className="sr-only">
         별점
       </label>
