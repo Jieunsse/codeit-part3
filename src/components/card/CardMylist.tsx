@@ -41,6 +41,14 @@ export function CardMylist({ size = 'large', text = 'Detail', price = 10000 }: C
     large: 'text-[30px]',
   }[size || 'large'];
 
+  const chipClass = {
+    small: 'text-[14px]',
+    medium: 'text-[18px]',
+    large: 'text-[18px]',
+  }[size || 'large'];
+
+  const bodyClass = size === 'small' ? 'w-4/5' : 'w-3/5';
+
   return (
     <Card className={clsx('flex flex-row', cardSizeClass)}>
       <Card.Container className="relative flex flex-row items-end gap-[28px] overflow-visible">
@@ -52,20 +60,19 @@ export function CardMylist({ size = 'large', text = 'Detail', price = 10000 }: C
           />
         </Card.Body>
 
-        <Card.Body className="flex h-full w-3/5 flex-col items-start justify-start gap-[10px]">
+        <Card.Body
+          className={clsx(bodyClass, 'flex h-full flex-col items-start justify-start gap-[10px]')}
+        >
           <Card.Title
             className={titleClass}
             style={{ fontWeight: '700', color: 'var(--color-gray-800)' }}
           >
             {text}
           </Card.Title>
-          <Card.Text
-            className={clsx(textClass, 'truncate')}
-            style={{ color: 'var(--color-gray-500)' }}
-          >
+          <Card.Text className={clsx(textClass)} style={{ color: 'var(--color-gray-500)' }}>
             {text}
           </Card.Text>
-          <Chip>₩ {price?.toLocaleString()}</Chip>
+          <Chip className={clsx(chipClass)}>₩ {price?.toLocaleString()}</Chip>
         </Card.Body>
       </Card.Container>
       <Card.Icon>
