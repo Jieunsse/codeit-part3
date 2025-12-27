@@ -30,9 +30,9 @@ export function CardMylist({ size = 'large', text = 'Detail', price = 10000 }: C
   }[size || 'large'];
 
   const textClass = {
-    small: 'text-[12px]',
-    medium: 'text-[14px]',
-    large: 'text-[14px]',
+    small: 'text-[14px]',
+    medium: 'text-[16px]',
+    large: 'text-[16px]',
   }[size || 'large'];
 
   const titleClass = {
