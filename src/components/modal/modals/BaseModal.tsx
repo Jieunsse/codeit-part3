@@ -4,14 +4,16 @@ import {
   useModalLockBodyScroll,
   useModalOutsideClickClose,
 } from '../hooks/modalHooks';
+import closeIcon from '../img/closeButton.svg';
 
 type BaseModalProps = {
   isOpen: boolean;
   title?: string;
   onClose: () => void;
   children: React.ReactNode;
-  maxWidthClassName?: string; // ex) "max-w-[520px]"
+  maxWidthClassName?: string;
   showHeader?: boolean;
+  titleClassName?: string;
 };
 
 export function BaseModal({
@@ -21,6 +23,7 @@ export function BaseModal({
   children,
   maxWidthClassName = 'max-w-[520px]',
   showHeader = true,
+  titleClassName,
 }: BaseModalProps) {
   useModalLockBodyScroll(isOpen);
   useModalEscapeClose(isOpen, onClose);
@@ -30,7 +33,7 @@ export function BaseModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      {/* backdrop */}
+      {/* modal background overlay */}
       <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
 
       {/* panel */}
@@ -42,14 +45,15 @@ export function BaseModal({
       >
         {showHeader && (
           <div className="flex items-center justify-between px-6 py-4">
-            <div className="text-base font-semibold text-gray-900">{title}</div>
+            <div className={`${titleClassName ?? ''}`}>{title}</div>
+
             <button
               type="button"
               onClick={onClose}
               className="rounded-md p-2 text-gray-400 hover:bg-gray-100"
               aria-label="close"
             >
-              ✕
+              <img src={closeIcon} alt="close" className="h-4 w-4" />
             </button>
           </div>
         )}

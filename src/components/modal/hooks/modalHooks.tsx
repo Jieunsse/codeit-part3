@@ -23,7 +23,9 @@ export function useModalEscapeClose(isOpen: boolean, onClose: () => void) {
     if (!isOpen) return;
 
     const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onCloseRef.current();
+      if (e.key === 'Escape' && !e.defaultPrevented) {
+        onCloseRef.current();
+      }
     };
 
     window.addEventListener('keydown', handler);

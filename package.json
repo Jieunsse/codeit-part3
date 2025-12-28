@@ -8,18 +8,22 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lighthouse": "pnpm build && pnpm preview & lighthouse http://localhost:4173 --output html --output-path ./lighthouse-report.html",
+    "lh:ci": "pnpm build && pnpm preview & lighthouse http://localhost:4173 --output json --output-path ./lighthouse-report.json --chrome-flags='--headless'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-query": "^5.90.11",
     "axios": "^1.13.2",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "react-hook-form": "^7.67.0",
     "react-router-dom": "^7.9.6",
+    "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
     "zod": "^4.1.13",
     "zustand": "^5.0.9"
@@ -40,6 +44,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "husky": "^8.0.0",
+    "lighthouse": "^13.0.1",
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.3",
     "prettier-plugin-tailwindcss": "^0.7.2",

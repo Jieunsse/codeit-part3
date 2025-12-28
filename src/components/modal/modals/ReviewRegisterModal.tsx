@@ -1,6 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BaseModal } from './BaseModal';
 import { FlavorSliderModal } from '../../card/FlavorSlider';
+import { StarReview as StarReviewComponent } from '../../star/StarReview';
+
+const DEFAULT_TASTE: Record<ReviewTasteKey, number> = {
+  body: 50,
+  tannin: 35,
+  sweet: 40,
+  acid: 55,
+};
 
 export type ReviewTasteKey = 'body' | 'tannin' | 'sweet' | 'acid';
 
@@ -56,12 +64,7 @@ export function ReviewRegisterModal({
   const [rating, setRating] = useState(4);
   const [content, setContent] = useState('');
 
-  const [taste, setTaste] = useState<Record<ReviewTasteKey, number>>({
-    body: 50,
-    tannin: 35,
-    sweet: 40,
-    acid: 55,
-  });
+  const [taste, setTaste] = useState<Record<ReviewTasteKey, number>>(DEFAULT_TASTE);
 
   const [selectedAromas, setSelectedAromas] = useState<string[]>([]);
 
@@ -70,8 +73,44 @@ export function ReviewRegisterModal({
   const [newAroma, setNewAroma] = useState('');
 
   const [error, setError] = useState<string>('');
-
   const [submitting, setSubmitting] = useState(false);
+
+  const hasDirty =
+    rating !== 4 ||
+    content.trim().length > 0 ||
+    selectedAromas.length > 0 ||
+    customAromas.length > 0 ||
+    taste.body !== DEFAULT_TASTE.body ||
+    taste.tannin !== DEFAULT_TASTE.tannin ||
+    taste.sweet !== DEFAULT_TASTE.sweet ||
+    taste.acid !== DEFAULT_TASTE.acid;
+
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
+
+  const requestClose = () => {
+    if (submitting) return;
+
+    if (isAddingAroma) {
+      setNewAroma('');
+      setIsAddingAroma(false);
+      return;
+    }
+
+    if (hasDirty) {
+      setShowCloseConfirm(true);
+      return;
+    }
+    onClose();
+  };
+
+  const confirmClose = () => {
+    setShowCloseConfirm(false);
+    onClose();
+  };
+
+  const cancelClose = () => {
+    setShowCloseConfirm(false);
+  };
 
   const allAromas = useMemo(() => {
     const set = new Set<string>([...DEFAULT_AROMAS, ...customAromas]);
@@ -139,16 +178,35 @@ export function ReviewRegisterModal({
     }
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // 열릴 때마다 초기화
+    setRating(4);
+    setContent('');
+    setTaste(DEFAULT_TASTE);
+    setSelectedAromas([]);
+    setCustomAromas([]);
+    setIsAddingAroma(false);
+    setNewAroma('');
+    setError('');
+    setSubmitting(false);
+
+    // 닫기 경고 모달도 닫아두기
+    setShowCloseConfirm(false);
+  }, [isOpen]);
+
   return (
     <BaseModal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={requestClose}
       title="리뷰 등록"
+      titleClassName="text-[24px] font-bold leading-[32px]"
       maxWidthClassName="max-w-[620px]"
     >
       <div className="space-y-6">
         {/* wine header */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <div className="h-12 w-12 overflow-hidden rounded-xl bg-gray-100">
             {wineImageUrl ? (
               <img src={wineImageUrl} alt="" className="h-full w-full object-cover" />
@@ -157,8 +215,8 @@ export function ReviewRegisterModal({
             )}
           </div>
           <div className="flex-1">
-            <div className="text-sm font-semibold text-gray-900">{wineName}</div>
-            <StarRating value={rating} onChange={setRating} />
+            <div className="text-[18px] leading-[26px] font-semibold text-gray-800">{wineName}</div>
+            <StarReviewComponent defaultValue={rating} onChange={setRating} />
           </div>
         </div>
 
@@ -168,13 +226,13 @@ export function ReviewRegisterModal({
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="후기를 작성해 주세요"
-            className="h-28 w-full resize-none rounded-xl border border-gray-200 p-4 text-sm outline-none focus:border-violet-400"
+            className="h-[120px] w-full resize-none rounded-xl border border-gray-500 px-5 py-3.5 text-sm text-[16px] outline-none focus:border-violet-400"
           />
         </div>
 
         {/* taste sliders */}
         <div className="space-y-3">
-          <div className="text-sm font-semibold text-gray-900">와인의 맛은 어땠나요?</div>
+          <div className="text-[20px] leading-8 font-bold text-gray-800">와인의 맛은 어땠나요?</div>
           <FlavorSliderModal value={taste} onChange={setTaste} />
         </div>
 
@@ -182,7 +240,9 @@ export function ReviewRegisterModal({
         <div className="space-y-3">
           <div className="flex items-end justify-between gap-3">
             <div>
-              <div className="text-sm font-semibold text-gray-900">기억에 남는 향이 있나요?</div>
+              <div className="text-[20px] leading-8 font-bold text-gray-800">
+                기억에 남는 향이 있나요?
+              </div>
               <div className="mt-1 text-xs text-gray-500">최대 {MAX_SELECT_AROMAS}개 선택 가능</div>
             </div>
 
@@ -205,7 +265,7 @@ export function ReviewRegisterModal({
                   type="button"
                   onClick={() => toggleAroma(tag)}
                   className={[
-                    'rounded-full px-3 py-2 text-xs font-medium transition',
+                    'my-[5px] rounded-full px-[18px] py-2.5 text-[16px] transition',
                     active
                       ? 'bg-violet-600 text-white'
                       : 'bg-white text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50',
@@ -225,7 +285,7 @@ export function ReviewRegisterModal({
                       setError('');
                       setIsAddingAroma(true);
                     }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-dashed border-gray-300 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                    className="flex items-center justify-center rounded-[50px] border border-dashed border-gray-300 px-[18px] py-2.5 text-[16px] text-gray-400 hover:bg-gray-100 hover:text-gray-800"
                     aria-label="향 태그 추가"
                   >
                     +
@@ -243,12 +303,14 @@ export function ReviewRegisterModal({
                           setIsAddingAroma(false);
                         }
                         if (e.key === 'Escape') {
+                          e.preventDefault();
+                          e.stopPropagation();
                           setNewAroma('');
                           setIsAddingAroma(false);
                         }
                       }}
                       placeholder="향 입력"
-                      className="w-16 bg-transparent text-xs outline-none"
+                      className="w-16 bg-transparent text-[16px] outline-none"
                     />
                     <button
                       type="button"
@@ -277,33 +339,39 @@ export function ReviewRegisterModal({
           type="button"
           onClick={submit}
           disabled={submitting}
-          className="h-12 w-full rounded-xl bg-violet-600 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
+          className="h-[54px] w-full rounded-xl bg-violet-600 px-9 py-4 text-[16px] font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
         >
           {submitting ? '리뷰 등록 중...' : '리뷰 남기기'}
         </button>
       </div>
-    </BaseModal>
-  );
-}
 
-function StarRating({ value, onChange }: { value: number; onChange: (v: number) => void }) {
-  return (
-    <div className="mt-1 flex items-center gap-1">
-      {Array.from({ length: 5 }).map((_, i) => {
-        const idx = i + 1;
-        const active = idx <= value;
-        return (
-          <button
-            key={idx}
-            type="button"
-            onClick={() => onChange(idx)}
-            className={active ? 'text-violet-600' : 'text-gray-300'}
-            aria-label={`star-${idx}`}
-          >
-            ★
-          </button>
-        );
-      })}
-    </div>
+      {showCloseConfirm && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40">
+          <div className="w-[360px] rounded-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
+            <div className="text-[20px] font-bold text-gray-900">작성 중인 내용이 있어요</div>
+            <div className="mt-2 text-[14px] font-semibold text-gray-600">
+              닫으면 입력한 내용이 사라져요. 정말 닫을까요?
+            </div>
+
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={cancelClose}
+                className="rounded-xl px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100"
+              >
+                계속 작성
+              </button>
+              <button
+                type="button"
+                onClick={confirmClose}
+                className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </BaseModal>
   );
 }
