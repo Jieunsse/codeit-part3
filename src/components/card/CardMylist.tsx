@@ -19,8 +19,8 @@ export function CardMylist({ size = 'large', text = 'Detail', price = 10000 }: C
 
   const imageSizeClass = {
     small: 'w-[53px] h-[185px]',
-    medium: 'w-[76px] h-[270px] ',
-    large: 'w-[76px] h-[270px] ',
+    medium: 'w-[90px] h-[270px] ',
+    large: 'w-[90px] h-[270px] ',
   }[size || 'large'];
 
   const imagePositionSizeClass = {
@@ -50,13 +50,13 @@ export function CardMylist({ size = 'large', text = 'Detail', price = 10000 }: C
   const bodyClass = size === 'small' ? 'w-4/5' : 'w-3/5';
 
   return (
-    <Card className={clsx('flex flex-row', cardSizeClass)}>
-      <Card.Container className="relative flex flex-row items-end gap-[28px] overflow-visible">
+    <Card className={clsx('flex flex-row justify-between', cardSizeClass)}>
+      <Card.Container className="relative flex w-full flex-row items-end gap-[28px] overflow-visible">
         <Card.Body className={clsx(imagePositionSizeClass, 'relative h-full')}>
           <Card.Image
             src={wine2}
             alt="Wine"
-            className={clsx(imageSizeClass, 'absolute bottom-0 left-0 object-cover')}
+            className={clsx(imageSizeClass, 'w-full] absolute bottom-0 left-0 object-cover')}
           />
         </Card.Body>
 

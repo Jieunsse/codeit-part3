@@ -10,6 +10,7 @@ interface CardSubComponentProps {
   className?: string;
   children?: React.ReactNode;
   style?: React.CSSProperties;
+  onClick?: () => void;
 }
 
 export function Card({ className, children }: CardProps) {
@@ -75,9 +76,9 @@ Card.Text = function CardText({ className, children, style }: CardSubComponentPr
   );
 };
 
-Card.Icon = function CardIcon({ className, children, style }: CardSubComponentProps) {
+Card.Icon = function CardIcon({ className, children, style, onClick }: CardSubComponentProps) {
   return (
-    <div className={clsx(className)} style={style}>
+    <div className={clsx(className)} style={style} onClick={onClick}>
       {children}
     </div>
   );

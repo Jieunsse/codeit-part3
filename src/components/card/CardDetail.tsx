@@ -13,13 +13,13 @@ export function CardDetail({ size = 'large', text = 'Detail', price = 10000 }: C
   const cardSizeClass = {
     small: 'w-[343px] h-[164px] px-[20px] py-[16px] pb-[0px]',
     medium: 'w-[704px] h-[228px] pl-[60px] py-[20px] pb-[0px]',
-    large: 'w-[800px] h-[228px] pl-[100px] py-[24px] pb-[0px]',
+    large: 'w-[800px] h-[228px] pl-[80px] py-[24px] pb-[0px]',
   }[size || 'large'];
 
   const imageSizeClass = {
     small: 'w-[53px] h-[185px]',
     medium: 'w-[76px] h-[270px] ',
-    large: 'w-[53px] h-[185px] ',
+    large: 'w-[56px] h-[209px] ',
   }[size || 'large'];
 
   const imagePositionSizeClass = {
@@ -46,16 +46,18 @@ export function CardDetail({ size = 'large', text = 'Detail', price = 10000 }: C
     large: 'text-[18px]',
   }[size || 'large'];
 
+  const imageCoverClass = size === 'large' ? 'object-cove' : 'object-contain';
+
   const bodyClass = size === 'small' ? 'w-4/5' : 'w-3/5';
 
   return (
     <Card className={clsx('flex flex-row', cardSizeClass)}>
-      <Card.Container className="relative flex flex-row items-end gap-[28px] overflow-visible">
+      <Card.Container className="relative flex w-full flex-row items-end gap-[28px] overflow-visible">
         <Card.Body className={clsx(imagePositionSizeClass, 'relative h-full')}>
           <Card.Image
             src={wine2}
             alt="Wine"
-            className={clsx(imageSizeClass, 'absolute bottom-0 left-0 object-cover')}
+            className={clsx(imageSizeClass, 'absolute bottom-0 left-0 w-full', imageCoverClass)}
           />
         </Card.Body>
 
