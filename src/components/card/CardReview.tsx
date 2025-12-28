@@ -9,49 +9,51 @@ import updown from '@shared/assets/images/updown.svg';
 import { useState } from 'react';
 
 import { Chip } from './CardChip';
+
+interface ChipData {
+  label: string;
+  value: number | string;
+}
+
 interface CardReviewProps extends BaseCardProps {
   username?: string;
   createdAt?: string;
+  chips?: ChipData[];
+  mainChip?: ChipData;
 }
 
 export function CardReview({
-  rating = 4.8,
-  size = 'large',
+  size,
   username = '와인 러버',
   createdAt = '2025-01-01',
   text = 'Detail',
+  chips = [
+    { label: '★', value: 4.8 },
+    { label: '★', value: 4.8 },
+    { label: '★', value: 4.8 },
+  ],
+  mainChip = { label: '★', value: 4.8 },
 }: CardReviewProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const cardSizeClass = {
-    small: 'w-full h-full px-[20px] py-[16px] pb-[0px] gap-[16px]',
-    medium: 'w-full h-full px-[24px] py-[20px] pb-[0px] gap-[18px]',
-    large: 'w-full h-full px-[30px] py-[24px] pb-[0px] gap-[20px]',
-  }[size || 'large'];
+  const cardSizeClass = clsx(
+    size
+      ? {
+          small: 'w-[343px] px-[20px] py-[16px] gap-[16px]',
+          medium: 'w-[704px] px-[24px] py-[20px] gap-[18px]',
+          large: 'w-[800px] px-[30px] py-[24px] gap-[20px]',
+        }[size]
+      : 'w-[343px] px-[20px] py-[16px] gap-[16px]',
+    'h-full',
+    'md:w-[704px] md:px-[24px] md:py-[20px] md:gap-[18px]',
+    'lg:w-[800px] lg:px-[30px] lg:py-[24px] lg:gap-[20px]',
+  );
 
-  const titleClass = {
-    small: 'text-[16px]',
-    medium: 'text-[18px]',
-    large: 'text-[18px]',
-  }[size || 'large'];
-
-  const timetextClass = {
-    small: 'text-[14px]',
-    medium: 'text-[16px]',
-    large: 'text-[16px]',
-  }[size || 'large'];
-
-  const textClass = {
-    small: 'text-[14px]',
-    medium: 'text-[16px]',
-    large: 'text-[16px]',
-  }[size || 'large'];
-
-  const chipClass = {
-    small: 'text-[14px]',
-    medium: 'text-[18px]',
-    large: 'text-[18px]',
-  }[size || 'large'];
+  const titleClass = 'text-[16px] md:text-[18px] lg:text-[18px]';
+  const timetextClass = 'text-[14px] md:text-[16px] lg:text-[16px]';
+  const textClass = 'text-[14px] md:text-[16px] lg:text-[16px]';
+  const iconSizeClass = 'h-[32px] w-[32px] md:h-[38px] md:w-[38px] lg:h-[38px] lg:w-[38px]';
+  const chipClass = 'text-[14px] md:text-[18px] lg:text-[18px]';
 
   return (
     <Card className={clsx('flex flex-col', cardSizeClass)}>
@@ -72,28 +74,27 @@ export function CardReview({
         </Card.Container>
 
         <Card.Container className="flex flex-row items-center justify-between gap-[24px]">
-          <Card.Icon className="h-[38px] w-[38px] cursor-pointer hover:opacity-80">
+          <Card.Icon className={clsx(iconSizeClass, 'cursor-pointer hover:opacity-80')}>
             <img src={heart} alt="heart" />
           </Card.Icon>
-          <Card.Icon className="h-[38px] w-[38px] cursor-pointer hover:opacity-80">
+          <Card.Icon className={clsx(iconSizeClass, 'cursor-pointer hover:opacity-80')}>
             <img src={kebab} alt="kebab" className="h-full w-full object-contain" />
           </Card.Icon>
         </Card.Container>
       </Card.Container>
       <Card.Container className="flex items-center justify-between">
         <Card.Container className="flex flex-row items-center gap-[4px]">
-          <Chip className={clsx(chipClass, 'flex h-[42px] w-[80px] items-center justify-center')}>
-            ★ {rating}
-          </Chip>
-          <Chip className={clsx(chipClass, 'flex h-[42px] w-[80px] items-center justify-center')}>
-            ★ {rating}
-          </Chip>
-          <Chip className={clsx(chipClass, 'flex h-[42px] w-[80px] items-center justify-center')}>
-            ★ {rating}
-          </Chip>
+          {chips.map((chip, index) => (
+            <Chip
+              key={index}
+              className={clsx(chipClass, 'flex h-[42px] w-[80px] items-center justify-center')}
+            >
+              {chip.label} {chip.value}
+            </Chip>
+          ))}
         </Card.Container>
         <Chip className={clsx(chipClass, 'flex h-[42px] w-[80px] items-center justify-center')}>
-          ★ {rating}
+          {mainChip.label} {mainChip.value}
         </Chip>
       </Card.Container>
 
