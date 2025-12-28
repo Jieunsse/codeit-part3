@@ -82,3 +82,11 @@ Card.Icon = function CardIcon({ className, children, style }: CardSubComponentPr
     </div>
   );
 };
+
+Card.Footer = function CardFooter({ className, children, style }: CardSubComponentProps) {
+  return (
+    <div className={clsx(className)} style={style}>
+      {children}
+    </div>
+  );
+};
