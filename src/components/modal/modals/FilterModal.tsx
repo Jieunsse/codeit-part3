@@ -40,7 +40,7 @@ export function FilterModal({
   const [rating, setRating] = useState<RatingRange>(init.rating);
 
   const toggleType = (t: WineType) => {
-    setTypes((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
+    setTypes([t]);
   };
 
   const reset = () => {
@@ -55,12 +55,21 @@ export function FilterModal({
     onClose();
   };
 
+  // ✅ 채워지는 트랙 퍼센트 (0~100)
+  const percent = maxPrice > 0 ? (priceMax / maxPrice) * 100 : 0;
+
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} title="필터" maxWidthClassName="max-w-[420px]">
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="필터"
+      titleClassName="text-[20px] leading-[32px] font-bold text-gray-800"
+      maxWidthClassName="max-w-[420px]"
+    >
       <div className="space-y-6">
         {/* WINE TYPES */}
         <section>
-          <div className="text-xs font-semibold text-gray-500">WINE TYPES</div>
+          <div className="text-[16px] leading-[26px] font-semibold text-gray-800">WINE TYPES</div>
           <div className="mt-3 flex gap-2">
             {(['Red', 'White', 'Sparkling'] as WineType[]).map((t) => {
               const active = types.includes(t);
@@ -83,36 +92,46 @@ export function FilterModal({
           </div>
         </section>
 
+        <div className="my-8 h-px w-full bg-gray-100"></div>
+
         {/* PRICE */}
         <section>
-          <div className="text-xs font-semibold text-gray-500">PRICE</div>
+          <div className="text-[20px] leading-[26px] font-bold text-gray-800">PRICE</div>
 
-          {/* 팀원 Slider 들어오면 여기 교체 */}
           <div className="mt-3 space-y-2">
-            <div className="flex justify-between text-xs text-gray-500">
+            <div className="text-medium flex justify-between text-[16px] leading-[26px] text-purple-600">
               <span>₩ {priceMin.toLocaleString()}</span>
               <span>₩ {priceMax.toLocaleString()}</span>
             </div>
 
+            {/* ✅ 채워지는 슬라이더 */}
             <input
               type="range"
               min={0}
               max={maxPrice}
               value={priceMax}
               onChange={(e) => setPriceMax(Number(e.target.value))}
-              className="w-full"
+              className="priceRange w-full"
+              style={{
+                background: `linear-gradient(
+                  to right,
+                  #7C3AED 0%,
+                  #7C3AED ${percent}%,
+                  #EDE9FE ${percent}%,
+                  #EDE9FE 100%
+                )`,
+              }}
             />
-
-            <div className="text-[11px] text-gray-400">
-              드래그 범위: 0 ~ {maxPrice.toLocaleString()}원
-            </div>
           </div>
         </section>
 
+        <div className="my-8 h-px w-full bg-gray-100"></div>
+
         {/* RATING */}
         <section>
-          <div className="text-xs font-semibold text-gray-500">RATING</div>
-          <div className="mt-3 space-y-2">
+          <div className="text-[20px] leading-[26px] font-bold text-gray-800">RATING</div>
+
+          <div className="text-medium mt-3 space-y-2 text-[16px] leading-[26px] text-gray-800">
             {(
               [
                 ['ALL', '전체'],
@@ -122,39 +141,85 @@ export function FilterModal({
                 ['3.0-4.0', '3.0 - 4.0'],
               ] as const
             ).map(([val, label]) => (
-              <label
-                key={val}
-                className="flex cursor-pointer items-center gap-3 text-sm text-gray-700"
-              >
+              <label key={val} className="flex cursor-pointer items-center gap-3">
                 <input
                   type="radio"
                   name="rating"
                   checked={rating === val}
                   onChange={() => setRating(val)}
+                  className="peer sr-only"
                 />
-                {label}
+
+                {/* 네모 라디오 UI (너가 만든 거 유지) */}
+                <span className="relative flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-white transition peer-checked:border-violet-600 peer-focus-visible:ring-2 peer-focus-visible:ring-violet-500 peer-focus-visible:ring-offset-2 after:absolute after:h-2.5 after:w-2.5 after:scale-75 after:rounded-[3px] after:bg-violet-600 after:opacity-0 after:transition after:content-[''] peer-checked:after:scale-100 peer-checked:after:opacity-100" />
+
+                <span className="text-gray-800 peer-checked:text-violet-600">{label}</span>
               </label>
             ))}
           </div>
         </section>
 
         {/* footer buttons */}
-        <div className="flex gap-3 pt-2">
+        <div className="flex gap-2.5 pt-2">
           <button
             type="button"
             onClick={reset}
-            className="h-12 flex-1 rounded-xl bg-gray-100 text-sm font-semibold text-gray-700 hover:bg-gray-200"
+            className="h-[54px] flex-1 rounded-xl bg-purple-100 px-9 py-4 text-[16px] font-bold text-purple-700 hover:bg-purple-200"
           >
             초기화
           </button>
           <button
             type="button"
             onClick={apply}
-            className="h-12 flex-1 rounded-xl bg-violet-600 text-sm font-semibold text-white hover:bg-violet-700"
+            className="h-[54px] flex-2 rounded-xl bg-violet-600 px-9 py-4 text-[16px] font-bold text-white hover:bg-violet-700"
           >
             필터 적용하기
           </button>
         </div>
+
+        {/* ✅ 이 파일(컴포넌트) 안에서만 슬라이더 스타일 적용 */}
+        <style>{`
+          .priceRange {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 9999px;
+            outline: none;
+            cursor: pointer;
+          }
+
+          .priceRange::-webkit-slider-runnable-track {
+            height: 8px;
+            border-radius: 9999px;
+            background: transparent;
+          }
+
+          .priceRange::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            background: #ffffff;
+            border: 2px solid #D1D5DB;
+            border-radius: 9999px;
+            margin-top: -10px; /* 트랙 중앙정렬 */
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+          }
+
+          .priceRange::-moz-range-track {
+            height: 8px;
+            border-radius: 9999px;
+            background: transparent;
+          }
+
+          .priceRange::-moz-range-thumb {
+            width: 28px;
+            height: 28px;
+            background: #ffffff;
+            border: 2px solid #D1D5DB;
+            border-radius: 9999px;
+          }
+        `}</style>
       </div>
     </BaseModal>
   );
