@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { BaseModal } from './BaseModal';
 import { FlavorSliderModal } from '../../card/FlavorSlider';
 import { StarReview as StarReviewComponent } from '../../star/StarReview';
+import wineIcon from '../img/wineIcon.svg';
 
 const DEFAULT_TASTE: Record<ReviewTasteKey, number> = {
   body: 50,
@@ -63,6 +64,8 @@ export function ReviewRegisterModal({
 }: ReviewRegisterModalProps) {
   const [rating, setRating] = useState(4);
   const [content, setContent] = useState('');
+  const [isContentEmpty, setIsContentEmpty] = useState(true);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const [taste, setTaste] = useState<Record<ReviewTasteKey, number>>(DEFAULT_TASTE);
 
@@ -207,11 +210,13 @@ export function ReviewRegisterModal({
       <div className="space-y-6">
         {/* wine header */}
         <div className="flex items-center gap-2.5">
-          <div className="h-12 w-12 overflow-hidden rounded-xl bg-gray-100">
+          <div className="h-[68px] w-[68px] overflow-hidden rounded-xl bg-gray-100">
             {wineImageUrl ? (
               <img src={wineImageUrl} alt="" className="h-full w-full object-cover" />
             ) : (
-              <div className="flex h-full w-full items-center justify-center text-gray-400">🍷</div>
+              <div className="flex h-full w-full items-center justify-center text-gray-400">
+                <img src={wineIcon} alt="wineIcon" />
+              </div>
             )}
           </div>
           <div className="flex-1">
@@ -222,12 +227,30 @@ export function ReviewRegisterModal({
 
         {/* content */}
         <div className="space-y-2">
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="후기를 작성해 주세요"
-            className="h-[120px] w-full resize-none rounded-xl border border-gray-500 px-5 py-3.5 text-sm text-[16px] outline-none focus:border-violet-400"
-          />
+          <div className="space-y-2">
+            <div className="relative">
+              {isContentEmpty && (
+                <div className="pointer-events-none absolute top-4 left-5 text-[16px] text-gray-400">
+                  후기를 작성해 주세요
+                </div>
+              )}
+
+              <div
+                ref={contentRef}
+                contentEditable
+                suppressContentEditableWarning
+                onInput={(e) => {
+                  const text = e.currentTarget.textContent ?? '';
+                  setContent(text);
+                  setIsContentEmpty(text.length === 0);
+                }}
+                onFocus={() => {
+                  contentRef.current?.focus({ preventScroll: true });
+                }}
+                className="h-[120px] w-full overflow-y-auto rounded-xl border border-gray-500 px-5 py-4 text-[16px] whitespace-pre-wrap outline-none focus:border-violet-400"
+              />
+            </div>
+          </div>
         </div>
 
         {/* taste sliders */}
