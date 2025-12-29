@@ -24,7 +24,7 @@ import type { BaseCardProps } from './Card.types';
  *   title="이달의 추천 와인"
  * />
  */
-export function CardMonthly({ size, rating = 4.8, title = 'Title' }: BaseCardProps) {
+export function CardMonthly({ size, rating = 4.8, title = 'Title', className }: BaseCardProps) {
   // size에 따른 스타일 결정
   const cardSizeClass = clsx(
     size === 'small'
@@ -39,7 +39,13 @@ export function CardMonthly({ size, rating = 4.8, title = 'Title' }: BaseCardPro
   const textClass = 'text-[10px] md:text-[12px] lg:text-[12px]';
 
   return (
-    <Card className={clsx('flex flex-row items-center justify-center gap-[28px]', cardSizeClass)}>
+    <Card
+      className={clsx(
+        'flex flex-row items-center justify-center gap-[28px]',
+        cardSizeClass,
+        className,
+      )}
+    >
       <Card.Image src={wine1} alt="Wine" className={clsx('h-full w-full object-contain')} />
       <Card.Body className="flex h-full w-full flex-col items-start justify-start gap-1">
         <Card.Title

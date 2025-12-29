@@ -11,4 +11,5 @@ export interface BaseCardProps {
   rating?: number;
   text?: string;
   title?: string;
+  className?: string;
 }
