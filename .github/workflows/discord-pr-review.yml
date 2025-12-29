@@ -1,8 +1,8 @@
 name: Notify Discord on PR Review
 
 on:
-  pull_request_review:
-    types: [submitted] # 리뷰가 제출(submit)될 때 트리거
+  pull_request_target:
+    types: [submitted]
 
 jobs:
   notify:
@@ -20,33 +20,40 @@ jobs:
         run: |
           echo "Sending PR Review notification to Discord..."
 
-          # JSON payload 생성
+          # 🔒 Secret 가드
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "❌ DISCORD_WEBHOOK_URL is empty. Check secrets & event context."
+            exit 1
+          fi
+
+          # 📦 JSON payload 생성
           PAYLOAD=$(jq -n \
-            --arg content "**🔍 PR 리뷰가 작성되었습니다. **" \
+            --arg content "**🔍 PR 리뷰가 작성되었습니다.**" \
             --arg reviewer "$REVIEWER" \
             --arg state "$REVIEW_STATE" \
-            --arg body "$REVIEW_BODY" \
+            --arg body "${REVIEW_BODY:-No comment}" \
             --arg prtitle "$PR_TITLE" \
             --arg prurl "$PR_URL" \
             '{
-              "content": $content,
-              "embeds": [
+              content: $content,
+              embeds: [
                 {
-                  "title": $prtitle,
-                  "url": $prurl,
-                  "color": 3447003,
-                  "fields": [
-                    {"name": "👤 리뷰어", "value": $reviewer, "inline": true},
-                    {"name": "📌 승인 여부", "value": $state, "inline": true},
-                    {"name": "💬 리뷰 내용", "value": ($body // "No comment")}
+                  title: $prtitle,
+                  url: $prurl,
+                  color: 3447003,
+                  fields: [
+                    { name: "👤 리뷰어", value: $reviewer, inline: true },
+                    { name: "📌 리뷰 상태", value: $state, inline: true },
+                    { name: "💬 리뷰 내용", value: $body }
                   ]
                 }
               ]
             }'
           )
 
-          # 디스코드 전송
-          curl -H "Content-Type: application/json" \
-               -X POST \
-               -d "$PAYLOAD" \
-               "$DISCORD_WEBHOOK_URL"
+          # 🚀 Discord 전송
+          curl -sS \
+            -H "Content-Type: application/json" \
+            -X POST \
+            -d "$PAYLOAD" \
+            "$DISCORD_WEBHOOK_URL"
