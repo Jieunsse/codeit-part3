@@ -4,6 +4,28 @@ import { FlavorSliderModal } from '../../card/FlavorSlider';
 import { StarReview as StarReviewComponent } from '../../star/StarReview';
 import wineIcon from '../img/wineIcon.svg';
 import ModalButtonAdapter from './common/ModalButtonAdapter';
+import { Chips } from '../../chips/Chips';
+
+/**
+ * ReviewRegisterModal
+ *
+ * 와인 리뷰를 작성/제출하는 모달 컴포넌트.
+ *
+ * Features
+ * - 별점(rating), 후기(content), 맛 슬라이더(taste), 향 태그(aromas) 입력
+ * - 향 태그: 최대 5개 선택, 기본+커스텀 합산 최대 25개 생성
+ * - 입력 도중 닫기 시(Dirty 상태) 확인 모달 표시
+ *
+ * Notes
+ * - content는 contentEditable에서 textContent만 수집(서식/HTML 저장하지 않음)
+ * - onSubmit 성공 시 모달을 닫음
+ *
+ * @param props.isOpen 모달 오픈 여부
+ * @param props.onClose 모달 닫기 콜백(상위에서 상태 제어)
+ * @param props.wineName 표시할 와인 이름
+ * @param props.wineImageUrl 와인 이미지 URL(없으면 기본 아이콘)
+ * @param props.onSubmit 제출 콜백. 성공적으로 resolve되면 모달 닫힘
+ */
 
 const DEFAULT_TASTE: Record<ReviewTasteKey, number> = {
   body: 50,
@@ -287,19 +309,7 @@ export function ReviewRegisterModal({
               const active = selectedAromas.includes(tag);
 
               return (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() => toggleAroma(tag)}
-                  className={[
-                    'mt-2.5 rounded-full px-[18px] py-2.5 text-[16px] transition',
-                    active
-                      ? 'bg-violet-600 text-white'
-                      : 'bg-white text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50',
-                  ].join(' ')}
-                >
-                  {tag}
-                </button>
+                <Chips key={tag} title={tag} selected={active} onClick={() => toggleAroma(tag)} />
               );
             })}
 
@@ -312,7 +322,7 @@ export function ReviewRegisterModal({
                       setError('');
                       setIsAddingAroma(true);
                     }}
-                    className="flex items-center justify-center rounded-[50px] border border-dashed border-gray-300 px-[18px] py-2.5 text-[16px] text-gray-400 hover:bg-gray-100 hover:text-gray-800"
+                    className="flex items-center justify-center rounded-[50px] border border-dashed border-gray-300 px-[18px] py-2.5 text-sm text-gray-400 hover:bg-gray-100 hover:text-gray-800"
                     aria-label="향 태그 추가"
                   >
                     +
@@ -337,7 +347,7 @@ export function ReviewRegisterModal({
                         }
                       }}
                       placeholder="향 입력"
-                      className="w-16 bg-transparent text-[16px] outline-none"
+                      className="w-16 bg-transparent text-sm outline-none"
                     />
                     <button
                       type="button"
@@ -366,7 +376,7 @@ export function ReviewRegisterModal({
           type="button"
           onClick={submit}
           disabled={submitting}
-          className="mt-12 mb-6 h-[54px] w-full rounded-xl bg-violet-600 text-[16px] font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
+          className="mt-6 mb-6 h-[54px] w-full rounded-xl bg-violet-600 text-[16px] font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
         >
           {submitting ? '리뷰 등록 중...' : '리뷰 남기기'}
         </ModalButtonAdapter>
