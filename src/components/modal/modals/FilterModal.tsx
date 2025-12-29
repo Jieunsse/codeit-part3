@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { BaseModal } from './BaseModal';
+import ModalButtonAdapter from '../modals/common/ModalButtonAdapter';
 
 export type WineType = 'Red' | 'White' | 'Sparkling';
 export type RatingRange = 'ALL' | '4.8-5.0' | '4.5-4.8' | '4.0-4.5' | '3.0-4.0';
@@ -190,20 +191,26 @@ export function FilterModal({
         </section>
 
         <div className="flex gap-2.5 pt-2">
-          <button
-            type="button"
-            onClick={reset}
-            className="h-[54px] flex-1 rounded-xl bg-purple-100 px-9 py-4 pb-6 text-[16px] font-bold text-purple-700 hover:bg-purple-200"
-          >
-            초기화
-          </button>
-          <button
-            type="button"
-            onClick={apply}
-            className="h-[54px] flex-2 rounded-xl bg-violet-600 px-9 py-4 text-[16px] font-bold text-white hover:bg-violet-700"
-          >
-            필터 적용하기
-          </button>
+          <div className="flex-1">
+            <ModalButtonAdapter
+              type="button"
+              cancel
+              onClick={reset}
+              className="h-[54px] bg-purple-100 px-9 py-4 text-[16px] leading-[26px] font-bold text-purple-700 hover:bg-purple-200"
+            >
+              초기화
+            </ModalButtonAdapter>
+          </div>
+
+          <div className="flex-2">
+            <ModalButtonAdapter
+              type="button"
+              onClick={apply}
+              className="h-[54px] px-9 py-4 text-[16px] leading-[26px] font-bold hover:bg-purple-700"
+            >
+              필터 적용하기
+            </ModalButtonAdapter>
+          </div>
         </div>
 
         <style>{`
