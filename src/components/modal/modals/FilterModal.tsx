@@ -19,6 +19,8 @@ type FilterModalProps = {
   maxPrice?: number;
 };
 
+const PRICE_STEP = 10000;
+
 const DEFAULT: FilterValue = {
   types: ['White'],
   priceMin: 0,
@@ -54,8 +56,6 @@ export function FilterModal({
     onApply({ types, priceMin, priceMax, rating });
     onClose();
   };
-
-  const percent = maxPrice > 0 ? (priceMax / maxPrice) * 100 : 0;
 
   return (
     <BaseModal
@@ -103,23 +103,56 @@ export function FilterModal({
               <span>₩ {priceMax.toLocaleString()}</span>
             </div>
 
-            <input
-              type="range"
-              min={0}
-              max={maxPrice}
-              value={priceMax}
-              onChange={(e) => setPriceMax(Number(e.target.value))}
-              className="priceRange w-full"
-              style={{
+            {(() => {
+              const minPercent = maxPrice > 0 ? (priceMin / maxPrice) * 100 : 0;
+              const maxPercent = maxPrice > 0 ? (priceMax / maxPrice) * 100 : 0;
+
+              const trackStyle = {
                 background: `linear-gradient(
-                  to right,
-                  #7C3AED 0%,
-                  #7C3AED ${percent}%,
-                  #EDE9FE ${percent}%,
-                  #EDE9FE 100%
-                )`,
-              }}
-            />
+          to right,
+          #EDE9FE 0%,
+          #EDE9FE ${minPercent}%,
+          #7C3AED ${minPercent}%,
+          #7C3AED ${maxPercent}%,
+          #EDE9FE ${maxPercent}%,
+          #EDE9FE 100%
+        )`,
+              } as React.CSSProperties;
+
+              return (
+                <div className="rangeWrap" style={trackStyle}>
+                  {/* MIN thumb */}
+                  <input
+                    type="range"
+                    min={0}
+                    max={maxPrice}
+                    step={PRICE_STEP}
+                    value={priceMin}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setPriceMin(Math.min(v, priceMax - PRICE_STEP));
+                    }}
+                    className="rangeThumb rangeMin"
+                    aria-label="최소 가격"
+                  />
+
+                  {/* MAX thumb */}
+                  <input
+                    type="range"
+                    min={0}
+                    max={maxPrice}
+                    step={PRICE_STEP}
+                    value={priceMax}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setPriceMax(Math.max(v, priceMin + PRICE_STEP));
+                    }}
+                    className="rangeThumb rangeMax"
+                    aria-label="최대 가격"
+                  />
+                </div>
+              );
+            })()}
           </div>
         </section>
 
@@ -174,45 +207,66 @@ export function FilterModal({
         </div>
 
         <style>{`
-          .priceRange {
+          .rangeWrap {
+            position: relative;
+            width: 100%;
+            height: 8px;
+            border-radius: 9999px;
+          }
+
+          /* 2개의 range를 겹치기 */
+          .rangeThumb {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
             -webkit-appearance: none;
             appearance: none;
-            height: 8px;
-            border-radius: 9999px;
-            outline: none;
-            cursor: pointer;
-          }
-
-          .priceRange::-webkit-slider-runnable-track {
-            height: 8px;
-            border-radius: 9999px;
             background: transparent;
+            height: 28px;
+            margin: 0;
+            pointer-events: none;
+            margin-top: -10px;
           }
 
-          .priceRange::-webkit-slider-thumb {
+          .rangeThumb::-webkit-slider-runnable-track {
+            height: 8px;
+            background: transparent;
+            border-radius: 9999px;
+          }
+          .rangeThumb::-moz-range-track {
+            height: 8px;
+            background: transparent;
+            border-radius: 9999px;
+          }
+
+          .rangeThumb::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
             width: 28px;
             height: 28px;
             background: #ffffff;
-            border: 2px solid #D1D5DB;
+            border: 2px solid #d1d5db;
             border-radius: 9999px;
-            margin-top: -10px; /* 트랙 중앙정렬 */
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            pointer-events: auto;
           }
-
-          .priceRange::-moz-range-track {
-            height: 8px;
-            border-radius: 9999px;
-            background: transparent;
-          }
-
-          .priceRange::-moz-range-thumb {
+          .rangeThumb::-moz-range-thumb {
             width: 28px;
             height: 28px;
             background: #ffffff;
-            border: 2px solid #D1D5DB;
+            border: 2px solid #d1d5db;
             border-radius: 9999px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            pointer-events: auto;
+          }
+
+          .rangeMax {
+            z-index: 2;
+          }
+          .rangeMin {
+            z-index: 3;
           }
         `}</style>
       </div>
