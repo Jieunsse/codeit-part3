@@ -1,0 +1,8 @@
+export const RATING = {
+  TITLE_FONT_SIZE: 20,
+  ITEM_GAP: 12,
+  CHECKBOX_SIZE: 20,
+  CHECKBOX_RADIUS: 6,
+  INNER_SIZE: 10,
+  INNER_RADIUS: 3,
+} as const;
