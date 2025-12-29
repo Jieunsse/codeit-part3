@@ -3,4 +3,5 @@ export interface BaseCardProps {
   size?: 'small' | 'large' | 'medium';
   rating?: number;
   text?: string;
+  title?: string;
 }
