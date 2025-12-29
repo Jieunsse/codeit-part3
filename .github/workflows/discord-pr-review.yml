@@ -20,6 +20,12 @@ jobs:
         run: |
           echo "Sending PR Review notification to Discord..."
 
+          
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "❌ DISCORD_WEBHOOK_URL is empty. Check secrets & event context."
+            exit 1
+          fi
+
           # JSON payload 생성
           PAYLOAD=$(jq -n \
             --arg content "**🔍 PR 리뷰가 작성되었습니다. **" \
