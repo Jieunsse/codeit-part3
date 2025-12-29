@@ -3,6 +3,7 @@ import { BaseModal } from './BaseModal';
 import { FlavorSliderModal } from '../../card/FlavorSlider';
 import { StarReview as StarReviewComponent } from '../../star/StarReview';
 import wineIcon from '../img/wineIcon.svg';
+import ModalButtonAdapter from './common/ModalButtonAdapter';
 
 const DEFAULT_TASTE: Record<ReviewTasteKey, number> = {
   body: 50,
@@ -361,14 +362,14 @@ export function ReviewRegisterModal({
         </div>
 
         {/* submit */}
-        <button
+        <ModalButtonAdapter
           type="button"
           onClick={submit}
           disabled={submitting}
           className="mt-12 mb-6 h-[54px] w-full rounded-xl bg-violet-600 text-[16px] font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
         >
           {submitting ? '리뷰 등록 중...' : '리뷰 남기기'}
-        </button>
+        </ModalButtonAdapter>
       </div>
 
       {showCloseConfirm && (

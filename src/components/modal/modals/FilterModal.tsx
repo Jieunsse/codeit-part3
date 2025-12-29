@@ -206,7 +206,7 @@ export function FilterModal({
             <ModalButtonAdapter
               type="button"
               onClick={apply}
-              className="h-[54px] px-9 py-4 text-[16px] leading-[26px] font-bold hover:bg-purple-700"
+              className="h-[54px] px-9 py-4 text-[16px] leading-[26px] font-bold hover:bg-violet-700"
             >
               필터 적용하기
             </ModalButtonAdapter>
