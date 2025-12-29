@@ -1,8 +1,8 @@
 name: Notify Discord on PR Review
 
 on:
-  pull_request_review:
-    types: [submitted] # 리뷰가 제출(submit)될 때 트리거
+  pull_request_target:
+    types: [review_submitted]
 
 jobs:
   notify:
