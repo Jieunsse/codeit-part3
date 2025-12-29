@@ -36,16 +36,18 @@ export function DeleteConfirmModal({
       onClose={onClose}
       title=""
       showHeader={false}
-      maxWidthClassName="max-w-[520px]"
+      maxWidthClassName="max-w-[353px]  h-[182px]"
     >
-      <div className="space-y-5">
-        <div className="text-center text-base font-semibold text-gray-900">{title}</div>
+      <div className="space-y-5 pt-2">
+        <div className="mb-10 text-center text-[20px] leading-8 font-bold text-gray-800">
+          {title}
+        </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-2.5 pb-6">
           <button
             type="button"
             onClick={onClose}
-            className="h-12 flex-1 rounded-xl bg-gray-100 text-sm font-semibold text-gray-700 hover:bg-gray-200"
+            className="h-[54px] flex-1 rounded-xl border border-gray-300 bg-white px-5 py-4 text-[16px] leading-[26px] font-bold text-gray-500 hover:bg-gray-100"
           >
             {cancelText}
           </button>
@@ -54,7 +56,7 @@ export function DeleteConfirmModal({
             type="button"
             onClick={confirm}
             disabled={loading}
-            className="h-12 flex-1 rounded-xl bg-violet-600 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
+            className="h-[54px] flex-1 rounded-xl bg-violet-600 px-5 py-4 text-[16px] font-bold text-white hover:bg-violet-700 disabled:opacity-60"
           >
             {loading ? '삭제 중...' : confirmText}
           </button>

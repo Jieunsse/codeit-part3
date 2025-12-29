@@ -204,8 +204,10 @@ export function ReviewRegisterModal({
       isOpen={isOpen}
       onClose={requestClose}
       title="리뷰 등록"
-      titleClassName="text-[24px] font-bold leading-[32px]"
+      titleClassName="text-[24px] font-bold leading-[32px] pb-[2]"
       maxWidthClassName="max-w-[620px]"
+      panelClassName="max-h-[85dvh] flex flex-col overflow-hidden"
+      bodyClassName="flex-1 overflow-y-auto"
     >
       <div className="space-y-6">
         {/* wine header */}
@@ -220,13 +222,15 @@ export function ReviewRegisterModal({
             )}
           </div>
           <div className="flex-1">
-            <div className="text-[18px] leading-[26px] font-semibold text-gray-800">{wineName}</div>
+            <div className="pt-px pb-2 text-[18px] leading-[26px] font-semibold text-gray-800">
+              {wineName}
+            </div>
             <StarReviewComponent defaultValue={rating} onChange={setRating} />
           </div>
         </div>
 
         {/* content */}
-        <div className="space-y-2">
+        <div className="mt-6 space-y-2">
           <div className="space-y-2">
             <div className="relative">
               {isContentEmpty && (
@@ -254,24 +258,23 @@ export function ReviewRegisterModal({
         </div>
 
         {/* taste sliders */}
-        <div className="space-y-3">
-          <div className="text-[20px] leading-8 font-bold text-gray-800">와인의 맛은 어땠나요?</div>
+        <div className="space-y-6">
+          <div className="mt-10 text-[20px] leading-8 font-bold text-gray-800">
+            와인의 맛은 어땠나요?
+          </div>
           <FlavorSliderModal value={taste} onChange={setTaste} />
         </div>
 
         {/* aroma chips */}
-        <div className="space-y-3">
+        <div className="space-y-6">
           <div className="flex items-end justify-between gap-3">
             <div>
-              <div className="text-[20px] leading-8 font-bold text-gray-800">
+              <div className="mt-10 text-[20px] leading-8 font-bold text-gray-800">
                 기억에 남는 향이 있나요?
               </div>
-              <div className="mt-1 text-xs text-gray-500">최대 {MAX_SELECT_AROMAS}개 선택 가능</div>
-            </div>
-
-            <div className="text-xs text-gray-500">
-              선택됨: <span className="font-semibold">{selectedAromas.length}</span> /{' '}
-              {MAX_SELECT_AROMAS}
+              <div className="mt-1.5 text-xs text-gray-500">
+                최대 {MAX_SELECT_AROMAS}개 선택 가능
+              </div>
             </div>
           </div>
 
@@ -288,7 +291,7 @@ export function ReviewRegisterModal({
                   type="button"
                   onClick={() => toggleAroma(tag)}
                   className={[
-                    'my-[5px] rounded-full px-[18px] py-2.5 text-[16px] transition',
+                    'mt-2.5 rounded-full px-[18px] py-2.5 text-[16px] transition',
                     active
                       ? 'bg-violet-600 text-white'
                       : 'bg-white text-gray-700 ring-1 ring-gray-200 hover:bg-gray-50',
@@ -362,7 +365,7 @@ export function ReviewRegisterModal({
           type="button"
           onClick={submit}
           disabled={submitting}
-          className="h-[54px] w-full rounded-xl bg-violet-600 px-9 py-4 text-[16px] font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
+          className="mt-12 mb-6 h-[54px] w-full rounded-xl bg-violet-600 text-[16px] font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
         >
           {submitting ? '리뷰 등록 중...' : '리뷰 남기기'}
         </button>

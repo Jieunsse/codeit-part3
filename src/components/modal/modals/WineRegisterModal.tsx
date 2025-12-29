@@ -46,15 +46,16 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
       isOpen={isOpen}
       onClose={onClose}
       title="와인 등록"
+      titleClassName="text-[24px] font-bold text-gray-800 leading-[32px] pb-[16px]"
       maxWidthClassName="max-w-[560px]"
     >
-      <div className="space-y-4">
+      <div className="space-y-8">
         <Field label="와인 이름">
           <input
             value={form.name}
             onChange={(e) => set('name', e.target.value)}
             placeholder="와인 이름 입력"
-            className="h-12 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none focus:border-violet-400"
+            className="font-regular h-12 w-full rounded-xl border border-gray-300 px-4 text-[16px] leading-6 text-gray-800 outline-none placeholder:text-gray-500 focus:border-violet-400"
           />
         </Field>
 
@@ -64,7 +65,7 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
             onChange={(e) => set('price', e.target.value === '' ? '' : Number(e.target.value))}
             placeholder="가격 입력"
             inputMode="numeric"
-            className="h-12 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none focus:border-violet-400"
+            className="font-regular h-12 w-full rounded-xl border border-gray-300 px-4 text-[16px] leading-6 text-gray-800 outline-none placeholder:text-gray-500 focus:border-violet-400"
           />
         </Field>
 
@@ -73,7 +74,7 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
             value={form.origin}
             onChange={(e) => set('origin', e.target.value)}
             placeholder="원산지 입력"
-            className="h-12 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none focus:border-violet-400"
+            className="font-regular h-12 w-full rounded-xl border border-gray-300 px-4 text-[16px] leading-6 text-gray-800 outline-none placeholder:text-gray-500 focus:border-violet-400"
           />
         </Field>
 
@@ -81,7 +82,7 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
           <select
             value={form.type}
             onChange={(e) => set('type', e.target.value as WineType)}
-            className="h-12 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none focus:border-violet-400"
+            className="font-regular h-12 w-full rounded-xl border border-gray-300 px-4 text-[16px] leading-6 text-gray-800 outline-none placeholder:text-gray-500 focus:border-violet-400"
           >
             <option value="Red">Red</option>
             <option value="White">White</option>
@@ -91,7 +92,7 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
 
         <Field label="와인 사진">
           {/* 팀원 업로드 컴포넌트로 교체 가능 */}
-          <label className="flex h-28 w-28 cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-gray-50 text-gray-400 hover:bg-gray-100">
+          <label className="flex h-[140px] w-[140px] cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-gray-50 text-gray-400 hover:bg-gray-100">
             <input
               type="file"
               accept="image/*"
@@ -102,11 +103,11 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
           </label>
         </Field>
 
-        <div className="flex gap-3 pt-2">
+        <div className="flex gap-2.5 pt-2">
           <button
             type="button"
             onClick={onClose}
-            className="h-12 flex-1 rounded-xl bg-gray-100 text-sm font-semibold text-gray-700 hover:bg-gray-200"
+            className="h-[54px] flex-1 rounded-xl bg-purple-100 px-9 py-4 text-[16px] font-bold text-purple-700 hover:bg-purple-200"
           >
             취소
           </button>
@@ -114,7 +115,7 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
             type="button"
             onClick={submit}
             disabled={submitting}
-            className="h-12 flex-1 rounded-xl bg-violet-600 text-sm font-semibold text-white hover:bg-violet-700 disabled:opacity-60"
+            className="h-[54px] flex-2 rounded-xl bg-violet-600 px-9 py-4 text-[16px] font-bold text-white hover:bg-violet-700"
           >
             {submitting ? '등록 중...' : '와인 등록하기'}
           </button>
@@ -127,7 +128,7 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="space-y-2">
-      <div className="text-sm font-medium text-gray-700">{label}</div>
+      <div className="text-[16px] leading-[26px] font-medium text-gray-800">{label}</div>
       {children}
     </div>
   );

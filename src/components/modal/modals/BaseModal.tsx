@@ -14,6 +14,9 @@ type BaseModalProps = {
   maxWidthClassName?: string;
   showHeader?: boolean;
   titleClassName?: string;
+
+  panelClassName?: string;
+  bodyClassName?: string;
 };
 
 export function BaseModal({
@@ -24,6 +27,8 @@ export function BaseModal({
   maxWidthClassName = 'max-w-[520px]',
   showHeader = true,
   titleClassName,
+  panelClassName,
+  bodyClassName,
 }: BaseModalProps) {
   useModalLockBodyScroll(isOpen);
   useModalEscapeClose(isOpen, onClose);
@@ -32,7 +37,7 @@ export function BaseModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* modal background overlay */}
       <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
 
@@ -41,16 +46,16 @@ export function BaseModal({
         ref={containerRef}
         role="dialog"
         aria-modal="true"
-        className={`relative w-full ${maxWidthClassName} rounded-2xl bg-white shadow-xl`}
+        className={`relative w-full ${maxWidthClassName} rounded-2xl bg-white shadow-xl ${panelClassName ?? ''}`}
       >
         {showHeader && (
-          <div className="flex items-center justify-between px-6 py-4">
-            <div className={`${titleClassName ?? ''}`}>{title}</div>
+          <div className="flex items-center justify-between p-6">
+            <div className={`translate-y-1 ${titleClassName ?? ''}`}>{title}</div>
 
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md p-2 text-gray-400 hover:bg-gray-100"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md hover:bg-gray-100"
               aria-label="close"
             >
               <img src={closeIcon} alt="close" className="h-4 w-4" />
@@ -58,7 +63,9 @@ export function BaseModal({
           </div>
         )}
 
-        <div className={showHeader ? 'px-6 pb-6' : 'p-6'}>{children}</div>
+        <div className={` ${showHeader ? 'px-6 pb-6' : 'p-6'} ${bodyClassName ?? ''} `}>
+          {children}
+        </div>
       </div>
     </div>
   );

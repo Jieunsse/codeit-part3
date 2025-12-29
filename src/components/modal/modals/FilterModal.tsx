@@ -55,7 +55,6 @@ export function FilterModal({
     onClose();
   };
 
-  // ✅ 채워지는 트랙 퍼센트 (0~100)
   const percent = maxPrice > 0 ? (priceMax / maxPrice) * 100 : 0;
 
   return (
@@ -63,10 +62,10 @@ export function FilterModal({
       isOpen={isOpen}
       onClose={onClose}
       title="필터"
-      titleClassName="text-[20px] leading-[32px] font-bold text-gray-800"
+      titleClassName="text-[20px] leading-[32px] font-bold text-gray-800 pb-[8px]"
       maxWidthClassName="max-w-[420px]"
     >
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* WINE TYPES */}
         <section>
           <div className="text-[16px] leading-[26px] font-semibold text-gray-800">WINE TYPES</div>
@@ -104,7 +103,6 @@ export function FilterModal({
               <span>₩ {priceMax.toLocaleString()}</span>
             </div>
 
-            {/* ✅ 채워지는 슬라이더 */}
             <input
               type="range"
               min={0}
@@ -150,7 +148,6 @@ export function FilterModal({
                   className="peer sr-only"
                 />
 
-                {/* 네모 라디오 UI (너가 만든 거 유지) */}
                 <span className="relative flex h-5 w-5 items-center justify-center rounded-md border border-gray-300 bg-white transition peer-checked:border-violet-600 peer-focus-visible:ring-2 peer-focus-visible:ring-violet-500 peer-focus-visible:ring-offset-2 after:absolute after:h-2.5 after:w-2.5 after:scale-75 after:rounded-[3px] after:bg-violet-600 after:opacity-0 after:transition after:content-[''] peer-checked:after:scale-100 peer-checked:after:opacity-100" />
 
                 <span className="text-gray-800 peer-checked:text-violet-600">{label}</span>
@@ -159,12 +156,11 @@ export function FilterModal({
           </div>
         </section>
 
-        {/* footer buttons */}
         <div className="flex gap-2.5 pt-2">
           <button
             type="button"
             onClick={reset}
-            className="h-[54px] flex-1 rounded-xl bg-purple-100 px-9 py-4 text-[16px] font-bold text-purple-700 hover:bg-purple-200"
+            className="h-[54px] flex-1 rounded-xl bg-purple-100 px-9 py-4 pb-6 text-[16px] font-bold text-purple-700 hover:bg-purple-200"
           >
             초기화
           </button>
@@ -177,7 +173,6 @@ export function FilterModal({
           </button>
         </div>
 
-        {/* ✅ 이 파일(컴포넌트) 안에서만 슬라이더 스타일 적용 */}
         <style>{`
           .priceRange {
             -webkit-appearance: none;
