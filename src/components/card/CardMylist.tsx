@@ -9,6 +9,28 @@ interface CardMylistProps extends BaseCardProps {
   price?: number;
 }
 
+/**
+ * 내 위시리스트의 와인을 표시하는 카드 컴포넌트
+ *
+ * @param {CardMylistProps} props - 컴포넌트 props
+ * @param {string} [props.size] - 카드 크기 (small, medium, large). 기본값: 반응형
+ * @param {string} [props.title='Title'] - 와인 제목
+ * @param {string} [props.text='Detail'] - 와인 설명
+ * @param {number} [props.price=10000] - 와인 가격
+ *
+ * @example
+ * // 기본 사용
+ * <CardMylist />
+ *
+ * @example
+ * // 모든 props 사용
+ * <CardMylist
+ *   size="large"
+ *   title="돔 페리뇽 2012"
+ *   text="프랑스 샴페인"
+ *   price={320000}
+ * />
+ */
 export function CardMylist({
   size,
   text = 'Detail',

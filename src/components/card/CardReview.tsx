@@ -10,6 +10,11 @@ import { useState } from 'react';
 
 import { Chip } from './CardChip';
 
+/**
+ * 칩 데이터 인터페이스
+ * @property {string} label - 칩 라벨 (예: '향', '맛', '★')
+ * @property {number | string} value - 칩 값 (예: 4.8, '달콤함')
+ */
 interface ChipData {
   label: string;
   value: number | string;
@@ -22,6 +27,36 @@ interface CardReviewProps extends BaseCardProps {
   mainChip?: ChipData;
 }
 
+/**
+ * 와인 후기를 표시하는 카드 컴포넌트 (접기/펼치기 기능 포함)
+ *
+ * @param {CardReviewProps} props - 컴포넌트 props
+ * @param {string} [props.size] - 카드 크기 (small, medium, large). 기본값: 반응형
+ * @param {string} [props.username='와인 러버'] - 사용자 이름
+ * @param {string} [props.createdAt='2025-01-01'] - 작성일
+ * @param {string} [props.text='Detail'] - 후기 내용
+ * @param {ChipData[]} [props.chips] - 왼쪽 칩 목록 (향, 맛, 여운 등)
+ * @param {ChipData} [props.mainChip] - 오른쪽 메인 칩 (종합 평점)
+ *
+ * @example
+ * // 기본 사용
+ * <CardReview />
+ *
+ * @example
+ * // 모든 props 사용
+ * <CardReview
+ *   size="large"
+ *   username="홍길동"
+ *   createdAt="2025-12-30"
+ *   text="부드럽고 풍부한 맛이 일품입니다."
+ *   chips={[
+ *     { label: '향', value: 4.5 },
+ *     { label: '맛', value: 4.8 },
+ *     { label: '여운', value: 4.2 }
+ *   ]}
+ *   mainChip={{ label: '종합', value: 4.5 }}
+ * />
+ */
 export function CardReview({
   size,
   username = '와인 러버',

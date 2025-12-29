@@ -12,6 +12,34 @@ interface CardWineProps extends BaseCardProps {
   reviewNumber?: number;
 }
 
+/**
+ * 와인 상세 정보를 표시하는 카드 컴포넌트
+ *
+ * @param {CardWineProps} props - 컴포넌트 props
+ * @param {string} [props.size] - 카드 크기 (small, medium, large). 기본값: 반응형
+ * @param {string} [props.title='Title'] - 와인 제목
+ * @param {string} [props.text='Detail'] - 와인 설명
+ * @param {number} [props.price=10000] - 와인 가격
+ * @param {number} [props.rating=4.8] - 와인 평점
+ * @param {number} [props.reviewNumber=47] - 후기 개수
+ * @param {string} [props.review='최신 후기'] - 최신 후기 내용
+ *
+ * @example
+ * // 기본 사용
+ * <CardWine />
+ *
+ * @example
+ * // 모든 props 사용
+ * <CardWine
+ *   size="large"
+ *   title="샤또 마고 2015"
+ *   text="Deep maroon color, tasting notes of blackberry"
+ *   price={450000}
+ *   rating={4.9}
+ *   reviewNumber={128}
+ *   review="훌륭한 와인입니다"
+ * />
+ */
 export function CardWine({
   size,
   text = 'Detail',

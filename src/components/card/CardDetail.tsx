@@ -8,6 +8,28 @@ interface CardDetailProps extends BaseCardProps {
   price?: number;
 }
 
+/**
+ * 와인 상세 정보를 간단하게 표시하는 카드 컴포넌트
+ *
+ * @param {CardDetailProps} props - 컴포넌트 props
+ * @param {string} [props.size] - 카드 크기 (small, medium, large). 기본값: 반응형
+ * @param {string} [props.title='Title'] - 와인 제목
+ * @param {string} [props.text='Detail'] - 와인 설명
+ * @param {number} [props.price=10000] - 와인 가격
+ *
+ * @example
+ * // 기본 사용
+ * <CardDetail />
+ *
+ * @example
+ * // 모든 props 사용
+ * <CardDetail
+ *   size="large"
+ *   title="샤또 라피트 로칠드"
+ *   text="Pauillac, Bordeaux, France"
+ *   price={850000}
+ * />
+ */
 export function CardDetail({
   size,
   text = 'Detail',

@@ -10,6 +10,30 @@ interface CardMyProps extends BaseCardProps {
   createdAt?: string;
 }
 
+/**
+ * 내가 작성한 후기를 표시하는 카드 컴포넌트
+ *
+ * @param {CardMyProps} props - 컴포넌트 props
+ * @param {string} [props.size] - 카드 크기 (small, medium, large). 기본값: 반응형
+ * @param {number} [props.rating=4.8] - 평점
+ * @param {string} [props.username='와인 러버'] - 사용자 이름
+ * @param {string} [props.createdAt='2025-01-01'] - 작성일
+ * @param {string} [props.text='Detail'] - 후기 내용
+ *
+ * @example
+ * // 기본 사용
+ * <CardMy />
+ *
+ * @example
+ * // 모든 props 사용
+ * <CardMy
+ *   size="large"
+ *   rating={4.5}
+ *   username="홍길동"
+ *   createdAt="2025-12-30"
+ *   text="정말 훌륭한 와인입니다!"
+ * />
+ */
 export function CardMy({
   rating = 4.8,
   size,

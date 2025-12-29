@@ -4,6 +4,26 @@ import wine1 from '@shared/assets/images/wine1.svg';
 import clsx from 'clsx';
 import type { BaseCardProps } from './Card.types';
 
+/**
+ * 이달의 와인을 표시하는 컴팩트한 카드 컴포넌트
+ *
+ * @param {BaseCardProps} props - 컴포넌트 props
+ * @param {string} [props.size] - 카드 크기 (small, large). 기본값: 반응형
+ * @param {number} [props.rating=4.8] - 와인 평점
+ * @param {string} [props.title='Title'] - 부제목 텍스트
+ *
+ * @example
+ * // 기본 사용
+ * <CardMonthly />
+ *
+ * @example
+ * // props 사용
+ * <CardMonthly
+ *   size="large"
+ *   rating={4.9}
+ *   title="이달의 추천 와인"
+ * />
+ */
 export function CardMonthly({ size, rating = 4.8, title = 'Title' }: BaseCardProps) {
   // size에 따른 스타일 결정
   const cardSizeClass = clsx(
