@@ -1,3 +1,22 @@
+/**
+ * 공통 모달 베이스 컴포넌트
+ *
+ * - ESC 키로 닫힘
+ * - 바깥 영역 클릭 시 닫힘
+ * - 열릴 때 body 스크롤 잠금
+ *
+ * ### 사용 목적
+ * - 모든 모달 UI의 공통 레이아웃과 접근성(role="dialog")을 제공
+ * - 실제 콘텐츠는 children으로 주입
+ *
+ * ### 확장 방법
+ * - `panelClassName`, `bodyClassName`으로 내부 스타일 커스터마이징
+ * - `showHeader=false`로 헤더 없는 모달 구현 가능
+ *
+ * ### 접근성
+ * - role="dialog"
+ * - aria-modal="true"
+ */
 import React from 'react';
 import {
   useModalEscapeClose,
@@ -8,15 +27,14 @@ import closeIcon from '../img/closeButton.svg';
 
 type BaseModalProps = {
   isOpen: boolean;
-  title?: string;
   onClose: () => void;
   children: React.ReactNode;
-  maxWidthClassName?: string;
-  showHeader?: boolean;
+  title?: string;
   titleClassName?: string;
-
-  panelClassName?: string;
-  bodyClassName?: string;
+  maxWidthClassName?: string; // 모달 최대 너비 Tailwind 클래스
+  showHeader?: boolean; // 헤더 표시 여부 (기본: true)
+  panelClassName?: string; // 패널 전체 컨테이너 클래스
+  bodyClassName?: string; // 본문(body) 영역 클래스
 };
 
 export function BaseModal({

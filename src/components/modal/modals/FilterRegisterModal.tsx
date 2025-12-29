@@ -1,3 +1,24 @@
+/**
+ * 와인 등록(필터 등록) 모달
+ *
+ * - 이름/가격/원산지/타입/사진을 입력받아 `onSubmit`으로 전달합니다.
+ * - 제출 성공(또는 onSubmit 완료) 후 모달을 자동으로 닫습니다.
+ * - 제출 중에는 버튼이 disabled 되고 로딩 텍스트가 표시됩니다.
+ *
+ * @example
+ * ```tsx
+ * const [open, setOpen] = useState(false);
+ *
+ * <FilterRegisterModal
+ *   isOpen={open}
+ *   onClose={() => setOpen(false)}
+ *   onSubmit={async (value) => {
+ *     await createWine(value);
+ *   }}
+ * />
+ * ```
+ */
+
 import React, { useState } from 'react';
 import { BaseModal } from './BaseModal';
 import type { WineType } from './FilterModal';

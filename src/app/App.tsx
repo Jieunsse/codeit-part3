@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FilterModal } from '../components/modal/modals/FilterModal';
 import { DeleteConfirmModal } from '../components/modal/modals/DeleteConfirmModal';
 import { FilterRegisterModal } from '../components/modal/modals/FilterRegisterModal';
-import { ReviewRegisterModal } from '../components/modal/modals/ReviewRegisterModal';
+import { ReviewRegisterModal } from '../components/modal/modals/ReviewRegisterModal/ReviewRegisterModal';
 import { WineRegisterModal } from '../components/modal/modals/WineRegisterModal';
 
 type ModalKey = null | 'filter' | 'wine' | 'filterReg' | 'review' | 'delete';

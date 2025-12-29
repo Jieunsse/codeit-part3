@@ -1,3 +1,27 @@
+/**
+ * 삭제 확인용 공통 모달
+ *
+ * - 확인 버튼 클릭 시 onConfirm 실행
+ * - onConfirm 완료 후 자동으로 모달 닫힘
+ * - 비동기 처리 중에는 확인 버튼 비활성화
+ *
+ * @example
+ * ```tsx
+ * const [open, setOpen] = useState(false);
+ *
+ * <DeleteConfirmModal
+ *   isOpen={open}
+ *   onClose={() => setOpen(false)}
+ *   onConfirm={async () => {
+ *     await deleteItem(id);
+ *   }}
+ *   title="이 게시물을 삭제할까요?"
+ *   confirmText="삭제"
+ *   cancelText="취소"
+ * />
+ * ```
+ */
+
 import { useState } from 'react';
 import { BaseModal } from './BaseModal';
 import ModalButtonAdapter from './common/ModalButtonAdapter';

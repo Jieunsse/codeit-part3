@@ -1,3 +1,24 @@
+/**
+ * 와인 목록 필터 모달
+ *
+ * - "필터 적용하기" 클릭 시 `onApply`로 현재 값을 전달한 뒤 모달을 닫습니다.
+ * - "초기화" 클릭 시 DEFAULT 값으로 되돌립니다.
+ *
+ * @example
+ * ```tsx
+ * const [open, setOpen] = useState(false);
+ * const [filter, setFilter] = useState<FilterValue>();
+ *
+ * <FilterModal
+ *   isOpen={open}
+ *   onClose={() => setOpen(false)}
+ *   initialValue={filter}
+ *   maxPrice={30000000}
+ *   onApply={(v) => setFilter(v)}
+ * />
+ * ```
+ */
+
 import { useMemo, useState } from 'react';
 import { BaseModal } from './BaseModal';
 import ModalButtonAdapter from '../modals/common/ModalButtonAdapter';
@@ -206,7 +227,7 @@ export function FilterModal({
             <ModalButtonAdapter
               type="button"
               onClick={apply}
-              className="h-[54px] px-9 py-4 text-[16px] leading-[26px] font-bold hover:bg-violet-700"
+              className="h-[54px] px-9 py-4 text-[16px] leading-[26px] font-bold hover:bg-purple-700"
             >
               필터 적용하기
             </ModalButtonAdapter>

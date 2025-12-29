@@ -1,3 +1,22 @@
+/**
+ * 와인 등록 모달
+ *
+ * - 입력값을 `onSubmit`으로 전달합니다.
+ * - onSubmit 완료 후 모달을 자동으로 닫습니다.
+ * - 제출 중에는 버튼이 비활성화되고 로딩 텍스트가 표시됩니다.
+ *
+ * @example
+ * ```tsx
+ * <WineRegisterModal
+ *   isOpen={open}
+ *   onClose={() => setOpen(false)}
+ *   onSubmit={async (v) => {
+ *     await createWine(v);
+ *   }}
+ * />
+ * ```
+ */
+
 import React, { useState } from 'react';
 import { BaseModal } from './BaseModal';
 import type { WineType } from './FilterModal';
