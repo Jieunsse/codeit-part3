@@ -2,7 +2,7 @@ import type { BaseCardProps } from './Card.types';
 import { Card } from './Card';
 import wine2 from '@shared/assets/images/wine2.svg';
 import clsx from 'clsx';
-import { Chip } from './CardChip';
+import { CardChip } from './CardChip';
 import { StarRating } from '../star/StarRating';
 import rightarrow from '@shared/assets/images/rightarrow.svg';
 
@@ -16,7 +16,6 @@ interface CardWineProps extends BaseCardProps {
  * 와인 상세 정보를 표시하는 카드 컴포넌트
  *
  * @param {CardWineProps} props - 컴포넌트 props
- * @param {string} [props.size] - 카드 크기 (small, medium, large). 기본값: 반응형
  * @param {string} [props.title='Title'] - 와인 제목
  * @param {string} [props.text='Detail'] - 와인 설명
  * @param {number} [props.price=10000] - 와인 가격
@@ -31,7 +30,6 @@ interface CardWineProps extends BaseCardProps {
  * @example
  * // 모든 props 사용
  * <CardWine
- *   size="large"
  *   title="샤또 마고 2015"
  *   text="Deep maroon color, tasting notes of blackberry"
  *   price={450000}
@@ -41,7 +39,6 @@ interface CardWineProps extends BaseCardProps {
  * />
  */
 export function CardWine({
-  size,
   text = 'Detail',
   price = 10000,
   review = '최신 후기',
@@ -49,56 +46,20 @@ export function CardWine({
   reviewNumber = 47,
   title = 'Title',
 }: CardWineProps) {
-  // size에 따른 스타일 결정
+  // 모바일(small) → md(medium) → lg(large) 반응형 고정
   const cardSizeClass = clsx(
-    size
-      ? {
-          small: 'w-[343px] h-[360px]',
-          medium: 'w-[704px] h-[375px]',
-          large: 'w-[800px] h-[375px]',
-        }[size]
-      : 'w-[343px] h-[360px]', // size 없으면 모바일 기본
+    'w-[343px] h-[360px]',
     'md:w-[704px] md:h-[375px]',
     'lg:w-[800px] lg:h-[375px]',
   );
 
   const imagePositionSizeClass = clsx('w-[80px]', 'md:w-[80px]', 'lg:w-[80px]');
 
-  const textClass = clsx(
-    size
-      ? {
-          small: 'text-[14px]',
-          medium: 'text-[16px]',
-          large: 'text-[16px]',
-        }[size]
-      : 'text-[14px]',
-    'md:text-[16px]',
-    'lg:text-[16px]',
-  );
+  const textClass = clsx('text-[14px]', 'md:text-[16px]', 'lg:text-[16px]');
 
-  const titleClass = clsx(
-    size
-      ? {
-          small: 'text-[20px]',
-          medium: 'text-[30px]',
-          large: 'text-[30px]',
-        }[size]
-      : 'text-[20px]',
-    'md:text-[30px]',
-    'lg:text-[30px]',
-  );
+  const titleClass = clsx('text-[20px]', 'md:text-[30px]', 'lg:text-[30px]');
 
-  const chipClass = clsx(
-    size
-      ? {
-          small: 'text-[14px]',
-          medium: 'text-[18px]',
-          large: 'text-[18px]',
-        }[size]
-      : 'text-[14px]',
-    'md:text-[18px]',
-    'lg:text-[18px]',
-  );
+  const chipClass = clsx('text-[14px]', 'md:text-[18px]', 'lg:text-[18px]');
 
   const bodyClass = 'w-4/5 md:w-3/5';
   const starTitleClass = 'text-[28px] md:text-[48px] lg:text-[48px]';
@@ -125,7 +86,7 @@ export function CardWine({
             </Card.Text>
           </Card.Container>
 
-          <Chip className={clsx(chipClass)}>₩ {price?.toLocaleString()}</Chip>
+          <CardChip className={clsx(chipClass)}>₩ {price?.toLocaleString()}</CardChip>
 
           {/* 모바일용: StarRating이 Card.Body 안에 */}
           <Card.Container className="flex w-full flex-row items-center justify-between md:hidden">

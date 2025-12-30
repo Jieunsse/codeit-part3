@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-interface ChipProps {
+interface CardChipProps {
   className?: string;
   children?: React.ReactNode;
 }
@@ -20,7 +20,7 @@ interface ChipProps {
  * // className과 함께 사용
  * <Chip className="text-lg">★ 4.8</Chip>
  */
-export function Chip({ className, children }: ChipProps) {
+export function CardChip({ className, children }: CardChipProps) {
   return (
     <div
       className={clsx('rounded-[12px] px-[15px] py-[5px]', className)}

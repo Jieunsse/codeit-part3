@@ -8,7 +8,6 @@ import type { BaseCardProps } from './Card.types';
  * 이달의 와인을 표시하는 컴팩트한 카드 컴포넌트
  *
  * @param {BaseCardProps} props - 컴포넌트 props
- * @param {string} [props.size] - 카드 크기 (small, large). 기본값: 반응형
  * @param {number} [props.rating=4.8] - 와인 평점
  * @param {string} [props.title='Title'] - 부제목 텍스트
  *
@@ -19,17 +18,14 @@ import type { BaseCardProps } from './Card.types';
  * @example
  * // props 사용
  * <CardMonthly
- *   size="large"
  *   rating={4.9}
  *   title="이달의 추천 와인"
  * />
  */
-export function CardMonthly({ size, rating = 4.8, title = 'Title', className }: BaseCardProps) {
-  // size에 따른 스타일 결정
+export function CardMonthly({ rating = 4.8, title = 'Title', className }: BaseCardProps) {
+  // 모바일(small) → md 이상(large)로 반응형 고정
   const cardSizeClass = clsx(
-    size === 'small'
-      ? 'w-[193px] h-[160px] px-[25px] py-[24px] pb-[0px]'
-      : 'w-[232px] h-[185px] px-[30px] py-[24px] pb-[0px]',
+    'w-[193px] h-[160px] px-[25px] py-[24px] pb-[0px]',
     'md:w-[232px] md:h-[185px] md:px-[30px] md:py-[24px] md:pb-[0px]',
     'lg:w-[232px] lg:h-[185px] lg:px-[30px] lg:py-[24px] lg:pb-[0px]',
   );

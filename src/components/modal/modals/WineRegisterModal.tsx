@@ -1,0 +1,162 @@
+/**
+ * 와인 등록 모달
+ *
+ * - 입력값을 `onSubmit`으로 전달합니다.
+ * - onSubmit 완료 후 모달을 자동으로 닫습니다.
+ * - 제출 중에는 버튼이 비활성화되고 로딩 텍스트가 표시됩니다.
+ *
+ * @example
+ * ```tsx
+ * <WineRegisterModal
+ *   isOpen={open}
+ *   onClose={() => setOpen(false)}
+ *   onSubmit={async (v) => {
+ *     await createWine(v);
+ *   }}
+ * />
+ * ```
+ */
+
+import React, { useState } from 'react';
+import { BaseModal } from './BaseModal';
+import type { WineType } from './FilterModal';
+import CameraIcon from '../img/camera.svg';
+import ModalButtonAdapter from './common/ModalButtonAdapter';
+import { Input } from '../../input/Input';
+import Select from '../../input/Select';
+
+export type WineRegisterValue = {
+  name: string;
+  price: number | '';
+  origin: string;
+  type: WineType;
+  photoFile?: File | null;
+};
+
+type WineRegisterModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (value: WineRegisterValue) => Promise<void> | void;
+};
+
+export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterModalProps) {
+  const [form, setForm] = useState<WineRegisterValue>({
+    name: '',
+    price: '',
+    origin: '',
+    type: 'Red',
+    photoFile: null,
+  });
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const set = <K extends keyof WineRegisterValue>(key: K, value: WineRegisterValue[K]) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const submit = async () => {
+    try {
+      setSubmitting(true);
+      await onSubmit(form);
+      onClose();
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <BaseModal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="와인 등록"
+      titleClassName="text-[24px] font-bold text-gray-800 leading-[32px] pb-[16px]"
+      maxWidthClassName="max-w-[560px]"
+    >
+      <div className="space-y-8">
+        <Field label="와인 이름">
+          <Input
+            title=""
+            value={form.name}
+            onChange={(e) => set('name', e.target.value)}
+            placeholder="와인 이름 입력"
+          />
+        </Field>
+
+        <Field label="가격">
+          <Input
+            title=""
+            value={form.price}
+            onChange={(e) => set('price', e.target.value === '' ? '' : Number(e.target.value))}
+            placeholder="가격 입력"
+          />
+        </Field>
+
+        <Field label="원산지">
+          <Input
+            title=""
+            value={form.origin}
+            onChange={(e) => set('origin', e.target.value)}
+            placeholder="원산지 입력"
+          />
+        </Field>
+
+        <Field label="타입">
+          <Select
+            title=""
+            value={form.type}
+            onChange={(value: string) => set('type', value as WineType)}
+            options={[
+              { label: 'Red', value: 'Red' },
+              { label: 'White', value: 'White' },
+              { label: 'Sparkling', value: 'Sparkling' },
+            ]}
+          />
+        </Field>
+
+        <Field label="와인 사진">
+          <label className="flex h-[120px] w-[120px] cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-gray-50 text-gray-400 hover:bg-gray-100">
+            <Input
+              title=""
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => set('photoFile', e.target.files?.[0] ?? null)}
+            />
+            <img src={CameraIcon} alt="cameraIcon" />
+          </label>
+        </Field>
+
+        <div className="flex gap-2.5 pt-2">
+          <div className="flex-1">
+            <ModalButtonAdapter
+              type="button"
+              onClick={onClose}
+              className="h-[54px] rounded-xl border-none bg-purple-100 px-9 py-4 text-[16px] font-bold text-purple-700 hover:bg-purple-200"
+            >
+              취소
+            </ModalButtonAdapter>
+          </div>
+          <div className="flex-2">
+            <ModalButtonAdapter
+              type="button"
+              onClick={submit}
+              disabled={submitting}
+              className="h-[54px] flex-2 rounded-xl bg-violet-600 px-9 py-4 text-[16px] font-bold text-white hover:bg-violet-700"
+            >
+              {submitting ? '등록 중...' : '와인 등록하기'}
+            </ModalButtonAdapter>
+          </div>
+        </div>
+      </div>
+    </BaseModal>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-2">
+      <div className="text-[16px] leading-[26px] font-medium text-gray-800">{label}</div>
+      {children}
+    </div>
+  );
+}

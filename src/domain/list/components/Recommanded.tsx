@@ -14,7 +14,6 @@ export interface RecommendedItem {
   id: string;
   rating: number;
   title: string;
-  size?: 'small' | 'large';
 }
 
 interface RecommandedProps {
@@ -39,8 +38,8 @@ interface RecommandedProps {
  * <Recommanded
  *   title="이번 달 추천 와인"
  *   items={[
- *     { id: '1', rating: 4.8, title: '이달의 추천 와인', size: 'small' },
- *     { id: '2', rating: 4.9, title: '에디터 픽', size: 'large' },
+ *     { id: '1', rating: 4.8, title: '이달의 추천 와인' },
+ *     { id: '2', rating: 4.9, title: '에디터 픽' },
  *   ]}
  * />
  */
@@ -69,12 +68,7 @@ export function Recommanded({ className, title, items }: RecommandedProps) {
         >
           {items.map((item, index) => (
             <SwiperSlide key={`${item.id}-${index}`} className="!w-auto">
-              <CardMonthly
-                size={item.size}
-                rating={item.rating}
-                title={item.title}
-                className="border-none"
-              />
+              <CardMonthly rating={item.rating} title={item.title} className="border-none" />
             </SwiperSlide>
           ))}
         </Swiper>
