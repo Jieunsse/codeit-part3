@@ -1,7 +1,14 @@
 import clsx from 'clsx';
 import { Recommanded } from '../components/Recommanded';
 
+interface RecommendedItem {
+  id: string;
+  rating: number;
+  title: string;
+}
+
 interface RecommandedContainerProps {
+  items: RecommendedItem[];
   className?: string;
 }
 
@@ -13,14 +20,7 @@ interface RecommandedContainerProps {
  * @example
  * <RecommandedContainer />
  */
-export function RecommandedContainer({ className }: RecommandedContainerProps) {
-  const items = [
-    { id: 'monthly-1', rating: 4.8, title: '이달의 추천 와인' },
-    { id: 'monthly-2', rating: 4.7, title: 'TOP 셀러' },
-    { id: 'monthly-3', rating: 4.9, title: '신상 와인' },
-    { id: 'monthly-4', rating: 4.6, title: '가성비 추천' },
-  ];
-
+export function RecommandedContainer({ className, items }: RecommandedContainerProps) {
   return (
     <Recommanded
       className={clsx(
