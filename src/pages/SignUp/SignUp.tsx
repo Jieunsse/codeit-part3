@@ -13,7 +13,6 @@ export function SignUp() {
   const { values, errors, touched, submitting, isFormValid, setFieldValue, handleBlur, submit } =
     useSignUpForm();
 
-  // ✅ 추천 패턴: 이벤트 타입을 "한 번만" 선언하고 함수로 빼기
   const handleEmailChange = (e: InputChangeEvent) => {
     setFieldValue('email', e.target.value);
   };
@@ -46,7 +45,7 @@ export function SignUp() {
         {/* 로고 */}
         <div className="mb-8 flex justify-center">
           <button type="button">
-            <img src={Logo} alt="WINE" className="h-10" />
+            <img src={Logo} alt="WINE" className="h-[30px] w-[104px]" />
           </button>
         </div>
 
