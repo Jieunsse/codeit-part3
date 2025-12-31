@@ -1,3 +1,11 @@
+/**
+ * 로그인 페이지 컴포넌트
+ *
+ * - 이메일/비밀번호 로그인 폼을 렌더링합니다.
+ * - 구글/카카오 소셜 로그인 버튼을 제공합니다.
+ * - 현재는 API 연동 전이며, submit 시 form 값을 콘솔로 출력합니다.
+ */
+
 import { useState } from 'react';
 
 import { Input } from '../../components/input/Input';
