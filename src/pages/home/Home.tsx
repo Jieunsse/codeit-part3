@@ -1,3 +1,9 @@
+import { SignUp } from '../SignUp/SignUp';
+
 export function Home() {
-  return <div>Home</div>;
+  return (
+    <>
+      <SignUp />
+    </>
+  );
 }
