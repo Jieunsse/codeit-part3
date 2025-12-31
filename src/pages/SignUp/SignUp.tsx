@@ -134,13 +134,32 @@ function Field({
   error?: string;
   children: React.ReactNode;
 }) {
+  const show = Boolean(error);
+
   return (
     <div className="space-y-2.5">
       <label className="block text-[14px] leading-6 font-medium text-gray-800 md:text-[16px]">
         {label}
       </label>
+
       {children}
-      {error ? <p className="text-sm text-red-500">{error}</p> : null}
+
+      <div
+        className={[
+          'overflow-hidden transition-all duration-1000 ease-out',
+          show ? 'max-h-20' : 'max-h-0',
+        ].join(' ')}
+      >
+        <p
+          className={[
+            'transform text-sm text-red-500 transition-all duration-1000 ease-out',
+            show ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0',
+          ].join(' ')}
+          aria-live="polite"
+        >
+          {error ?? ''}
+        </p>
+      </div>
     </div>
   );
 }
