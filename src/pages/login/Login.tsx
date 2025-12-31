@@ -47,14 +47,11 @@ export function Login() {
               aria-describedby={errors.email ? 'login-email-error' : undefined}
             />
 
-            {errors.email && (
-              <p
-                id="login-email-error"
-                className="text-[12px] leading-5 text-red-600 md:text-[14px]"
-              >
-                {errors.email}
-              </p>
-            )}
+            <p
+              className={`overflow-hidden text-[12px] leading-5 text-red-600 transition-[max-height,opacity] duration-1000 ease-out md:text-[14px] ${errors.email ? 'max-h-10 opacity-100' : 'max-h-0 opacity-0'} `}
+            >
+              {errors.email}
+            </p>
           </div>
 
           {/* Password */}
@@ -73,14 +70,11 @@ export function Login() {
               aria-describedby={errors.password ? 'login-password-error' : undefined}
             />
 
-            {errors.password && (
-              <p
-                id="login-password-error"
-                className="text-[12px] leading-5 text-red-600 md:text-[14px]"
-              >
-                {errors.password}
-              </p>
-            )}
+            <p
+              className={`overflow-hidden text-[12px] leading-5 text-red-600 transition-[max-height,opacity] duration-1000 ease-out md:text-[14px] ${errors.password ? 'max-h-10 opacity-100' : 'max-h-0 opacity-0'} `}
+            >
+              {errors.password}
+            </p>
           </div>
 
           <div className="-mt-5">
