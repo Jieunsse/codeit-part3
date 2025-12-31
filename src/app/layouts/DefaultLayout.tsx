@@ -1,14 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import { Header } from '@src/components/header/Header';
-import { AuthInitializer } from './AuthInitializer';
+import { AuthInitializer } from '@app/AuthInitializer';
 
-export default function App() {
+export function DefaultLayout() {
   return (
     <>
       <AuthInitializer />
-      <span className="mt-[24px] flex justify-center">
+
+      <div className="mt-[16px] flex justify-center md:mt-[24px]">
         <Header />
-      </span>
+      </div>
+
       <main>
         <Outlet />
       </main>
