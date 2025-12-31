@@ -6,11 +6,7 @@ export function DefaultLayout() {
   return (
     <>
       <AuthInitializer />
-
-      <div className="mt-[16px] flex justify-center md:mt-[24px]">
-        <Header />
-      </div>
-
+      <Header />
       <main>
         <Outlet />
       </main>
