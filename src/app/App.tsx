@@ -6,7 +6,9 @@ export default function App() {
   return (
     <>
       <AuthInitializer />
-      <Header />
+      <span className="mt-[24px] flex justify-center">
+        <Header />
+      </span>
       <main>
         <Outlet />
       </main>
