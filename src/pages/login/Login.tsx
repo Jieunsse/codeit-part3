@@ -1,7 +1,7 @@
 import Button from '../../components/button/Button';
 import { Input } from '../../components/input/Input';
 
-import Logo from './img/logo.svg';
+import Logo from './img/Logo.svg';
 import GoogleIcon from './img/GoogleIcon.svg';
 import KakaoIcon from './img/KakaoIcon.svg';
 
