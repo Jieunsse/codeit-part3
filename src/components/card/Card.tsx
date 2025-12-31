@@ -118,7 +118,7 @@ Card.Image = function CardImage({ className, src, alt }: CardImageProps) {
 };
 
 /**
- * 카드 텍스트 컴포넌트 (자동으로 truncate 적용)
+ * 카드 텍스트 컴포넌트
  * @param {CardSubComponentProps} props
  */
 Card.Text = function CardText({ className, children, style }: CardSubComponentProps) {
