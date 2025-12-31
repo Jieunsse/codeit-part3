@@ -2,28 +2,37 @@ import type { BaseCardProps } from './Card.types';
 import { Card } from './Card';
 import wine2 from '@shared/assets/images/wine2.svg';
 import clsx from 'clsx';
-import { Chip } from './CardChip';
+import { CardChip } from './CardChip';
 import kebab from '@shared/assets/images/kebab.svg';
 
 interface CardMylistProps extends BaseCardProps {
   price?: number;
 }
 
-export function CardMylist({
-  size,
-  text = 'Detail',
-  price = 10000,
-  title = 'Title',
-}: CardMylistProps) {
-  // size에 따른 스타일 결정
+/**
+ * 내 위시리스트의 와인을 표시하는 카드 컴포넌트
+ *
+ * @param {CardMylistProps} props - 컴포넌트 props
+ * @param {string} [props.title='Title'] - 와인 제목
+ * @param {string} [props.text='Detail'] - 와인 설명
+ * @param {number} [props.price=10000] - 와인 가격
+ *
+ * @example
+ * // 기본 사용
+ * <CardMylist />
+ *
+ * @example
+ * // 모든 props 사용
+ * <CardMylist
+ *   title="돔 페리뇽 2012"
+ *   text="프랑스 샴페인"
+ *   price={320000}
+ * />
+ */
+export function CardMylist({ text = 'Detail', price = 10000, title = 'Title' }: CardMylistProps) {
+  // 모바일(small) → md(medium) → lg(large) 반응형 고정
   const cardSizeClass = clsx(
-    size
-      ? {
-          small: 'w-[343px] h-[164px] px-[20px] py-[16px] pb-[0px]',
-          medium: 'w-[704px] h-[228px] px-[24px] py-[20px] pb-[0px]',
-          large: 'w-[800px] h-[228px] px-[30px] py-[24px] pb-[0px]',
-        }[size]
-      : 'w-[343px] h-[164px] px-[20px] py-[16px] pb-[0px]',
+    'w-[343px] h-[164px] px-[20px] py-[16px] pb-[0px]',
     'md:w-[704px] md:h-[228px] md:px-[24px] md:py-[20px] md:pb-[0px]',
     'lg:w-[800px] lg:h-[228px] lg:px-[30px] lg:py-[24px] lg:pb-[0px]',
   );
@@ -58,7 +67,7 @@ export function CardMylist({
           <Card.Text className={clsx(textClass)} style={{ color: 'var(--color-gray-500)' }}>
             {text}
           </Card.Text>
-          <Chip className={clsx(chipClass)}>₩ {price?.toLocaleString()}</Chip>
+          <CardChip className={clsx(chipClass)}>₩ {price?.toLocaleString()}</CardChip>
         </Card.Body>
       </Card.Container>
       <Card.Icon>
