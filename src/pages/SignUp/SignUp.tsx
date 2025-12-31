@@ -1,4 +1,5 @@
 import type React from 'react';
+import { Link } from 'react-router-dom';
 import Logo from './img/logo.svg';
 
 import { Input } from '../../components/input/Input';
@@ -40,17 +41,17 @@ export function SignUp() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-[520px] rounded-2xl border border-slate-100 bg-white px-10 py-12 shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-[343px] rounded-2xl border border-gray-300 bg-white px-5 py-14 shadow-lg md:max-w-[496px] md:px-12 md:py-20">
         {/* 로고 */}
-        <div className="mb-8 flex justify-center">
+        <div className="mb-16 flex justify-center">
           <button type="button">
             <img src={Logo} alt="WINE" className="h-[30px] w-[104px]" />
           </button>
         </div>
 
         {/* 폼 */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <Field label="이메일" error={touched.email ? errors.email : undefined}>
             <Input
               title=" "
@@ -97,18 +98,27 @@ export function SignUp() {
           </Field>
 
           <div className="pt-2">
-            <Button type="submit" disabled={!isFormValid || submitting} className="w-full">
+            <Button
+              type="submit"
+              disabled={!isFormValid || submitting}
+              className="w-full cursor-pointer hover:bg-violet-800"
+            >
               {submitting ? '가입 중...' : '가입하기'}
             </Button>
           </div>
         </form>
 
         {/* 하단 링크 */}
-        <div className="mt-8 text-center text-sm text-slate-500">
+        <div className="font-regular mt-10 text-center text-[14px] text-gray-500 md:text-[16px]">
           계정이 이미 있으신가요?{' '}
-          <button type="button" className="font-semibold text-violet-600 hover:underline">
-            로그인하기
-          </button>
+          <Link to="/login">
+            <button
+              type="button"
+              className="cursor-pointer text-[14px] font-medium text-violet-600 hover:underline md:text-[16px]"
+            >
+              로그인하기
+            </button>
+          </Link>
         </div>
       </div>
     </div>
@@ -125,8 +135,10 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-slate-700">{label}</label>
+    <div className="space-y-2.5">
+      <label className="block text-[14px] leading-6 font-medium text-gray-800 md:text-[16px]">
+        {label}
+      </label>
       {children}
       {error ? <p className="text-sm text-red-500">{error}</p> : null}
     </div>
