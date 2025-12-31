@@ -1,33 +1,18 @@
-/**
- * 로그인 페이지 컴포넌트
- *
- * - 이메일/비밀번호 로그인 폼을 렌더링합니다.
- * - 구글/카카오 소셜 로그인 버튼을 제공합니다.
- * - 현재는 API 연동 전이며, submit 시 form 값을 콘솔로 출력합니다.
- */
-
-import { useState } from 'react';
-
-import { Input } from '../../components/input/Input';
 import Button from '../../components/button/Button';
+import { Input } from '../../components/input/Input';
+
 import Logo from './img/logo.svg';
 import GoogleIcon from './img/GoogleIcon.svg';
 import KakaoIcon from './img/KakaoIcon.svg';
 
+import { useLoginForm } from './useLoginForm';
+
 export function Login() {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  });
+  const { form, errors, onChange, submit } = useLoginForm();
 
-  const onChange = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, [key]: e.target.value }));
-  };
-
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: 로그인 API 연결
-    console.log('login submit', form);
+    await submit();
   };
 
   const onGoogleLogin = () => {
@@ -43,7 +28,6 @@ export function Login() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-white px-4 py-10">
       <div className="w-full max-w-[343px] rounded-2xl border border-gray-300 bg-white px-5 py-14 shadow-[0_10px_30px_rgba(0,0,0,0.08)] md:max-w-[496px] md:px-12 md:py-16">
-        {/* Logo */}
         <img src={Logo} alt="Wine Logo" className="mx-auto" />
 
         <form onSubmit={onSubmit} className="mt-14 flex flex-col gap-4 md:mt-16 md:gap-[25px]">
@@ -52,29 +36,53 @@ export function Login() {
             <label className="text-[14px] leading-6 font-medium text-gray-800 md:text-[16px]">
               이메일
             </label>
+
             <Input
               title=" "
               value={form.email}
               onChange={onChange('email')}
               placeholder="이메일 입력"
               type="email"
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'login-email-error' : undefined}
             />
+
+            {errors.email && (
+              <p
+                id="login-email-error"
+                className="text-[12px] leading-5 text-red-600 md:text-[14px]"
+              >
+                {errors.email}
+              </p>
+            )}
           </div>
 
+          {/* Password */}
           <div className="flex flex-col gap-2.5">
             <label className="text-[14px] leading-6 font-medium text-gray-800 md:text-[16px]">
               비밀번호
             </label>
+
             <Input
               title=" "
               value={form.password}
               onChange={onChange('password')}
               placeholder="비밀번호 입력"
               type="password"
+              aria-invalid={!!errors.password}
+              aria-describedby={errors.password ? 'login-password-error' : undefined}
             />
+
+            {errors.password && (
+              <p
+                id="login-password-error"
+                className="text-[12px] leading-5 text-red-600 md:text-[14px]"
+              >
+                {errors.password}
+              </p>
+            )}
           </div>
 
-          {/* Forgot password */}
           <div className="-mt-5">
             <a
               href="/forgot-password"
@@ -85,7 +93,6 @@ export function Login() {
           </div>
 
           <div className="flex flex-col gap-[15px] pt-[26px]">
-            {/* Login button */}
             <Button
               type="submit"
               className="h-[50px] w-full max-w-[400px] cursor-pointer rounded-2xl bg-violet-700 text-[14px] leading-6 font-bold text-white hover:bg-violet-800 md:text-[16px]"
@@ -93,7 +100,6 @@ export function Login() {
               로그인
             </Button>
 
-            {/* Social buttons */}
             <Button
               type="button"
               onClick={onGoogleLogin}
@@ -118,12 +124,11 @@ export function Login() {
           </div>
         </form>
 
-        {/* Footer link */}
         <div className="mt-6 flex items-center justify-center gap-3 text-[14px] md:mt-8 md:text-[16px]">
           <span className="font-regular cursor-pointer text-gray-500 hover:underline">
             계정이 없으신가요?
           </span>
-          <a href="/signup" className="cursor-pointer font-medium text-violet-800 hover:underline">
+          <a href="/Signup" className="cursor-pointer font-medium text-violet-800 hover:underline">
             회원가입하기
           </a>
         </div>
