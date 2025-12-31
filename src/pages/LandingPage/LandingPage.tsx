@@ -33,7 +33,6 @@ export default function LandingPage() {
           </section>
 
           <div className="mx-auto w-full max-w-[343px] md:max-w-[699px]">
-            {/* RECOMMEND */}
             <section className="mt-16 md:mt-20">
               <ResponsiveImg
                 alt="추천"
@@ -43,7 +42,6 @@ export default function LandingPage() {
               />
             </section>
 
-            {/* FILTER */}
             <section className="mt-16 md:mt-20">
               <ResponsiveImg
                 alt="필터"
@@ -53,7 +51,6 @@ export default function LandingPage() {
               />
             </section>
 
-            {/* REVIEW */}
             <section className="mt-16 md:mt-20">
               <ResponsiveImg
                 alt="리뷰"
@@ -62,7 +59,6 @@ export default function LandingPage() {
                 className="mx-auto block w-full max-w-[343px] md:mx-0 md:max-w-[640px]"
               />
             </section>
-            {/* CTA BUTTON */}
             <section className="lg:pb[109px] mx-auto mt-16 block w-full max-w-[343px] pb-[62px] md:mx-0 md:mt-20 md:max-w-[640px] md:pb-[72px] lg:mt-[104px]">
               <Button
                 className="mx-auto block rounded-[100px]! px-24 py-4 hover:bg-violet-800"
