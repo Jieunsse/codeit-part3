@@ -1,11 +1,11 @@
-import { RecommandedContainer } from '@src/domain/list/containers/RecommandedContainer';
+import { RecommendedContainer } from '@src/domain/list/containers/RecommendedContainer';
 import { InputWineListContainer } from '@src/domain/list/containers/InputWineListContainer';
 
 export function Wines() {
   return (
     <div>
       <header>
-        <RecommandedContainer
+        <RecommendedContainer
           items={[
             { id: '1', rating: 4.8, title: '이달의 추천 와인' },
             { id: '2', rating: 4.9, title: '에디터 픽' },

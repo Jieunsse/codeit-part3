@@ -7,7 +7,7 @@ interface RecommendedItem {
   title: string;
 }
 
-interface RecommandedContainerProps {
+interface RecommendedContainerProps {
   items?: RecommendedItem[];
   className?: string;
 }
@@ -20,7 +20,7 @@ interface RecommandedContainerProps {
  * @example
  * <RecommendedContainer />
  */
-export function RecommandedContainer({ className, items }: RecommandedContainerProps) {
+export function RecommendedContainer({ className, items }: RecommendedContainerProps) {
   return (
     <Recommended
       className={clsx(
