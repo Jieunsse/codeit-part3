@@ -1,9 +1,9 @@
 import { RecommendedContainer } from '@src/domain/list/containers/RecommendedContainer';
 import { InputWineListContainer } from '@src/domain/list/containers/InputWineListContainer';
-
+import { FilterContainer } from '@src/domain/list/containers/FilterContainer';
 export function Wines() {
   return (
-    <div>
+    <div className="w-full">
       <header>
         <RecommendedContainer
           items={[
@@ -12,7 +12,8 @@ export function Wines() {
           ]}
         />
       </header>
-      <div>
+      <div className="flex w-full items-center justify-center">
+        <FilterContainer />
         <InputWineListContainer
           items={[
             {
