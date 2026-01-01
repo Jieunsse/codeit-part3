@@ -1,16 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { Header } from '@src/components/header/Header';
-import { AuthInitializer } from './AuthInitializer';
-import { RecommandedContainer } from '@src/domain/list/containers/RecommandedContainer';
+import { AuthInitializer } from '@app/AuthInitializer';
 
-export default function App() {
+export function DefaultLayout() {
   return (
     <>
       <AuthInitializer />
       <Header />
       <main>
         <Outlet />
-        <RecommandedContainer />
       </main>
     </>
   );

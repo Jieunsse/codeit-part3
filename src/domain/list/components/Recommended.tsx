@@ -16,7 +16,7 @@ export interface RecommendedItem {
   title: string;
 }
 
-interface RecommandedProps {
+interface RecommendedProps {
   className?: string;
   title: string;
   items: RecommendedItem[];
@@ -28,14 +28,14 @@ interface RecommandedProps {
  * - Swiper 기반 가로 스크롤/스와이프 UI
  * - 각 아이템은 `CardMonthly`로 렌더링
  *
- * @param {RecommandedProps} props
+ * @param {RecommendedProps} props
  * @param {string} [props.className] - wrapper 추가 클래스
  * @param {string} props.title - 섹션 타이틀
  * @param {RecommendedItem[]} props.items - 추천 카드 목록
  *
  * @example
  * // 데이터 주입
- * <Recommanded
+ * <Recommended
  *   title="이번 달 추천 와인"
  *   items={[
  *     { id: '1', rating: 4.8, title: '이달의 추천 와인' },
@@ -43,7 +43,7 @@ interface RecommandedProps {
  *   ]}
  * />
  */
-export function Recommanded({ className, title, items }: RecommandedProps) {
+export function Recommended({ className, title, items }: RecommendedProps) {
   const swiperRef = useRef<SwiperInstance | null>(null);
 
   return (
