@@ -7,14 +7,13 @@ import { Wines } from '@src/pages/wines/Wines';
 export const router = createBrowserRouter([
   {
     element: <DefaultLayout />,
-    children: [{ path: '/', element: <Home /> }],
+    children: [
+      { path: '/', element: <Home /> },
+      { path: '/wines', element: <Wines /> },
+    ],
   },
   {
     element: <AuthLayout />,
     children: [],
-  },
-  {
-    path: '/wines',
-    element: <Wines />,
   },
 ]);
