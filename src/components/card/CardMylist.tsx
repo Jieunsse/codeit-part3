@@ -32,9 +32,9 @@ interface CardMylistProps extends BaseCardProps {
 export function CardMylist({ text = 'Detail', price = 10000, title = 'Title' }: CardMylistProps) {
   // 모바일(small) → md(medium) → lg(large) 반응형 고정
   const cardSizeClass = clsx(
-    'w-[343px] h-[164px] px-[20px] py-[16px] pb-[0px]',
-    'md:w-[704px] md:h-[228px] md:px-[24px] md:py-[20px] md:pb-[0px]',
-    'lg:w-[800px] lg:h-[228px] lg:px-[30px] lg:py-[24px] lg:pb-[0px]',
+    'h-[164px] px-[20px] py-[16px] pb-[0px]',
+    'md:min-h-[228px] md:pl-[60px] md:py-[20px] md:pb-[0px]',
+    'lg:min-h-[228px] lg:pl-[60px] lg:py-[24px] lg:pb-[0px]',
   );
 
   const imageSizeClass = 'w-[53px] h-[185px] md:w-[90px] md:h-[270px] lg:w-[90px] lg:h-[270px]';
@@ -45,13 +45,13 @@ export function CardMylist({ text = 'Detail', price = 10000, title = 'Title' }: 
   const bodyClass = 'w-4/5 md:w-3/5';
 
   return (
-    <Card className={clsx('flex flex-row justify-between', cardSizeClass)}>
+    <Card className={clsx('flex w-full flex-row justify-between', cardSizeClass)}>
       <Card.Container className="relative flex w-full flex-row items-end gap-[28px] overflow-visible">
-        <Card.Body className={clsx(imagePositionSizeClass, 'relative h-full')}>
+        <Card.Body className={clsx(imagePositionSizeClass, 'flex h-full shrink-0 items-end')}>
           <Card.Image
             src={wine2}
             alt="Wine"
-            className={clsx(imageSizeClass, 'w-full] absolute bottom-0 left-0 object-cover')}
+            className={clsx(imageSizeClass, 'w-full object-contain')}
           />
         </Card.Body>
 
