@@ -7,43 +7,75 @@ import kebab from '@shared/assets/images/kebab.svg';
 import heart from '@shared/assets/images/heart.svg';
 import updown from '@shared/assets/images/updown.svg';
 import { useState } from 'react';
-
-import { Chip } from './CardChip';
-
-interface ChipData {
+import { FlavorSliderReadOnly } from './FlavorSliderReadOnly';
+import { CardChip } from './CardChip';
+import { Chips } from '../chips/Chips';
+/**
+ * 칩 데이터 인터페이스
+ * @property {string} label - 칩 라벨 (예: '향', '맛', '★')
+ * @property {number | string} value - 칩 값 (예: 4.8, '달콤함')
+ */
+interface CardChipData {
+  title: string;
+}
+interface MainChipData {
   label: string;
   value: number | string;
 }
-
 interface CardReviewProps extends BaseCardProps {
   username?: string;
   createdAt?: string;
-  chips?: ChipData[];
-  mainChip?: ChipData;
+  chips?: CardChipData[];
+  mainChip?: MainChipData;
+  flavorValue: {
+    body: number;
+    tannin: number;
+    sweet: number;
+    acid: number;
+  };
 }
 
+/**
+ * 와인 후기를 표시하는 카드 컴포넌트 (접기/펼치기 기능 포함)
+ *
+ * @param {CardReviewProps} props - 컴포넌트 props
+ * @param {string} [props.username='와인 러버'] - 사용자 이름
+ * @param {string} [props.createdAt='2025-01-01'] - 작성일
+ * @param {string} [props.text='Detail'] - 후기 내용
+ * @param {ChipData[]} [props.chips] - 왼쪽 칩 목록 (향, 맛, 여운 등)
+ * @param {ChipData} [props.mainChip] - 오른쪽 메인 칩 (종합 평점)
+ *
+ * @example
+ * // 기본 사용
+ * <CardReview />
+ *
+ * @example
+ * // 모든 props 사용
+ * <CardReview
+ *   username="홍길동"
+ *   createdAt="2025-12-30"
+ *   text="부드럽고 풍부한 맛이 일품입니다."
+ *   chips={[
+ *     { label: '향', value: 4.5 },
+ *     { label: '맛', value: 4.8 },
+ *     { label: '여운', value: 4.2 }
+ *   ]}
+ *   mainChip={{ label: '종합', value: 4.5 }}
+ * />
+ */
 export function CardReview({
-  size,
   username = '와인 러버',
   createdAt = '2025-01-01',
   text = 'Detail',
-  chips = [
-    { label: '★', value: 4.8 },
-    { label: '★', value: 4.8 },
-    { label: '★', value: 4.8 },
-  ],
+  chips = [{ title: '시트러스' }, { title: '맛' }, { title: '여운' }],
+  flavorValue = { body: 50, tannin: 55, sweet: 20, acid: 65 },
   mainChip = { label: '★', value: 4.8 },
 }: CardReviewProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
+  // 모바일(small) → md(medium) → lg(large) 반응형 고정
   const cardSizeClass = clsx(
-    size
-      ? {
-          small: 'w-[343px] px-[20px] py-[16px] gap-[16px]',
-          medium: 'w-[704px] px-[24px] py-[20px] gap-[18px]',
-          large: 'w-[800px] px-[30px] py-[24px] gap-[20px]',
-        }[size]
-      : 'w-[343px] px-[20px] py-[16px] gap-[16px]',
+    'w-[343px] px-[20px] py-[16px] gap-[16px]',
     'h-full',
     'md:w-[704px] md:px-[24px] md:py-[20px] md:gap-[18px]',
     'lg:w-[800px] lg:px-[30px] lg:py-[24px] lg:gap-[20px]',
@@ -83,28 +115,35 @@ export function CardReview({
         </Card.Container>
       </Card.Container>
       <Card.Container className="flex items-center justify-between">
-        <Card.Container className="flex flex-row items-center gap-[4px]">
+        <Card.Container
+          className={clsx(
+            'flex flex-row items-center gap-[8px]',
+            // Chips(button) 자체를 부모에서 스타일링 (Chips 컴포넌트 수정 없이)
+            '[&>button]:w-full',
+            '[&>button]:text-[var(--color-primary-gray-800)]',
+            '[&>button]:border-[1px] [&>button]:border-[var(--color-gray-300)]',
+            '[&>button]:text-[14px] md:[&>button]:text-[16px] lg:[&>button]:text-[16px]',
+          )}
+        >
           {chips.map((chip, index) => (
-            <Chip
-              key={index}
-              className={clsx(chipClass, 'flex h-[42px] w-[80px] items-center justify-center')}
-            >
-              {chip.label} {chip.value}
-            </Chip>
+            <Chips key={index} title={chip.title} />
           ))}
         </Card.Container>
-        <Chip className={clsx(chipClass, 'flex h-[42px] w-[80px] items-center justify-center')}>
+        <CardChip className={clsx(chipClass, 'flex h-[42px] w-[80px] items-center justify-center')}>
           {mainChip.label} {mainChip.value}
-        </Chip>
+        </CardChip>
       </Card.Container>
 
       {/* 텍스트 영역 - 접혔을 때는 숨김 */}
       {isExpanded && (
-        <Card.Container>
-          <Card.Text className={clsx(textClass)} style={{ color: 'var(--color-gray-800)' }}>
-            {text}
-          </Card.Text>
-        </Card.Container>
+        <>
+          <Card.Container>
+            <Card.Text className={clsx(textClass)} style={{ color: 'var(--color-gray-800)' }}>
+              {text}
+            </Card.Text>
+          </Card.Container>
+          <FlavorSliderReadOnly value={flavorValue} />
+        </>
       )}
 
       {/* 토글 버튼 - 클릭 시 180도 회전 */}

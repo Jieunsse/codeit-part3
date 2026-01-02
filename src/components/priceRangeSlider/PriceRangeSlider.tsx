@@ -63,7 +63,7 @@ export function PriceRangeSlider({
   };
 
   return (
-    <div className="space-y-4" style={{ width: SLIDER.CONTAINER_WIDTH }}>
+    <div className="w-full space-y-4">
       <h2 className="text-xl font-bold text-gray-800">PRICE</h2>
 
       <div className="text-primary-purple-100 flex justify-between text-lg font-medium">

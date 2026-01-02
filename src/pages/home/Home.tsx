@@ -1,9 +1,9 @@
-import LandingPage from '../LandingPage/LandingPage';
+import { Login } from '../login/Login';
 
 export function Home() {
   return (
     <>
-      <LandingPage />
+      <Login />
     </>
   );
 }
