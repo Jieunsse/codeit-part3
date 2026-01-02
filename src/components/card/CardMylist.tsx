@@ -60,7 +60,7 @@ export function CardMylist({ text = 'Detail', price = 10000, title = 'Title' }: 
         >
           <Card.Title
             className={titleClass}
-            style={{ fontWeight: '700', color: 'var(--color-gray-800)' }}
+            style={{ fontWeight: '600', color: 'var(--color-gray-800)' }}
           >
             {title}
           </Card.Title>
