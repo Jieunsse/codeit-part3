@@ -10,9 +10,7 @@ export function WinesMobileFloatingRegisterButton({
   return (
     <div className="fixed inset-x-0 bottom-0 z-30 sm:hidden">
       <div className="mx-auto w-full max-w-[1140px] px-[30px] pb-4">
-        <div className="rounded-2xl bg-white/80 p-2 shadow-lg ring-1 ring-gray-200 backdrop-blur">
-          <WineRegisterButton className="w-full" onClick={onOpenWineRegister} />
-        </div>
+        <WineRegisterButton className="w-full" onClick={onOpenWineRegister} />
       </div>
     </div>
   );
