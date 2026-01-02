@@ -34,30 +34,43 @@ export function useSignUpForm() {
     return Boolean(filled) && Object.values(errors).every((e) => !e);
   }, [values, errors]);
 
+  const computeNextErrors = (
+    field: keyof FormValues,
+    nextValues: FormValues,
+    prevErr: FormErrors,
+  ) => {
+    const nextErr: FormErrors = { ...prevErr };
+
+    if (touched[field]) {
+      nextErr[field] = validateField(field, nextValues);
+    }
+
+    if (field === 'password' && touched.passwordConfirm) {
+      nextErr.passwordConfirm = validateField('passwordConfirm', nextValues);
+    }
+
+    return nextErr;
+  };
+
   const setFieldValue = (field: keyof FormValues, value: string) => {
-    setValues((prev) => {
-      const next = { ...prev, [field]: value };
+    const nextValues = { ...values, [field]: value };
 
-      // touched 된 필드는 입력 중에도 검증 업데이트
-      if (touched[field]) {
-        setErrors((prevErr) => ({ ...prevErr, [field]: validateField(field, next) }));
-      }
-
-      // 비밀번호 변경 시 비번확인도(이미 touched면) 같이 재검증
-      if (field === 'password' && touched.passwordConfirm) {
-        setErrors((prevErr) => ({
-          ...prevErr,
-          passwordConfirm: validateField('passwordConfirm', next),
-        }));
-      }
-
-      return next;
-    });
+    setValues(nextValues);
+    setErrors((prevErr) => computeNextErrors(field, nextValues, prevErr));
   };
 
   const handleBlur = (field: keyof FormValues) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
-    setErrors((prev) => ({ ...prev, [field]: validateField(field, values) }));
+
+    setErrors((prevErr) => {
+      const nextErr: FormErrors = { ...prevErr, [field]: validateField(field, values) };
+
+      if (field === 'password' && touched.passwordConfirm) {
+        nextErr.passwordConfirm = validateField('passwordConfirm', values);
+      }
+
+      return nextErr;
+    });
   };
 
   const submit = async (onValid: (values: FormValues) => Promise<void> | void) => {
