@@ -7,6 +7,8 @@ import kebab from '@shared/assets/images/kebab.svg';
 
 interface CardMylistProps extends BaseCardProps {
   price?: number;
+  /** 케밥(팝업 메뉴) 버튼 클릭 핸들러 */
+  onMenuClick?: () => void;
 }
 
 /**
@@ -29,7 +31,13 @@ interface CardMylistProps extends BaseCardProps {
  *   price={320000}
  * />
  */
-export function CardMylist({ text = 'Detail', price = 10000, title = 'Title' }: CardMylistProps) {
+export function CardMylist({
+  text = 'Detail',
+  price = 10000,
+  title = 'Title',
+  className,
+  onMenuClick,
+}: CardMylistProps) {
   // 모바일(small) → md(medium) → lg(large) 반응형 고정
   const cardSizeClass = clsx(
     'h-[164px] px-[20px] py-[16px] pb-[0px]',
@@ -45,7 +53,7 @@ export function CardMylist({ text = 'Detail', price = 10000, title = 'Title' }: 
   const bodyClass = 'w-4/5 md:w-3/5';
 
   return (
-    <Card className={clsx('flex w-full flex-row justify-between', cardSizeClass)}>
+    <Card className={clsx('flex w-full flex-row justify-between', cardSizeClass, className)}>
       <Card.Container className="relative flex w-full flex-row items-end gap-[28px] overflow-visible">
         <Card.Body className={clsx(imagePositionSizeClass, 'flex h-full shrink-0 items-end')}>
           <Card.Image
@@ -70,12 +78,11 @@ export function CardMylist({ text = 'Detail', price = 10000, title = 'Title' }: 
           <CardChip className={clsx(chipClass)}>₩ {price?.toLocaleString()}</CardChip>
         </Card.Body>
       </Card.Container>
-      <Card.Icon>
-        <Card.Image
-          src={kebab}
-          alt="kebab"
-          className="h-[26px] w-[26px] cursor-pointer transition-opacity duration-300 hover:opacity-80"
-        />
+      <Card.Icon
+        onClick={onMenuClick}
+        className="cursor-pointer transition-opacity duration-300 hover:opacity-80"
+      >
+        <Card.Image src={kebab} alt="kebab" className="h-[26px] w-[26px]" />
       </Card.Icon>
     </Card>
   );
