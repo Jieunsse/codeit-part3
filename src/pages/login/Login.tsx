@@ -138,7 +138,7 @@ export function Login() {
       setSocialLoading('KAKAO');
       await ensureKakaoReady();
 
-      const kakao = window.Kakao; // ✅ 변수로 빼기
+      const kakao = window.Kakao;
       if (!kakao) {
         setErrors({ email: '카카오 SDK를 불러오지 못했어요.' });
         setSocialLoading(null);
