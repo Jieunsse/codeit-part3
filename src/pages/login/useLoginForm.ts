@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { LoginErrors, LoginForm } from './login.types';
 import { EMAIL_REGEX, LOGIN_ERROR_MESSAGE } from './login.constants';
+import { postSignIn } from './login.api';
 
 export function useLoginForm() {
   const [form, setForm] = useState<LoginForm>({
@@ -53,9 +54,16 @@ export function useLoginForm() {
     }
 
     try {
-      // 로그인 API
+      const res = await postSignIn(form);
+
+      localStorage.setItem('accessToken', res.accessToken);
+      localStorage.setItem('refreshToken', res.refreshToken);
+      localStorage.setItem('user', JSON.stringify(res.user));
+
+      return res;
     } catch {
       setErrors({ email: LOGIN_ERROR_MESSAGE.LOGIN_FAILED });
+      return;
     }
   };
 

@@ -12,7 +12,8 @@ export function Login() {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await submit();
+    const res = await submit();
+    if (res) window.location.href = '/';
   };
 
   const onGoogleLogin = () => {
