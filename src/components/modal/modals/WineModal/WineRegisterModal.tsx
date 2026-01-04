@@ -1,29 +1,43 @@
 /**
  * 와인 등록 모달
  *
- * - 입력값을 `onSubmit`으로 전달합니다.
- * - onSubmit 완료 후 모달을 자동으로 닫습니다.
- * - 제출 중에는 버튼이 비활성화되고 로딩 텍스트가 표시됩니다.
+ * ## Reusability
+ * - 기본 사용 시: 와인 등록 모달
+ * - 수정 모달은 `WineEditModal` 래퍼 컴포넌트를 통해
+ *   제목 및 버튼 문구만 변경하여 재사용합니다.
+ *
+ * ## Props
+ * @param isOpen - 모달의 열림 여부 (부모 컴포넌트에서 제어)
+ * @param onClose - 모달을 닫기 위한 콜백
+ * @param onSubmit - 와인 등록/수정 제출 콜백
+ * @param titleText - (선택) 모달 상단 제목 텍스트 (기본값: "와인 등록")
+ * @param submitButtonText - (선택) 제출 버튼 텍스트 (기본값: "와인 등록하기")
+ * @param submittingText - (선택) 제출 중 표시할 버튼 텍스트 (기본값: "등록 중...")
  *
  * @example
- * ```tsx
+ * // 와인 등록 모달
  * <WineRegisterModal
  *   isOpen={open}
  *   onClose={() => setOpen(false)}
- *   onSubmit={async (v) => {
- *     await createWine(v);
- *   }}
+ *   onSubmit={createWine}
  * />
- * ```
+ *
+ * @example
+ * // 와인 수정 모달 (WineEditModal 내부에서 사용)
+ * <WineEditModal
+ *   isOpen={open}
+ *   onClose={() => setOpen(false)}
+ *   onSubmit={updateWine}
+ * />
  */
 
 import React, { useState } from 'react';
-import { BaseModal } from './BaseModal';
-import type { WineType } from './FilterModal';
+import { BaseModal } from '../BaseModal';
+import type { WineType } from '../FilterModal';
 import CameraIcon from '../img/camera.svg';
-import ModalButtonAdapter from './common/ModalButtonAdapter';
-import { Input } from '../../input/Input';
-import Select from '../../input/Select';
+import ModalButtonAdapter from '../common/ModalButtonAdapter';
+import { Input } from '../../../input/Input';
+import Select from '../../../input/Select';
 
 export type WineRegisterValue = {
   name: string;
@@ -37,9 +51,20 @@ type WineRegisterModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (value: WineRegisterValue) => Promise<void> | void;
+
+  titleText?: string; // 기본: "와인 등록"
+  submitButtonText?: string; // 기본: "와인 등록하기"
+  submittingText?: string; // 기본: "등록 중..."
 };
 
-export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterModalProps) {
+export function WineRegisterModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  titleText = '와인 등록',
+  submitButtonText = '와인 등록하기',
+  submittingText = '등록 중...',
+}: WineRegisterModalProps) {
   const [form, setForm] = useState<WineRegisterValue>({
     name: '',
     price: '',
@@ -68,7 +93,7 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
     <BaseModal
       isOpen={isOpen}
       onClose={onClose}
-      title="와인 등록"
+      title={titleText}
       titleClassName="text-[24px] font-bold text-gray-800 leading-[32px] pb-[16px]"
       maxWidthClassName="max-w-[560px]"
     >
@@ -143,7 +168,7 @@ export function WineRegisterModal({ isOpen, onClose, onSubmit }: WineRegisterMod
               disabled={submitting}
               className="h-[54px] flex-2 rounded-xl bg-violet-600 px-9 py-4 text-[16px] font-bold text-white hover:bg-violet-700"
             >
-              {submitting ? '등록 중...' : '와인 등록하기'}
+              {submitting ? submittingText : submitButtonText}
             </ModalButtonAdapter>
           </div>
         </div>
