@@ -15,4 +15,7 @@ export type ReviewRegisterModalProps = {
   wineImageUrl?: string;
 
   onSubmit: (value: ReviewRegisterValue) => Promise<void> | void;
+
+  titleText?: string;
+  submitButtonText?: string;
 };
