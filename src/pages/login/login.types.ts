@@ -4,7 +4,6 @@ export type LoginForm = {
 };
 
 export type LoginErrors = Partial<Record<keyof LoginForm, string>>;
-
 export type LoginRequest = LoginForm;
 
 export type LoginUser = {
@@ -22,3 +21,13 @@ export type LoginResponse = {
   refreshToken: string;
   user: LoginUser;
 };
+
+export type SocialProvider = 'GOOGLE' | 'KAKAO';
+
+export type SocialLoginRequest = {
+  token: string;
+  state?: string;
+  redirectUri?: string;
+};
+
+export type SocialLoginResponse = LoginResponse;

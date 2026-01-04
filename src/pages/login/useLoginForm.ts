@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { LoginErrors, LoginForm } from './login.types';
 import { EMAIL_REGEX, LOGIN_ERROR_MESSAGE } from './login.constants';
-import { postSignIn } from './login.api';
+import { postSignIn } from './api/login.api';
 
 export function useLoginForm() {
   const [form, setForm] = useState<LoginForm>({
