@@ -1,9 +1,9 @@
-import { SignUp } from '../SignUp/SignUp';
+import { Login } from '../login/Login';
 
 export function Home() {
   return (
     <>
-      <SignUp />
+      <Login />
     </>
   );
 }

@@ -47,11 +47,11 @@ export function CardWine({
   title = 'Title',
 }: CardWineProps) {
   // 모바일(small) → md(medium) → lg(large) 반응형 고정
-  const cardSizeClass = clsx(
-    'w-[343px] h-[360px]',
-    'md:w-[704px] md:h-[375px]',
-    'lg:w-[800px] lg:h-[375px]',
-  );
+  // const cardSizeClass = clsx(
+  //   'w-[343px] h-[360px]',
+  //   'md:w-[704px] md:h-[375px]',
+  //   'lg:w-[800px] lg:h-[375px]',
+  // );
 
   const imagePositionSizeClass = clsx('w-[80px]', 'md:w-[80px]', 'lg:w-[80px]');
 
@@ -65,16 +65,14 @@ export function CardWine({
   const starTitleClass = 'text-[28px] md:text-[48px] lg:text-[48px]';
 
   return (
-    <Card className={clsx('flex flex-col', cardSizeClass)}>
-      <Card.Container className="relative flex h-2/3 flex-row items-end gap-[28px] overflow-visible px-[20px] py-[16px] pb-[0px]">
+    <Card className={clsx('flex h-full w-full flex-col')}>
+      <Card.Container className="relative flex h-full w-full flex-row justify-between gap-[28px] overflow-visible px-[20px] py-[16px] pb-[0px]">
         <Card.Body className={clsx(imagePositionSizeClass, 'h-full')}>
           <Card.Image src={wine2} alt="Wine" className="h-full w-full object-contain" />
         </Card.Body>
 
-        <Card.Body
-          className={clsx(bodyClass, 'flex h-full flex-col items-start justify-between pb-[24px]')}
-        >
-          <Card.Container className="flex flex-col gap-[20px]">
+        <Card.Body className={clsx(bodyClass, 'flex h-full flex-col items-start gap-[24px]')}>
+          <Card.Container className="flex h-full flex-col gap-[20px]">
             <Card.Title
               className={titleClass}
               style={{ fontWeight: '700', color: 'var(--color-gray-800)' }}
@@ -84,12 +82,12 @@ export function CardWine({
             <Card.Text className={clsx(textClass)} style={{ color: 'var(--color-gray-500)' }}>
               {text}
             </Card.Text>
+
+            <CardChip className={clsx(chipClass)}>₩ {price?.toLocaleString()}</CardChip>
           </Card.Container>
 
-          <CardChip className={clsx(chipClass)}>₩ {price?.toLocaleString()}</CardChip>
-
           {/* 모바일용: StarRating이 Card.Body 안에 */}
-          <Card.Container className="flex w-full flex-row items-center justify-between md:hidden">
+          <Card.Container className="flex h-full w-full flex-row items-center justify-between md:hidden">
             <Card.Container className="flex flex-row items-center gap-[13px]">
               <Card.Title
                 className={starTitleClass}
@@ -117,7 +115,7 @@ export function CardWine({
         </Card.Body>
 
         {/* 태블릿/데스크톱용: StarRating이 별도 섹션 */}
-        <Card.Container className="hidden h-full flex-col justify-between pb-[24px] md:flex">
+        <Card.Container className="hidden h-full flex-col justify-between gap-[12px] pb-[24px] md:flex">
           <Card.Container className="flex flex-col gap-[4px]">
             <Card.Title
               className={starTitleClass}
