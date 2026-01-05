@@ -1,6 +1,6 @@
 import { CardWinetList } from '../components/CardWinetList';
-import { Search } from '@src/components/input/Search';
-
+import { CardDetail } from '@src/components/card/CardDetail';
+import { CardMylist } from '@src/components/card/CardMylist';
 interface CardWineData {
   id: string;
   title: string;
@@ -10,11 +10,17 @@ interface CardWineData {
   reviewNumber: number;
   review: string;
 }
-export function InputWineListContainer({ items }: { items: CardWineData[] }) {
+
+interface InputWineListContainerProps {
+  items: CardWineData[];
+}
+
+export function InputWineListContainer({ items }: InputWineListContainerProps) {
   return (
-    <div className="wf flex flex-col items-center justify-center gap-[20px] px-[30px] py-[30px]">
-      <Search className="w-full" placeholder="와인을 검색해 보세요" />
+    <div className="flex flex-col items-start justify-center gap-[20px]">
       <CardWinetList items={items} />
+      <CardDetail />
+      <CardMylist />
     </div>
   );
 }

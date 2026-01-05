@@ -12,7 +12,7 @@ interface CardWineData {
 
 export function CardWinetList({ items }: { items: CardWineData[] }) {
   return (
-    <div>
+    <div className="flex h-full w-full flex-col items-start justify-start gap-[20px]">
       {items.map((item) => (
         <CardWine
           key={item.id}
