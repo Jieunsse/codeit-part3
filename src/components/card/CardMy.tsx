@@ -8,6 +8,8 @@ import { CardChip } from './CardChip';
 interface CardMyProps extends BaseCardProps {
   username?: string;
   createdAt?: string;
+  /** 케밥(팝업 메뉴) 버튼 클릭 핸들러 */
+  onMenuClick?: () => void;
 }
 
 /**
@@ -37,6 +39,8 @@ export function CardMy({
   username = '와인 러버',
   createdAt = '2025-01-01',
   text = 'Detail',
+  className,
+  onMenuClick,
 }: CardMyProps) {
   // 모바일(small) → md(medium) → lg(large) 반응형 고정
   const cardSizeClass = clsx(
@@ -53,7 +57,7 @@ export function CardMy({
   const iconSizeClass = 'h-[24px] w-[24px] md:h-[26px] md:w-[26px] lg:h-[26px] lg:w-[26px]';
 
   return (
-    <Card className={clsx('flex flex-col', cardSizeClass)}>
+    <Card className={clsx('flex flex-col', cardSizeClass, className)}>
       <Card.Container className="flex flex-row items-center justify-between">
         <Card.Container className="flex flex-row items-center justify-between gap-[24px]">
           <CardChip
@@ -65,7 +69,10 @@ export function CardMy({
             {createdAt}
           </Card.Text>
         </Card.Container>
-        <Card.Icon className={clsx(iconSizeClass, 'cursor-pointer hover:opacity-80')}>
+        <Card.Icon
+          onClick={onMenuClick}
+          className={clsx(iconSizeClass, 'cursor-pointer hover:opacity-80')}
+        >
           <img src={kebab} alt="kebab" className="h-full w-full object-contain" />
         </Card.Icon>
       </Card.Container>
