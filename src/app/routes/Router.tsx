@@ -4,6 +4,8 @@ import { AuthLayout } from '../layouts/AuthLayout';
 import { Wines } from '@src/pages/wines/Wines';
 import { WineDetailPage } from '@src/pages/wineDetailPage/WineDetailPage';
 import LandingPage from '@src/pages/LandingPage/LandingPage';
+import { Login } from '@src/pages/login/Login';
+import { SignUp } from '@src/pages/SignUp/SignUp';
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +18,9 @@ export const router = createBrowserRouter([
   },
   {
     element: <AuthLayout />,
-    children: [],
+    children: [
+      { path: '/login', element: <Login /> },
+      { path: '/signup', element: <SignUp /> },
+    ],
   },
 ]);
