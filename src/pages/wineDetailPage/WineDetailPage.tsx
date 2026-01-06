@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { PageContainer } from '@src/app/layouts/PageContainer';
@@ -10,6 +10,7 @@ import { ReviewRegisterModal } from '@src/components/modal/modals/ReviewRegister
 import { useWineDetail } from './hooks/useWineDetail';
 import { useSubmitReview } from '@src/domain/review/hooks/useSubmitReview';
 import { mapReviewToCardModel } from '@src/domain/review/mapper/mapReviewToCardModel';
+import { calculateRatingDistributions } from '@src/domain/review/utils/calculateRatingDistributions';
 
 export function WineDetailPage() {
   const { wineId } = useParams<{ wineId: string }>();
@@ -18,6 +19,8 @@ export function WineDetailPage() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const submitReview = useSubmitReview(wine?.id ?? 0);
+
+  const distributions = useMemo(() => calculateRatingDistributions(reviews), [reviews]);
 
   if (error) {
     return <PageContainer>존재하지 않는 와인입니다.</PageContainer>;
@@ -73,7 +76,7 @@ export function WineDetailPage() {
             <RatingSummary
               average={wine.avgRating}
               reviewCount={wine.reviewCount}
-              distributions={[]}
+              distributions={distributions}
               onClickReview={() => setIsReviewModalOpen(true)}
             />
           </aside>
