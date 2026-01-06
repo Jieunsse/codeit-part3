@@ -15,7 +15,12 @@ export function Header() {
       {isLoggedIn ? (
         <ProfileImg src="" size={45} onClick={() => navigate('/mypage')} />
       ) : (
-        <button className="cursor-pointer text-lg font-medium text-white">로그인</button>
+        <button
+          className="cursor-pointer text-lg font-medium text-white"
+          onClick={() => navigate('/login')}
+        >
+          로그인
+        </button>
       )}
     </header>
   );
