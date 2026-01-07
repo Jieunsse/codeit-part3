@@ -26,3 +26,7 @@ dist-ssr
 
 # Local-only dev tokens (do NOT commit)
 src/shared/apis/devToken.local.ts
+
+.env
+.env.*
+!.env.example
