@@ -7,6 +7,7 @@ import { StarRating } from '../star/StarRating';
 import rightarrow from '@shared/assets/images/rightarrow.svg';
 
 interface CardWineProps extends BaseCardProps {
+  imageUrl?: string;
   price?: number;
   review?: string;
   reviewNumber?: number;
@@ -39,6 +40,7 @@ interface CardWineProps extends BaseCardProps {
  * />
  */
 export function CardWine({
+  imageUrl,
   text = 'Detail',
   price = 10000,
   review = '최신 후기',
@@ -63,12 +65,13 @@ export function CardWine({
 
   const bodyClass = 'w-4/5 md:w-3/5';
   const starTitleClass = 'text-[28px] md:text-[48px] lg:text-[48px]';
+  const formattedRating = Number.isFinite(rating) ? rating.toFixed(1) : '0.0';
 
   return (
     <Card className={clsx('flex h-full w-full flex-col')}>
       <Card.Container className="relative flex h-full w-full flex-row justify-between gap-[28px] overflow-visible px-[20px] py-[16px] pb-[0px]">
         <Card.Body className={clsx(imagePositionSizeClass, 'h-full')}>
-          <Card.Image src={wine2} alt="Wine" className="h-full w-full object-contain" />
+          <Card.Image src={imageUrl ?? wine2} alt="Wine" className="h-full w-full object-contain" />
         </Card.Body>
 
         <Card.Body className={clsx(bodyClass, 'flex h-full flex-col items-start gap-[24px]')}>
@@ -93,7 +96,7 @@ export function CardWine({
                 className={starTitleClass}
                 style={{ fontWeight: '800', color: 'var(--color-gray-800)' }}
               >
-                {rating}
+                {formattedRating}
               </Card.Title>
               <Card.Container>
                 <StarRating value={rating} className="text-[14px]" />
@@ -121,7 +124,7 @@ export function CardWine({
               className={starTitleClass}
               style={{ fontWeight: '800', color: 'var(--color-gray-800)' }}
             >
-              {rating}
+              {formattedRating}
             </Card.Title>
 
             <StarRating value={rating} className="text-[20px]" />

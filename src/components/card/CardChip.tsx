@@ -23,7 +23,11 @@ interface CardChipProps {
 export function CardChip({ className, children }: CardChipProps) {
   return (
     <div
-      className={clsx('rounded-[12px] px-[15px] py-[5px]', className)}
+      className={clsx(
+        // 부모 레이아웃/폰트 영향 최소화: 항상 동일한 Chip 크기/정렬 유지
+        'inline-flex w-fit items-center rounded-[12px] px-[15px] py-[10px] leading-none whitespace-nowrap',
+        className,
+      )}
       style={{
         backgroundColor: 'var(--color-primary-purple-10)',
         color: 'var(--color-primary-purple-100)',

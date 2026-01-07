@@ -19,7 +19,7 @@
  * ```
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BaseModal } from './BaseModal';
 import type { WineType } from './FilterModal';
 import CameraIcon from '../img/camera.svg';
@@ -51,6 +51,21 @@ export function FilterRegisterModal({ isOpen, onClose, onSubmit }: FilterRegiste
   });
 
   const [submitting, setSubmitting] = useState(false);
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!form.photoFile) {
+      setPhotoPreviewUrl(null);
+      return;
+    }
+
+    const url = URL.createObjectURL(form.photoFile);
+    setPhotoPreviewUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [form.photoFile]);
 
   const set = <K extends keyof FilterRegisterValue>(key: K, value: FilterRegisterValue[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -124,8 +139,19 @@ export function FilterRegisterModal({ isOpen, onClose, onSubmit }: FilterRegiste
               className="hidden"
               onChange={(e) => set('photoFile', e.target.files?.[0] ?? null)}
             />
-            <img src={CameraIcon} alt="cameraIcon" />
+            {photoPreviewUrl ? (
+              <img
+                src={photoPreviewUrl}
+                alt="selected wine"
+                className="h-full w-full rounded-2xl object-cover"
+              />
+            ) : (
+              <img src={CameraIcon} alt="cameraIcon" />
+            )}
           </label>
+          {form.photoFile?.name ? (
+            <div className="text-[12px] leading-5 text-gray-500">{form.photoFile.name}</div>
+          ) : null}
         </Field>
 
         <div className="flex gap-3 pt-2">

@@ -18,11 +18,17 @@ const checkedInnerStyle = {
   backgroundColor: 'var(--color-primary-purple-100)',
 };
 
-export function RatingFilter({ onSelect }: RatingFilterProps) {
-  const [selected, setSelected] = useState<RatingRange>('all');
+export function RatingFilter({ onSelect, value, initialValue }: RatingFilterProps) {
+  const isControlled = typeof value !== 'undefined';
+
+  const [uncontrolledSelected, setUncontrolledSelected] = useState<RatingRange>(
+    initialValue ?? 'all',
+  );
+
+  const selected = isControlled ? value : uncontrolledSelected;
 
   const handleSelect = (key: RatingRange) => {
-    setSelected(key);
+    if (!isControlled) setUncontrolledSelected(key);
     onSelect(key);
   };
 

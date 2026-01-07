@@ -14,6 +14,7 @@ export interface RecommendedItem {
   id: string;
   rating: number;
   title: string;
+  imageUrl?: string;
 }
 
 interface RecommendedProps {
@@ -68,7 +69,12 @@ export function Recommended({ className, title, items }: RecommendedProps) {
         >
           {items.map((item, index) => (
             <SwiperSlide key={`${item.id}-${index}`} className="!w-auto">
-              <CardMonthly rating={item.rating} title={item.title} className="border-none" />
+              <CardMonthly
+                imageUrl={item.imageUrl}
+                rating={item.rating}
+                title={item.title}
+                className="border-none"
+              />
             </SwiperSlide>
           ))}
         </Swiper>

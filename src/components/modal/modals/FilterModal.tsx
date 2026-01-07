@@ -29,16 +29,17 @@ import ModalButtonAdapter from '../modals/common/ModalButtonAdapter';
 import { Chips } from '../../chips/Chips';
 import { RatingFilter } from '../../rating/RatingFilter';
 import { PriceRangeSlider } from '@src/components/priceRangeSlider/PriceRangeSlider';
+import type {
+  RatingRange,
+  WineListFilterValue,
+  WineType,
+} from '@src/domain/list/types/wineListFilter.types';
+import { DEFAULT_WINE_LIST_FILTER_VALUE } from '@src/domain/list/types/wineListFilter.types';
 
-export type WineType = 'Red' | 'White' | 'Sparkling';
-export type RatingRange = 'all' | '4.8-5.0' | '4.5-4.8' | '4.0-4.5' | '3.0-4.0';
+// 다른 모달(예: WineRegisterModal, FilterRegisterModal)에서 import 하던 타입 호환성 유지용
+export type { WineType, RatingRange };
 
-export type FilterValue = {
-  types: WineType[];
-  priceMin: number;
-  priceMax: number;
-  rating: RatingRange;
-};
+export type FilterValue = WineListFilterValue;
 
 type FilterModalProps = {
   isOpen: boolean;
@@ -50,12 +51,7 @@ type FilterModalProps = {
 
 const PRICE_STEP = 10000;
 
-const DEFAULT: FilterValue = {
-  types: ['White'],
-  priceMin: 0,
-  priceMax: 30000000,
-  rating: '4.5-4.8',
-};
+const DEFAULT: FilterValue = DEFAULT_WINE_LIST_FILTER_VALUE;
 
 export function FilterModal({
   isOpen,
@@ -136,6 +132,7 @@ export function FilterModal({
           <div className="rating-press-scope">
             <RatingFilter
               key={ratingKey}
+              value={rating}
               onSelect={(key) => {
                 setRating(key);
               }}
