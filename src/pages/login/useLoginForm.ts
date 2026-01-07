@@ -2,6 +2,8 @@ import { useState } from 'react';
 import type { LoginErrors, LoginForm } from './login.types';
 import { EMAIL_REGEX, LOGIN_ERROR_MESSAGE } from './login.constants';
 import { postSignIn } from './api/login.api';
+import { useAuthStore } from '@src/domain/auth/store/authStore';
+import { mapLoginUserToUser } from '@src/domain/auth/mapper/mapLoginUserToUser';
 
 export function useLoginForm() {
   const [form, setForm] = useState<LoginForm>({
@@ -11,12 +13,14 @@ export function useLoginForm() {
 
   const [errors, setErrors] = useState<LoginErrors>({});
 
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const login = useAuthStore((state) => state.login);
+
   const onChange = (key: keyof LoginForm) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     setForm((prev) => ({ ...prev, [key]: value }));
 
-    // 입력 시 해당 필드 에러 제거
     setErrors((prev) => {
       if (!prev[key]) return prev;
       const next = { ...prev };
@@ -41,11 +45,6 @@ export function useLoginForm() {
     return next;
   };
 
-  /**
-   * 실제 API 붙이기
-   * - 성공: 그대로 return
-   * - 실패: catch에서 이메일 입력창에 에러 세팅
-   */
   const submit = async () => {
     const nextErrors = validate(form);
     if (Object.keys(nextErrors).length > 0) {
@@ -58,12 +57,13 @@ export function useLoginForm() {
 
       localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
-      localStorage.setItem('user', JSON.stringify(res.user));
+
+      setAccessToken(res.accessToken);
+      login(mapLoginUserToUser(res.user));
 
       return res;
     } catch {
       setErrors({ email: LOGIN_ERROR_MESSAGE.LOGIN_FAILED });
-      return;
     }
   };
 
