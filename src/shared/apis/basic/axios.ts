@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_BASE_URL } from './config';
 import { TEAM_ID } from './team';
-import { DEV_ACCESS_TOKEN } from '../devToken.ts';
+import { DEV_ACCESS_TOKEN } from '../devToken';
 
 export const axiosInstance = axios.create({
   baseURL: `${API_BASE_URL}/${TEAM_ID}`,

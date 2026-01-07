@@ -3,6 +3,7 @@ import ModalButtonAdapter from '../../common/ModalButtonAdapter';
 type Props = {
   submitting: boolean;
   onClick: () => void;
+  text?: string;
 };
 
 export function ReviewSubmitButton({ submitting, onClick }: Props) {
