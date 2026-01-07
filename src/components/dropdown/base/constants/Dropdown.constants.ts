@@ -1,0 +1,7 @@
+export const DROPDOWN = {
+  BORDER_RADIUS: 16,
+  ITEM_RADIUS: 12,
+  ITEM_HEIGHT: 46,
+  FONT_SIZE: 16,
+  LINE_HEIGHT: 26,
+} as const;

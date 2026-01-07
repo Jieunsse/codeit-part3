@@ -1,0 +1,12 @@
+@theme {
+  --font-sans:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Apple SD Gothic Neo',
+    'Noto Sans KR',
+    'Segoe UI',
+    Roboto,
+    Arial,
+    sans-serif;
+}
