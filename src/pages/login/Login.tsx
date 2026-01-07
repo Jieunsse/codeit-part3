@@ -12,8 +12,8 @@ import { postSocialSignIn } from './api/socialLogin.api';
 import type { SocialProvider } from './api/socialLogin.api';
 
 // 여기만 팀에서 발급받은 키로 교체
-const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
-const KAKAO_JS_KEY = 'YOUR_KAKAO_JAVASCRIPT_KEY';
+const GOOGLE_CLIENT_ID = 'VITE_GOOGLE_CLIENT_ID';
+const KAKAO_JS_KEY = 'VITE_KAKAO_JS_KEY';
 
 // --- 유틸: 스크립트 1회 로드 ---
 function loadScript(src: string, id: string) {
