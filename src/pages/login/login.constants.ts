@@ -1,3 +1,7 @@
+export const AUTH = {
+  SIGN_IN: '/auth/signin',
+} as const;
+
 export const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const LOGIN_ERROR_MESSAGE = {

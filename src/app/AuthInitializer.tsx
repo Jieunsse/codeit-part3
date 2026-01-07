@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { axiosInstance } from '@src/shared/apis/axios';
 
 import { useAuthStore } from '@src/domain/user/stores/authStore';
 import type { UserMeResponse } from '@src/domain/user/Interface/UserMeResponse';
 import { mapUserMeResponseToUser } from '@src/domain/user/mapper/mapper';
+import { axiosInstance } from '@src/shared/apis/basic/axios';
 
 export function AuthInitializer() {
   const login = useAuthStore((state) => state.login);
