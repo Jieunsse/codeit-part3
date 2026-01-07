@@ -31,7 +31,7 @@
  * />
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BaseModal } from '../BaseModal';
 import type { WineType } from '../FilterModal';
 import CameraIcon from '../img/camera.svg';
@@ -47,10 +47,21 @@ export type WineRegisterValue = {
   photoFile?: File | null;
 };
 
+const DEFAULT_FORM: WineRegisterValue = {
+  name: '',
+  price: '',
+  origin: '',
+  type: 'Red',
+  photoFile: null,
+};
+
 type WineRegisterModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (value: WineRegisterValue) => Promise<void> | void;
+
+  /** 수정 모달 등에서 기존 값을 주입하기 위한 초기값 */
+  initialValue?: Partial<WineRegisterValue>;
 
   titleText?: string; // 기본: "와인 등록"
   submitButtonText?: string; // 기본: "와인 등록하기"
@@ -61,19 +72,25 @@ export function WineRegisterModal({
   isOpen,
   onClose,
   onSubmit,
+  initialValue,
   titleText = '와인 등록',
   submitButtonText = '와인 등록하기',
   submittingText = '등록 중...',
 }: WineRegisterModalProps) {
-  const [form, setForm] = useState<WineRegisterValue>({
-    name: '',
-    price: '',
-    origin: '',
-    type: 'Red',
-    photoFile: null,
-  });
-
+  const [form, setForm] = useState<WineRegisterValue>(DEFAULT_FORM);
   const [submitting, setSubmitting] = useState(false);
+
+  // 모달이 열릴 때마다 초기값 반영(수정/등록 공용)
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setForm({
+      ...DEFAULT_FORM,
+      ...initialValue,
+      // photoFile은 file input 특성상 안전하게 null로 기본 처리
+      photoFile: initialValue?.photoFile ?? null,
+    });
+  }, [isOpen, initialValue]);
 
   const set = <K extends keyof WineRegisterValue>(key: K, value: WineRegisterValue[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
