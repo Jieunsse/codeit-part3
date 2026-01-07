@@ -6,6 +6,7 @@ import { WineDetailPage } from '@src/pages/wineDetailPage/WineDetailPage';
 import LandingPage from '@src/pages/LandingPage/LandingPage';
 import { Login } from '@src/pages/login/Login';
 import { SignUp } from '@src/pages/SignUp/SignUp';
+import MyProfile from '@src/pages/profile/Profile';
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ export const router = createBrowserRouter([
       { path: '/', element: <LandingPage /> },
       { path: '/wines', element: <Wines /> },
       { path: '/wines/:wineId', element: <WineDetailPage /> },
+      { path: 'myprofile', element: <MyProfile /> },
     ],
   },
   {

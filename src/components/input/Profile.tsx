@@ -8,7 +8,7 @@ interface ProfileProps {
 
 export default function Profile({ url, className = '' }: ProfileProps) {
   return (
-    <div className={`relative h-[174px] w-[174px] ${className}`}>
+    <div className={`relative aspect-square w-[60px] md:w-[80px] lg:w-[164px] ${className}`}>
       <img
         className={`absolute inset-0 h-full w-full rounded-full object-cover`}
         src={url || profile}
