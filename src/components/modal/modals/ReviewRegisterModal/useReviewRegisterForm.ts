@@ -5,24 +5,38 @@ import {
   MAX_SELECT_AROMAS,
   MAX_TOTAL_AROMAS,
 } from './ReviewRegisterModal.constants';
-import type { ReviewRegisterValue, ReviewTasteKey } from './ReviewRegisterModal.types';
+import type {
+  ReviewRegisterInitialValue,
+  ReviewRegisterValue,
+  ReviewTasteKey,
+} from './ReviewRegisterModal.types';
 
 type Params = {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (value: ReviewRegisterValue) => Promise<void> | void;
+  initialValue?: ReviewRegisterInitialValue;
 };
 
-export function useReviewRegisterForm({ isOpen, onClose, onSubmit }: Params) {
+export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue }: Params) {
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [rating, setRating] = useState(4);
-  const [content, setContent] = useState('');
-  const [isContentEmpty, setIsContentEmpty] = useState(true);
+  const baseline = useMemo(() => {
+    return {
+      rating: initialValue?.rating ?? 4,
+      content: initialValue?.content ?? '',
+      taste: (initialValue?.taste ?? DEFAULT_TASTE) as Record<ReviewTasteKey, number>,
+      aromas: initialValue?.aromas ?? [],
+    };
+  }, [initialValue]);
 
-  const [taste, setTaste] = useState<Record<ReviewTasteKey, number>>(DEFAULT_TASTE);
+  const [rating, setRating] = useState(baseline.rating);
+  const [content, setContent] = useState(baseline.content);
+  const [isContentEmpty, setIsContentEmpty] = useState(baseline.content.trim().length === 0);
 
-  const [selectedAromas, setSelectedAromas] = useState<string[]>([]);
+  const [taste, setTaste] = useState<Record<ReviewTasteKey, number>>(baseline.taste);
+
+  const [selectedAromas, setSelectedAromas] = useState<string[]>(baseline.aromas);
   const [customAromas, setCustomAromas] = useState<string[]>([]);
   const [isAddingAroma, setIsAddingAroma] = useState(false);
   const [newAroma, setNewAroma] = useState('');
@@ -38,17 +52,19 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit }: Params) {
   }, [customAromas]);
 
   const hasDirty = useMemo(() => {
+    const sameAromas = selectedAromas.join('|') === baseline.aromas.join('|');
+
     return (
-      rating !== 4 ||
-      content.trim().length > 0 ||
-      selectedAromas.length > 0 ||
+      rating !== baseline.rating ||
+      content.trim() !== baseline.content.trim() ||
+      !sameAromas ||
       customAromas.length > 0 ||
-      taste.body !== DEFAULT_TASTE.body ||
-      taste.tannin !== DEFAULT_TASTE.tannin ||
-      taste.sweet !== DEFAULT_TASTE.sweet ||
-      taste.acid !== DEFAULT_TASTE.acid
+      taste.body !== baseline.taste.body ||
+      taste.tannin !== baseline.taste.tannin ||
+      taste.sweet !== baseline.taste.sweet ||
+      taste.acid !== baseline.taste.acid
     );
-  }, [rating, content, selectedAromas.length, customAromas.length, taste]);
+  }, [rating, content, selectedAromas, customAromas.length, taste, baseline]);
 
   /** 공백 정규화(중복 공백 제거) */
   const normalizeTag = (s: string) => s.trim().replace(/\s+/g, ' ');
@@ -155,19 +171,17 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit }: Params) {
     }
   };
 
-  /**
-   * 모달 열릴 때마다 초기화
-   * - contentEditable은 state만 비워도 DOM에 이전 값이 남을 수 있어 ref도 같이 초기화
-   */
+  // 모달 열릴 때마다 baseline 기준으로 초기화
   useEffect(() => {
     if (!isOpen) return;
 
-    setRating(4);
-    setContent('');
-    setIsContentEmpty(true);
-    setTaste(DEFAULT_TASTE);
+    setRating(baseline.rating);
+    setContent(baseline.content);
+    setIsContentEmpty(baseline.content.trim().length === 0);
+    setTaste(baseline.taste);
 
-    setSelectedAromas([]);
+    setSelectedAromas(baseline.aromas);
+
     setCustomAromas([]);
     setIsAddingAroma(false);
     setNewAroma('');
@@ -176,8 +190,8 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit }: Params) {
     setSubmitting(false);
     setShowCloseConfirm(false);
 
-    if (contentRef.current) contentRef.current.textContent = '';
-  }, [isOpen]);
+    if (contentRef.current) contentRef.current.textContent = baseline.content;
+  }, [isOpen, baseline]);
 
   return {
     // refs
