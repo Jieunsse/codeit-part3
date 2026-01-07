@@ -2,13 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import type { MyWine } from './myWine';
 import { CardMylist } from '@src/components/card/CardMylist';
 import { DropdownBase } from '@src/components/dropdown/base/DropdownBase';
-import {
-  WineRegisterModal,
-  type WineRegisterValue,
-} from '@src/components/modal/modals/WineRegisterModal';
 import { getTempHeader } from './tempHeader';
 import { DeleteConfirmModal } from '@src/components/modal/modals/DeleteConfirmModal';
 import { axiosInstance } from '@src/shared/apis/basic/axios';
+import { type WineRegisterValue } from '@src/components/modal/modals/WineModal/WineRegisterModal';
+import { WineEditModal } from '@src/components/modal/modals/WineModal/WineEditModal';
+import type { WineType } from '@src/components/modal/modals/FilterModal';
 
 const LIMIT_COUNT = 10;
 
@@ -117,10 +116,28 @@ export default function MyWines() {
     setItems((prev) => prev.map((it) => (it.id != editingId ? it : res.data)));
   }
 
+  function convertType(typeCode: string): WineType {
+    switch (typeCode) {
+      case 'RED':
+        return 'Red';
+      case 'WHITE':
+        return 'White';
+      default:
+        return 'Sparkling';
+    }
+  }
+
   return (
     <div className="flex flex-col">
       {editingItem && (
-        <WineRegisterModal
+        <WineEditModal
+          initialValue={{
+            name: editingItem?.name ?? '',
+            price: editingItem?.price ?? 0,
+            origin: editingItem?.region ?? '',
+            type: convertType(editingItem?.type),
+            photoFile: null,
+          }}
           isOpen={true}
           onClose={() => setEditingItem(undefined)}
           onSubmit={onSubmitItem}

@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import type { MyReview } from './myReview';
 import { CardMy } from '@src/components/card/CardMy';
 import { DropdownBase } from '@src/components/dropdown/base/DropdownBase';
-import { ReviewRegisterModal } from '@src/components/modal/modals/ReviewRegisterModal/ReviewRegisterModal';
 import type { ReviewRegisterValue } from '@src/components/modal/modals/ReviewRegisterModal/ReviewRegisterModal.types';
 import { convertReviewTime } from './review';
 import { DeleteConfirmModal } from '@src/components/modal/modals/DeleteConfirmModal';
 import { getTempHeader } from './tempHeader';
 import { axiosInstance } from '@src/shared/apis/basic/axios';
+import { ReviewEditModal } from '@src/components/modal/modals/ReviewRegisterModal/ReviewEditModal';
+import { AROMA_MAP } from '@src/domain/review/utils/aroma';
 
 const LIMIT_COUNT = 10;
 
@@ -108,9 +109,32 @@ export default function MyReviews() {
     setItems((prev) => prev.map((it) => (it.id != editingId ? it : res.data)));
   }
 
+  function convertAromas(codes: string[]): string[] {
+    const keys = Object.keys(AROMA_MAP);
+    const map: { [key: string]: string } = {};
+    keys.forEach((it) => {
+      const value = AROMA_MAP[it];
+      map[value] = it;
+    });
+    return codes.map((it) => {
+      return map[it];
+    });
+  }
+
   return (
     <div className="flex flex-col">
-      <ReviewRegisterModal
+      <ReviewEditModal
+        review={{
+          rating: editingItem?.rating ?? 0,
+          content: editingItem?.content ?? '',
+          taste: {
+            body: editingItem?.lightBold ?? 0,
+            tannin: editingItem?.smoothTannic ?? 0,
+            sweet: editingItem?.drySweet ?? 0,
+            acid: editingItem?.softAcidic ?? 0,
+          },
+          aromas: convertAromas(editingItem?.aroma ?? []),
+        }}
         isOpen={editingItem != undefined}
         onClose={() => setEditingItem(undefined)}
         wineName={editingItem?.user.nickname ?? ''}

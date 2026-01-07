@@ -34,7 +34,7 @@
 import React, { useEffect, useState } from 'react';
 import { BaseModal } from '../BaseModal';
 import type { WineType } from '../FilterModal';
-import CameraIcon from '../img/camera.svg';
+import CameraIcon from '../../img/camera.svg';
 import ModalButtonAdapter from '../common/ModalButtonAdapter';
 import { Input } from '../../../input/Input';
 import Select from '../../../input/Select';
