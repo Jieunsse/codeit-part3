@@ -1,6 +1,9 @@
 import type React from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import Logo from './img/logo.svg';
+import { postSignUp } from './api/signUp.api';
 
 import { Input } from '../../components/input/Input';
 import Button from '../../components/button/Button';
@@ -10,7 +13,26 @@ import type { FormValues } from './useSignUpForm';
 
 type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
+type ApiErrorResponse = {
+  message?: string;
+  details?: {
+    email?: { message?: string };
+    nickname?: { message?: string };
+    password?: { message?: string };
+    passwordConfirmation?: { message?: string };
+  };
+};
+
 export function SignUp() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      navigate('/');
+    }
+  }, [navigate]);
+
   const { values, errors, touched, submitting, isFormValid, setFieldValue, handleBlur, submit } =
     useSignUpForm();
 
@@ -34,9 +56,38 @@ export function SignUp() {
     e.preventDefault();
 
     submit(async (formValues: FormValues) => {
-      // ✅ 여기서 API 연결
-      console.log('회원가입 요청 값:', formValues);
-      // await signUpAPI(formValues);
+      try {
+        const res = await postSignUp({
+          email: formValues.email,
+          nickname: formValues.nickname,
+          password: formValues.password,
+          passwordConfirmation: formValues.passwordConfirm,
+        });
+
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+
+        navigate('/');
+
+        console.log('회원가입 성공', res);
+      } catch (err: unknown) {
+        if (axios.isAxiosError<ApiErrorResponse>(err)) {
+          const data = err.response?.data;
+
+          const message =
+            data?.message ||
+            data?.details?.email?.message ||
+            data?.details?.nickname?.message ||
+            data?.details?.password?.message ||
+            data?.details?.passwordConfirmation?.message ||
+            '회원가입에 실패했어요.';
+
+          alert(message);
+          return;
+        }
+
+        alert('알 수 없는 오류가 발생했어요.');
+      }
     });
   };
 
