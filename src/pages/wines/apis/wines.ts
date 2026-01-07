@@ -1,4 +1,4 @@
-import { axiosInstance } from '@src/shared/apis/axios';
+import { axiosInstance } from '@src/shared/apis/basic/axios';
 import { uploadImage } from './images';
 
 export type WineUser = {

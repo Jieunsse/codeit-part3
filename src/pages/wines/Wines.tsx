@@ -4,10 +4,6 @@ import { Search } from '@src/components/input/Search';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FilterModal, type FilterValue } from '@src/components/modal/modals/FilterModal';
-import {
-  WineRegisterModal,
-  type WineRegisterValue,
-} from '@src/components/modal/modals/WineRegisterModal';
 import { WinesStickyControls } from '@src/domain/list/components/WinesStickyControls';
 import { WinesDesktopSidebar } from '@src/domain/list/components/WinesDesktopSidebar';
 import { WinesMobileFloatingRegisterButton } from '@src/domain/list/components/WinesMobileFloatingRegisterButton';
@@ -17,6 +13,10 @@ import { useWineList } from './hooks/useWineList';
 import { toWineListCardItems } from '@src/domain/list/mapper/wineList.mapper';
 import { DEFAULT_WINE_LIST_FILTER_VALUE } from '@src/domain/list/types/wineListFilter.types';
 import { createWine } from './apis/wines';
+import {
+  WineRegisterModal,
+  type WineRegisterValue,
+} from '@src/components/modal/modals/WineModal/WineRegisterModal';
 export function Wines() {
   const navigate = useNavigate();
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
