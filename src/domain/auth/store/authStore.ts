@@ -11,6 +11,8 @@ export type AuthState = {
   logout: () => void;
 };
 
+const ACCESS_TOKEN_KEY = 'accessToken';
+
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   accessToken: null,
@@ -23,16 +25,22 @@ export const useAuthStore = create<AuthState>((set) => ({
       isAuthenticated: true,
     })),
 
-  setAccessToken: (token) =>
+  setAccessToken: (token) => {
+    localStorage.setItem(ACCESS_TOKEN_KEY, token);
     set((state) => ({
       ...state,
       accessToken: token,
-    })),
+      isAuthenticated: true,
+    }));
+  },
 
-  logout: () =>
+  logout: () => {
+    localStorage.removeItem(ACCESS_TOKEN_KEY);
+
     set({
       user: null,
       accessToken: null,
       isAuthenticated: false,
-    }),
+    });
+  },
 }));
