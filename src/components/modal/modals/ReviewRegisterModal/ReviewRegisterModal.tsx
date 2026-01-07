@@ -62,8 +62,9 @@ export function ReviewRegisterModal({
   onSubmit,
   titleText = '리뷰 등록',
   submitButtonText = '리뷰 남기기',
+  initialValue,
 }: ReviewRegisterModalProps) {
-  const form = useReviewRegisterForm({ isOpen, onClose, onSubmit });
+  const form = useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue });
 
   return (
     <BaseModal

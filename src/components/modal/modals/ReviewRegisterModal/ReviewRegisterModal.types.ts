@@ -7,6 +7,8 @@ export type ReviewRegisterValue = {
   aromas: string[];
 };
 
+export type ReviewRegisterInitialValue = Partial<ReviewRegisterValue>;
+
 export type ReviewRegisterModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -18,4 +20,6 @@ export type ReviewRegisterModalProps = {
 
   titleText?: string;
   submitButtonText?: string;
+
+  initialValue?: ReviewRegisterInitialValue;
 };
