@@ -1,38 +1,35 @@
 import { useEffect } from 'react';
-
-import { useAuthStore } from '@src/domain/user/stores/authStore';
+import { axiosInstance } from '@src/shared/apis/basic/axios';
+import { useAuthStore } from '@src/domain/auth/store/authStore';
 import type { UserMeResponse } from '@src/domain/user/Interface/UserMeResponse';
 import { mapUserMeResponseToUser } from '@src/domain/user/mapper/mapper';
-import { axiosInstance } from '@src/shared/apis/basic/axios';
 
 export function AuthInitializer() {
   const login = useAuthStore((state) => state.login);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const logout = useAuthStore((state) => state.logout);
 
   useEffect(() => {
-    let mounted = true;
+    const token = localStorage.getItem('accessToken');
 
-    async function initializeAuth() {
+    if (!token) {
+      logout();
+      return;
+    }
+
+    setAccessToken(token);
+
+    async function init() {
       try {
-        const response = await axiosInstance.get<UserMeResponse>('/users/me');
-
-        if (!mounted) return;
-
-        const user = mapUserMeResponseToUser(response.data);
-        login(user);
-      } catch (error) {
-        console.error(error);
-        if (!mounted) return;
+        const res = await axiosInstance.get<UserMeResponse>('/users/me');
+        login(mapUserMeResponseToUser(res.data));
+      } catch {
         logout();
       }
     }
 
-    initializeAuth();
-
-    return () => {
-      mounted = false;
-    };
-  }, [login, logout]);
+    init();
+  }, [login, logout, setAccessToken]);
 
   return null;
 }

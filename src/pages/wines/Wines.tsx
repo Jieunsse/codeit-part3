@@ -3,13 +3,13 @@ import { InputWineListContainer } from '@src/domain/list/containers/InputWineLis
 import { Search } from '@src/components/input/Search';
 import { useState } from 'react';
 import { FilterModal, type FilterValue } from '@src/components/modal/modals/FilterModal';
-import {
-  WineRegisterModal,
-  type WineRegisterValue,
-} from '@src/components/modal/modals/WineRegisterModal';
 import { WinesStickyControls } from '@src/domain/list/components/WinesStickyControls';
 import { WinesDesktopSidebar } from '@src/domain/list/components/WinesDesktopSidebar';
 import { WinesMobileFloatingRegisterButton } from '@src/domain/list/components/WinesMobileFloatingRegisterButton';
+import {
+  WineRegisterModal,
+  type WineRegisterValue,
+} from '@src/components/modal/modals/WineModal/WineRegisterModal';
 export function Wines() {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [filterValue, setFilterValue] = useState<FilterValue | undefined>(undefined);

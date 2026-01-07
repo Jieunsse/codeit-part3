@@ -1,4 +1,4 @@
-import { axiosInstance } from '../../../shared/apis/axios';
+import { axiosInstance } from '@src/shared/apis/basic/axios';
 import { AUTH } from '../login.constants';
 import type { LoginRequest, LoginResponse } from '../login.types';
 
