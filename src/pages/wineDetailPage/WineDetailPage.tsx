@@ -9,6 +9,8 @@ import { ReviewRegisterModal } from '@src/components/modal/modals/ReviewRegister
 
 import { useWineDetail } from './hooks/useWineDetail';
 import { useSubmitReview } from '@src/domain/review/hooks/useSubmitReview';
+import { useReviewActions } from '@src/domain/review/hooks/useReviewActions';
+
 import { mapReviewToCardModel } from '@src/domain/review/mapper/mapReviewToCardModel';
 import { calculateRatingDistributions } from '@src/domain/review/utils/calculateRatingDistributions';
 
@@ -19,6 +21,7 @@ export function WineDetailPage() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const submitReview = useSubmitReview(wine?.id ?? 0);
+  const { handleToggleLike, handleDeleteReview } = useReviewActions(setReviews);
 
   const distributions = useMemo(() => calculateRatingDistributions(reviews), [reviews]);
 
@@ -67,7 +70,12 @@ export function WineDetailPage() {
             <h3 className="text-[24px] font-bold text-gray-800">리뷰 목록</h3>
             <div className="flex flex-col gap-4">
               {reviews.map((review) => (
-                <CardReview key={review.id} {...mapReviewToCardModel(review)} />
+                <CardReview
+                  key={review.id}
+                  {...mapReviewToCardModel(review)}
+                  onToggleLike={handleToggleLike}
+                  onDelete={handleDeleteReview}
+                />
               ))}
             </div>
           </main>

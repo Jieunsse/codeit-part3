@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { DropdownBase } from './base/DropdownBase';
 import { ACCOUNT_ITEMS } from './account/data/account.data';
+import { useAuthStore } from '@src/domain/auth/store/authStore';
 
 /**
  * 사용자 계정 관련 액션을 제공하는 드롭다운 컴포넌트
@@ -20,12 +21,19 @@ import { ACCOUNT_ITEMS } from './account/data/account.data';
  */
 export function AccountDropdown() {
   const navigate = useNavigate();
+  const logout = useAuthStore((state) => state.logout);
 
-  return (
-    <DropdownBase
-      items={ACCOUNT_ITEMS}
-      width={126}
-      onItemClick={(item) => (item.key === 'mypage' ? navigate('/mypage') : navigate('/logout'))}
-    />
-  );
+  const handleItemClick = (item: { key: string }) => {
+    if (item.key === 'mypage') {
+      navigate('/myprofile');
+      return;
+    }
+
+    if (item.key === 'logout') {
+      logout();
+      navigate('/');
+    }
+  };
+
+  return <DropdownBase items={ACCOUNT_ITEMS} width={126} onItemClick={handleItemClick} />;
 }
