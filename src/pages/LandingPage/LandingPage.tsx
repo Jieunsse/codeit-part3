@@ -68,7 +68,7 @@ export default function LandingPage() {
             </section>
             <section className="lg:pb[109px] mx-auto mt-16 block w-full max-w-[343px] pb-[62px] md:mx-0 md:mt-20 md:max-w-[640px] md:pb-[72px] lg:mt-[104px]">
               <Button
-                className="mx-auto block rounded-[100px]! px-24 py-4 hover:bg-violet-800"
+                className="mx-auto block cursor-pointer rounded-[100px]! px-24 py-4 hover:bg-violet-800"
                 onClick={() => {
                   navigate('/wines');
                 }}

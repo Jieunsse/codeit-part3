@@ -165,7 +165,6 @@ export default function MyWines() {
                 text={it.region}
                 price={it.price}
                 onMenuClick={() => setDropdownItem(it)}
-                imageUrl={it.image}
               />
               {dropdownItem == it && (
                 <div className="absolute top-[117px] right-[40px]" ref={dropdownRef}>

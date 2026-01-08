@@ -4,7 +4,7 @@ import { TEAM_ID } from './team';
 import { useAuthStore } from '@src/domain/auth/store/authStore';
 
 export const axiosInstance = axios.create({
-  baseURL: `${API_BASE_URL}/${TEAM_ID}`,
+  baseURL: `${API_BASE_URL.replace(/\/$/, '')}/${TEAM_ID}`,
   timeout: 10_000,
   headers: {
     'Content-Type': 'application/json',
