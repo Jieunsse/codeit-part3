@@ -2,36 +2,23 @@ import ModalButton from '@src/components/button/ModalButton';
 import { Input } from '@src/components/input/Input';
 import Profile from '@src/components/input/Profile';
 import { useRef, useState } from 'react';
-import { getTempHeader } from './tempHeader';
 import { axiosInstance } from '@src/shared/apis/basic/axios';
+import { useAuthStore } from '@src/domain/auth/store/authStore';
 
 // 프로필 페이지 내의 내 프로필 수정 컴포넌트
 export default function ModifyProfile() {
-  //   const { user } = useAuthStore();
-  const mockUser = {
-    image:
-      'https://file.sportsseoul.com/news/cms/2025/08/05/news-p.v1.20250805.44a328b08e9b4a549f66834fd2b98558_P1.png',
-    updatedAt: '2025-12-30T11:04:56.432Z',
-    createdAt: '2025-12-30T11:04:56.432Z',
-    teamId: '123',
-    nickname: '정소은',
-    id: 1,
-  };
-  const [user, setUser] = useState(mockUser);
-  const [newNickname, setNewNickname] = useState(user.nickname);
-  const canModify = newNickname.length > 0 && newNickname !== user.nickname;
+  const user = useAuthStore((state) => state.user);
+  const login = useAuthStore((state) => state.login);
+  const [newNickname, setNewNickname] = useState(user?.nickname ?? '');
+  const canModify = newNickname.length > 0 && newNickname !== user?.nickname;
   const refFile = useRef<HTMLInputElement>(null);
 
   // 닉네임 수정
   async function modifyNickname() {
-    const res = await axiosInstance.patch(
-      'users/me',
-      {
-        nickname: newNickname,
-      },
-      await getTempHeader(),
-    );
-    setUser(res.data);
+    const res = await axiosInstance.patch('users/me', {
+      nickname: newNickname,
+    });
+    login(res.data);
   }
 
   // 프로필 이미지 선택
@@ -45,21 +32,15 @@ export default function ModifyProfile() {
     const file = refFile.current.files[0];
     const formdata = new FormData();
     formdata.append('image', file);
-    const tempHeader = await getTempHeader();
     const res = await axiosInstance.post('images/upload', formdata, {
       headers: {
-        ...tempHeader.headers,
         'Content-Type': 'multipart/form-data',
       },
     });
-    const resUser = await axiosInstance.patch(
-      'users/me',
-      {
-        image: res.data.url,
-      },
-      tempHeader,
-    );
-    setUser(resUser.data);
+    const resUser = await axiosInstance.patch('users/me', {
+      image: res.data.url,
+    });
+    login(resUser.data);
   }
 
   return (
@@ -71,12 +52,12 @@ export default function ModifyProfile() {
 
           {/* 프로필 이미지 */}
           <div className="cursor-pointer" onClick={onProfileClick}>
-            <Profile url={user.image} />
+            <Profile url={user?.profileImage ?? ''} />
           </div>
 
           {/* 닉네임 */}
           <div className="flex-1 text-[20px] leading-[32px] font-[var(--font-weight-bold)] text-[var(--color-gray-800)] md:pb-[34px] md:text-[24px] lg:pb-0">
-            {user.nickname}
+            {user?.nickname ?? ''}
           </div>
         </div>
         <div className="flex w-full flex-col md:flex-row md:gap-6 lg:flex-col lg:gap-0">

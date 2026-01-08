@@ -1,9 +1,11 @@
+// useReviewRegisterForm.ts
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   DEFAULT_AROMAS,
   DEFAULT_TASTE,
   MAX_SELECT_AROMAS,
   MAX_TOTAL_AROMAS,
+  AROMA_MAP,
 } from './ReviewRegisterModal.constants';
 import type {
   ReviewRegisterInitialValue,
@@ -17,6 +19,9 @@ type Params = {
   onSubmit: (value: ReviewRegisterValue) => Promise<void> | void;
   initialValue?: ReviewRegisterInitialValue;
 };
+
+// ✅ 커스텀 아로마 타입 정의
+type Aroma = (typeof DEFAULT_AROMAS)[number] | string;
 
 export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue }: Params) {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -36,7 +41,7 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue 
 
   const [taste, setTaste] = useState<Record<ReviewTasteKey, number>>(baseline.taste);
 
-  const [selectedAromas, setSelectedAromas] = useState<string[]>(baseline.aromas);
+  const [selectedAromas, setSelectedAromas] = useState<Aroma[]>(baseline.aromas);
   const [customAromas, setCustomAromas] = useState<string[]>([]);
   const [isAddingAroma, setIsAddingAroma] = useState(false);
   const [newAroma, setNewAroma] = useState('');
@@ -73,7 +78,7 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue 
    * 향 선택/해제 토글
    * - 최대 MAX_SELECT_AROMAS개 선택 제한
    */
-  const toggleAroma = (tag: string) => {
+  const toggleAroma = (tag: Aroma) => {
     setError('');
     setSelectedAromas((prev) => {
       const exists = prev.includes(tag);
@@ -145,6 +150,7 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue 
   /**
    * 제출 처리
    * - 향 태그 최소 1개 선택 필수
+   * - 한글 → 코드 변환
    * - 성공적으로 resolve 되면 모달 닫힘
    */
   const submit = async () => {
@@ -155,11 +161,21 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue 
       return;
     }
 
+    // ✅ 한글 → 코드 변환, 매핑 없는 값은 UNKNOWN 처리
+    const aromasCode: string[] = selectedAromas.map((aroma) => {
+      const code = AROMA_MAP[aroma];
+      if (!code) {
+        console.warn(`Unknown aroma: ${aroma}`);
+        return 'UNKNOWN';
+      }
+      return code;
+    });
+
     const payload: ReviewRegisterValue = {
       rating,
       content,
       taste,
-      aromas: selectedAromas,
+      aromas: aromasCode,
     };
 
     try {
@@ -181,7 +197,6 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue 
     setTaste(baseline.taste);
 
     setSelectedAromas(baseline.aromas);
-
     setCustomAromas([]);
     setIsAddingAroma(false);
     setNewAroma('');
@@ -194,10 +209,7 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue 
   }, [isOpen, baseline]);
 
   return {
-    // refs
     contentRef,
-
-    // states
     rating,
     content,
     isContentEmpty,
@@ -209,26 +221,19 @@ export function useReviewRegisterForm({ isOpen, onClose, onSubmit, initialValue 
     error,
     submitting,
     showCloseConfirm,
-
-    // derived
     allAromas,
     hasDirty,
-
-    // setters/handlers
     setRating,
     setTaste,
     setIsAddingAroma,
     setNewAroma,
     toggleAroma,
     addCustomAroma,
-
     setContent,
     setIsContentEmpty,
-
     requestClose,
     confirmClose,
     cancelClose,
-
     submit,
   };
 }

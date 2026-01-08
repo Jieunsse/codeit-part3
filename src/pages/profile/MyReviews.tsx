@@ -5,7 +5,6 @@ import { DropdownBase } from '@src/components/dropdown/base/DropdownBase';
 import type { ReviewRegisterValue } from '@src/components/modal/modals/ReviewRegisterModal/ReviewRegisterModal.types';
 import { convertReviewTime } from './review';
 import { DeleteConfirmModal } from '@src/components/modal/modals/DeleteConfirmModal';
-import { getTempHeader } from './tempHeader';
 import { axiosInstance } from '@src/shared/apis/basic/axios';
 import { ReviewEditModal } from '@src/components/modal/modals/ReviewRegisterModal/ReviewEditModal';
 import { AROMA_MAP } from '@src/domain/review/utils/aroma';
@@ -28,10 +27,7 @@ export default function MyReviews() {
   // 첫 번째 목록 받아오기
   async function loadFirstList() {
     isLoadingRef.current = true;
-    const res = await axiosInstance.get(
-      `users/me/reviews?limit=${LIMIT_COUNT}`,
-      await getTempHeader(),
-    );
+    const res = await axiosInstance.get(`users/me/reviews?limit=${LIMIT_COUNT}`);
     setItems(res.data.list);
     setTotalCount(res.data.totalCount);
     setCursor(res.data.nextCursor);
@@ -41,14 +37,10 @@ export default function MyReviews() {
   // 이후 목록 받아오기
   function loadNextList() {
     isLoadingRef.current = true;
-    getTempHeader().then((header) => {
-      axiosInstance
-        .get(`users/me/reviews?limit=${LIMIT_COUNT}&cursor=${cursor}`, header)
-        .then((res) => {
-          setItems([...items, ...res.data.list]);
-          setCursor(res.data.nextCursor);
-          isLoadingRef.current = false;
-        });
+    axiosInstance.get(`users/me/reviews?limit=${LIMIT_COUNT}&cursor=${cursor}`).then((res) => {
+      setItems([...items, ...res.data.list]);
+      setCursor(res.data.nextCursor);
+      isLoadingRef.current = false;
     });
   }
 
@@ -90,14 +82,14 @@ export default function MyReviews() {
   }
 
   async function requestDeleteItem(item: MyReview) {
-    await axiosInstance.delete(`reviews/${item.id}`, await getTempHeader());
+    await axiosInstance.delete(`reviews/${item.id}`);
     setItems(items.filter((it) => it.id != item.id));
   }
 
   async function onSubmitItem(values: ReviewRegisterValue) {
     const body = {
       rating: values.rating,
-      aroma: values.aromas,
+      aroma: values.aromas.map((it) => AROMA_MAP[it]),
       content: values.content,
       lightBold: values.taste['body'] ?? 0,
       smoothTannic: values.taste['tannin'] ?? 0,
@@ -105,7 +97,7 @@ export default function MyReviews() {
       drySweet: values.taste['sweet'] ?? 0,
     };
     const editingId = editingItem?.id ?? 0;
-    const res = await axiosInstance.patch(`reviews/${editingId}`, body, await getTempHeader());
+    const res = await axiosInstance.patch(`reviews/${editingId}`, body);
     setItems((prev) => prev.map((it) => (it.id != editingId ? it : res.data)));
   }
 

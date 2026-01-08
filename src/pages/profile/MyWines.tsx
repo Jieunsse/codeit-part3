@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import type { MyWine } from './myWine';
 import { CardMylist } from '@src/components/card/CardMylist';
 import { DropdownBase } from '@src/components/dropdown/base/DropdownBase';
-import { getTempHeader } from './tempHeader';
 import { DeleteConfirmModal } from '@src/components/modal/modals/DeleteConfirmModal';
 import { axiosInstance } from '@src/shared/apis/basic/axios';
 import { type WineRegisterValue } from '@src/components/modal/modals/WineModal/WineRegisterModal';
@@ -25,10 +24,7 @@ export default function MyWines() {
 
   async function loadFirstList() {
     isLoadingRef.current = true;
-    const res = await axiosInstance.get(
-      `users/me/wines?limit=${LIMIT_COUNT}`,
-      await getTempHeader(),
-    );
+    const res = await axiosInstance.get(`users/me/wines?limit=${LIMIT_COUNT}`);
     setItems(res.data.list);
     setTotalCount(res.data.totalCount);
     setCursor(res.data.nextCursor);
@@ -37,14 +33,10 @@ export default function MyWines() {
 
   function loadNextList() {
     isLoadingRef.current = true;
-    getTempHeader().then((header) => {
-      axiosInstance
-        .get(`users/me/wines?limit=${LIMIT_COUNT}&cursor=${cursor}`, header)
-        .then((res) => {
-          setItems([...items, ...res.data.list]);
-          setCursor(res.data.nextCursor);
-          isLoadingRef.current = false;
-        });
+    axiosInstance.get(`users/me/wines?limit=${LIMIT_COUNT}&cursor=${cursor}`).then((res) => {
+      setItems([...items, ...res.data.list]);
+      setCursor(res.data.nextCursor);
+      isLoadingRef.current = false;
     });
   }
 
@@ -81,23 +73,17 @@ export default function MyWines() {
   }, [items]);
 
   async function requestDeleteItem(item: MyWine) {
-    await axiosInstance.delete(`wines/${item.id}`, await getTempHeader());
+    await axiosInstance.delete(`wines/${item.id}`);
     setItems(items.filter((it) => it.id != item.id));
   }
 
   async function onSubmitItem(value: WineRegisterValue) {
-    //     {
-    //   "image": "string",
-    //   "type": "RED"
-    // }
     let fileUrl: string | null = null;
-    const tempHeader = await getTempHeader();
     if (value.photoFile) {
       const formdata = new FormData();
       formdata.append('image', value.photoFile);
       const res = await axiosInstance.post('images/upload', formdata, {
         headers: {
-          ...tempHeader.headers,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -112,7 +98,7 @@ export default function MyWines() {
       ...(fileUrl ? { image: fileUrl } : {}),
     };
     const editingId = editingItem?.id ?? 0;
-    const res = await axiosInstance.patch(`wines/${editingId}`, body, tempHeader);
+    const res = await axiosInstance.patch(`wines/${editingId}`, body);
     setItems((prev) => prev.map((it) => (it.id != editingId ? it : res.data)));
   }
 

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import type { Wine } from '@shared/types/Wine';
 import type { ReviewResponse } from '@src/domain/review/types/ReviewResponse';
-import type { AxiosResponse } from 'axios';
 
 import { getWineDetail } from '@src/shared/apis/wine/getWineDetail';
 import { axiosInstance } from '@src/shared/apis/basic/axios';
@@ -24,17 +23,28 @@ export function useWineDetail(wineId?: string) {
         const reviewIds = loadReviewIds(wineData.id);
 
         const results = await Promise.allSettled(
-          reviewIds.map((id) => axiosInstance.get<ReviewResponse>(`/reviews/${id}`)),
+          reviewIds.map((id) =>
+            axiosInstance
+              .get<ReviewResponse>(`/reviews/${id}`)
+              .then((res) => res.data)
+              .catch((err) => {
+                if (err.response?.status === 404) {
+                  return null;
+                }
+                throw err;
+              }),
+          ),
         );
 
-        const fulfilledResponses = results.filter(
-          (result): result is PromiseFulfilledResult<AxiosResponse<ReviewResponse>> =>
-            result.status === 'fulfilled',
-        );
-
-        const fetchedReviews = fulfilledResponses
-          .map((result) => result.value.data)
-          .filter((review) => review.wineId === wineData.id);
+        const fetchedReviews = results
+          .filter(
+            (result): result is PromiseFulfilledResult<ReviewResponse | null> =>
+              result.status === 'fulfilled',
+          )
+          .map((result) => result.value)
+          .filter(
+            (review): review is ReviewResponse => review !== null && review.wineId === wineData.id,
+          );
 
         setReviews(fetchedReviews);
       } catch {
