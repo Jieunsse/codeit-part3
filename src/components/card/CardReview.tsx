@@ -11,6 +11,7 @@ import { FlavorSliderReadOnly } from './FlavorSliderReadOnly';
 import { CardChip } from './CardChip';
 import { Chips } from '../chips/Chips';
 import { ReviewDropdown } from '../dropdown/ReviewDropdown';
+import { formatDateTime } from '@src/shared/utils/formatDate';
 
 interface CardChipData {
   title: string;
@@ -92,7 +93,9 @@ export function CardReview({
             <Card.Title className={clsx(titleClass, 'font-semibold text-gray-800')}>
               {username}
             </Card.Title>
-            <Card.Text className={clsx(timetextClass, 'text-gray-500')}>{createdAt}</Card.Text>
+            <Card.Text className={clsx(timetextClass, 'text-gray-500')}>
+              {createdAt ? formatDateTime(createdAt) : ''}
+            </Card.Text>
           </Card.Container>
         </Card.Container>
 
