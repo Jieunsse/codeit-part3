@@ -1,10 +1,10 @@
 import { CardWinetList } from '../components/CardWinetList';
-import { CardDetail } from '@src/components/card/CardDetail';
-import { CardMylist } from '@src/components/card/CardMylist';
+
 interface CardWineData {
   id: string;
   title: string;
   text: string;
+  imageUrl?: string;
   price: number;
   rating: number;
   reviewNumber: number;
@@ -13,14 +13,13 @@ interface CardWineData {
 
 interface InputWineListContainerProps {
   items: CardWineData[];
+  onItemClick?: (id: string) => void;
 }
 
-export function InputWineListContainer({ items }: InputWineListContainerProps) {
+export function InputWineListContainer({ items, onItemClick }: InputWineListContainerProps) {
   return (
     <div className="flex flex-col items-start justify-center gap-[20px]">
-      <CardWinetList items={items} />
-      <CardDetail />
-      <CardMylist />
+      <CardWinetList items={items} onItemClick={onItemClick} />
     </div>
   );
 }

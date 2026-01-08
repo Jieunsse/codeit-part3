@@ -1,11 +1,5 @@
 import clsx from 'clsx';
-import { Recommended } from '../components/Recommended';
-
-interface RecommendedItem {
-  id: string;
-  rating: number;
-  title: string;
-}
+import { Recommended, type RecommendedItem } from '../components/Recommended';
 
 interface RecommendedContainerProps {
   items?: RecommendedItem[];

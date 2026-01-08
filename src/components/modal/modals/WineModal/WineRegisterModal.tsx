@@ -79,6 +79,21 @@ export function WineRegisterModal({
 }: WineRegisterModalProps) {
   const [form, setForm] = useState<WineRegisterValue>(DEFAULT_FORM);
   const [submitting, setSubmitting] = useState(false);
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!form.photoFile) {
+      setPhotoPreviewUrl(null);
+      return;
+    }
+
+    const url = URL.createObjectURL(form.photoFile);
+    setPhotoPreviewUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [form.photoFile]);
 
   // 모달이 열릴 때마다 초기값 반영(수정/등록 공용)
   useEffect(() => {
@@ -164,8 +179,19 @@ export function WineRegisterModal({
               className="hidden"
               onChange={(e) => set('photoFile', e.target.files?.[0] ?? null)}
             />
-            <img src={CameraIcon} alt="cameraIcon" />
+            {photoPreviewUrl ? (
+              <img
+                src={photoPreviewUrl}
+                alt="selected wine"
+                className="h-full w-full rounded-2xl object-cover"
+              />
+            ) : (
+              <img src={CameraIcon} alt="cameraIcon" />
+            )}
           </label>
+          {form.photoFile?.name ? (
+            <div className="text-[12px] leading-5 text-gray-500">{form.photoFile.name}</div>
+          ) : null}
         </Field>
 
         <div className="flex gap-2.5 pt-2">

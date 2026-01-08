@@ -22,7 +22,17 @@ import type { BaseCardProps } from './Card.types';
  *   title="이달의 추천 와인"
  * />
  */
-export function CardMonthly({ rating = 4.8, title = 'Title', className }: BaseCardProps) {
+type CardMonthlyProps = BaseCardProps & {
+  imageUrl?: string;
+};
+
+export function CardMonthly({
+  imageUrl,
+  rating = 4.8,
+  title = 'Title',
+  className,
+}: CardMonthlyProps) {
+  const formattedRating = Number.isFinite(rating) ? rating.toFixed(1) : '0.0';
   // 모바일(small) → md 이상(large)로 반응형 고정
   const cardSizeClass = clsx(
     'w-[193px] h-[160px] px-[25px] py-[24px] pb-[0px]',
@@ -42,7 +52,11 @@ export function CardMonthly({ rating = 4.8, title = 'Title', className }: BaseCa
         className,
       )}
     >
-      <Card.Image src={wine1} alt="Wine" className={clsx('h-full w-full object-contain')} />
+      <Card.Image
+        src={imageUrl ?? wine1}
+        alt="Wine"
+        className={clsx('h-full w-full object-contain')}
+      />
       <Card.Body className="flex h-full w-full flex-col items-start justify-start gap-1">
         <Card.Title
           className={titleClass}
@@ -52,7 +66,7 @@ export function CardMonthly({ rating = 4.8, title = 'Title', className }: BaseCa
             lineHeight: '1',
           }}
         >
-          {rating}
+          {formattedRating}
         </Card.Title>
         <StarRating value={Math.floor(rating)} className={starRatingClass} />
         <Card.Text

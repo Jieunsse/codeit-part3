@@ -6,6 +6,7 @@ import { CardChip } from './CardChip';
 import kebab from '@shared/assets/images/kebab.svg';
 
 interface CardMylistProps extends BaseCardProps {
+  imageUrl?: string;
   price?: number;
   /** 케밥(팝업 메뉴) 버튼 클릭 핸들러 */
   onMenuClick?: () => void;
@@ -32,6 +33,7 @@ interface CardMylistProps extends BaseCardProps {
  * />
  */
 export function CardMylist({
+  imageUrl,
   text = 'Detail',
   price = 10000,
   title = 'Title',
@@ -57,7 +59,7 @@ export function CardMylist({
       <Card.Container className="relative flex w-full flex-row items-end gap-[28px] overflow-visible">
         <Card.Body className={clsx(imagePositionSizeClass, 'flex h-full shrink-0 items-end')}>
           <Card.Image
-            src={wine2}
+            src={imageUrl ?? wine2}
             alt="Wine"
             className={clsx(imageSizeClass, 'w-full object-contain')}
           />

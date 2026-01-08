@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import type { PriceRangeSliderProps } from './types/priceRangeSlider.types';
@@ -43,9 +43,30 @@ export function PriceRangeSlider({
   initialMin = min,
   initialMax = max,
   onChange,
+  onChangeEnd,
 }: PriceRangeSliderProps) {
   const [minValue, setMinValue] = useState(initialMin);
   const [maxValue, setMaxValue] = useState(initialMax);
+  const minRef = useRef(minValue);
+  const maxRef = useRef(maxValue);
+
+  // 외부에서 initialMin/initialMax가 바뀌는 경우(예: 모달에서 필터 적용)에도 슬라이더가 값 동기화되도록 함
+  useEffect(() => {
+    let cancelled = false;
+
+    // lint 규칙(Effect 내부 동기 setState) 회피: 마이크로태스크로 동기화
+    Promise.resolve().then(() => {
+      if (cancelled) return;
+      setMinValue(initialMin);
+      setMaxValue(initialMax);
+      minRef.current = initialMin;
+      maxRef.current = initialMax;
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [initialMin, initialMax]);
 
   const minPercent = calculatePercentage(minValue, min, max);
   const maxPercent = calculatePercentage(maxValue, min, max);
@@ -53,13 +74,19 @@ export function PriceRangeSlider({
   const updateMinValue = (nextValue: number) => {
     const value = clampMinValue(nextValue, maxValue, step);
     setMinValue(value);
+    minRef.current = value;
     onChange?.({ min: value, max: maxValue });
   };
 
   const updateMaxValue = (nextValue: number) => {
     const value = clampMaxValue(nextValue, minValue, step);
     setMaxValue(value);
+    maxRef.current = value;
     onChange?.({ min: minValue, max: value });
+  };
+
+  const commit = () => {
+    onChangeEnd?.({ min: minRef.current, max: maxRef.current });
   };
 
   return (
@@ -93,6 +120,8 @@ export function PriceRangeSlider({
           step={step}
           value={minValue}
           onChange={(e) => updateMinValue(Number(e.target.value))}
+          onPointerUp={commit}
+          onKeyUp={commit}
           className={twMerge(rangeInput({ z: 'front' }))}
         />
 
@@ -103,6 +132,8 @@ export function PriceRangeSlider({
           step={step}
           value={maxValue}
           onChange={(e) => updateMaxValue(Number(e.target.value))}
+          onPointerUp={commit}
+          onKeyUp={commit}
           className={twMerge(rangeInput({ z: 'back' }))}
         />
       </div>

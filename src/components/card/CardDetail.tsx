@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { CardChip } from './CardChip';
 
 interface CardDetailProps extends BaseCardProps {
+  imageUrl?: string;
   price?: number;
 }
 
@@ -28,7 +29,12 @@ interface CardDetailProps extends BaseCardProps {
  *   price={850000}
  * />
  */
-export function CardDetail({ text = 'Detail', price = 10000, title = 'Title' }: CardDetailProps) {
+export function CardDetail({
+  imageUrl,
+  text = 'Detail',
+  price = 10000,
+  title = 'Title',
+}: CardDetailProps) {
   // 너비는 유동(w-full)으로 두되, "이미지가 카드 위로 뚫고 나오는" 효과를 위해
   // 카드 높이는 breakpoint별로 최소 높이를 잡아준다(카드 높이 < 이미지 높이).
   const cardSizeClass = clsx(
@@ -44,14 +50,14 @@ export function CardDetail({ text = 'Detail', price = 10000, title = 'Title' }: 
   const titleClass = 'text-[20px] md:text-[30px] lg:text-[30px]';
   const chipClass = 'text-[14px] md:text-[18px] lg:text-[18px]';
   const imageCoverClass = 'object-contain md:object-cover lg:object-contain';
-  const bodyClass = 'w-4/5 md:w-3/5';
+  const bodyClass = 'w-3/5 md:w-3/5';
 
   return (
     <Card className={clsx('flex w-full flex-row overflow-visible', cardSizeClass)}>
       <Card.Container className="flex w-full flex-row items-end gap-[28px] overflow-visible">
         <Card.Body className={clsx(imagePositionSizeClass, 'flex h-full shrink-0 items-end')}>
           <Card.Image
-            src={wine2}
+            src={imageUrl ?? wine2}
             alt="Wine"
             className={clsx(imageCoverClass, imageSizeClass, 'w-full')}
           />
