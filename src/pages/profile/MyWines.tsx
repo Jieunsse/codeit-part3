@@ -21,6 +21,24 @@ export default function MyWines() {
   const [intersecting, setIntersecting] = useState(false);
   const isLoadingRef = useRef(false);
   const [deletingItem, setDeletingItem] = useState<MyWine>();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (dropdownItem) {
+      document.addEventListener('mousedown', onMouseDown);
+    } else {
+      document.removeEventListener('mousedown', onMouseDown);
+    }
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+    };
+  }, [dropdownItem]);
+
+  function onMouseDown(e: MouseEvent) {
+    if (!dropdownRef.current?.contains(e.target as Node)) {
+      setDropdownItem(undefined);
+    }
+  }
 
   async function loadFirstList() {
     isLoadingRef.current = true;
@@ -149,7 +167,7 @@ export default function MyWines() {
                 onMenuClick={() => setDropdownItem(it)}
               />
               {dropdownItem == it && (
-                <div className="absolute top-[117px] right-[40px]">
+                <div className="absolute top-[117px] right-[40px]" ref={dropdownRef}>
                   <DropdownBase
                     items={[
                       { key: 'edit', label: '수정하기' },
