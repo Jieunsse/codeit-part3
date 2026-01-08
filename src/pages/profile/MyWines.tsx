@@ -161,7 +161,6 @@ export default function MyWines() {
           return (
             <div key={it.id} ref={isTarget ? targetRef : null} className="relative">
               <CardMylist
-                imageUrl={it.image}
                 title={it.name}
                 text={it.region}
                 price={it.price}
