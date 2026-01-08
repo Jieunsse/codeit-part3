@@ -23,6 +23,7 @@ export type SocialSignInResponse = {
 };
 
 export async function postSocialSignIn(provider: SocialProvider, body: SocialSignInRequest) {
+  // 만약 서버가 /auth/signin/KAKAO 주소를 기다린다면:
   const { data } = await axiosInstance.post<SocialSignInResponse>(`/auth/signin/${provider}`, body);
   return data;
 }

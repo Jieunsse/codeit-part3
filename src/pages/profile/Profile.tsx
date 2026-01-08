@@ -2,13 +2,9 @@ import { useState } from 'react';
 import ModifyProfile from './ModifyProfile';
 import MyReviews from './MyReviews';
 import MyWines from './MyWines';
-// import { useAuthStore } from '@src/domain/auth/store/authStore';
-// import { Navigate } from 'react-router-dom';
 
 export default function MyProfile() {
   const [tab, setTeb] = useState('myReview');
-  // const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  // if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return (
     <div className="flex w-full flex-col lg:mx-auto lg:mt-[37px] lg:flex-row lg:justify-center lg:gap-15">
@@ -31,9 +27,7 @@ export default function MyProfile() {
             onClick={() => {
               setTeb('myReview');
             }}
-            style={{
-              color: tab == 'myReview' ? 'var(--color-gray-800)' : 'var(--color-gray-300)',
-            }}
+            style={{ color: tab == 'myReview' ? 'var(--color-gray-800)' : 'var(--color-gray-300)' }}
           >
             내가 쓴 후기
           </div>
