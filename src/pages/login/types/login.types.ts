@@ -31,3 +31,13 @@ export type SocialLoginRequest = {
 };
 
 export type SocialLoginResponse = LoginResponse;
+
+export interface FormState {
+  email: string;
+  password: string;
+}
+
+export interface FormErrors {
+  email?: string;
+  password?: string;
+}

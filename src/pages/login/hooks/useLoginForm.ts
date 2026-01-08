@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import type { LoginErrors, LoginForm } from './login.types';
-import { EMAIL_REGEX, LOGIN_ERROR_MESSAGE } from './login.constants';
-import { postSignIn } from './api/login.api';
+import type { LoginErrors, LoginForm } from '../types/login.types';
+import { EMAIL_REGEX, LOGIN_ERROR_MESSAGE } from '../constants/login.constants';
+import { postSignIn } from '../api/login.api';
 import { useAuthStore } from '@src/domain/auth/store/authStore';
 import { mapLoginUserToUser } from '@src/domain/auth/mapper/mapLoginUserToUser';
 
