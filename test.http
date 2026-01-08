@@ -1,0 +1,27 @@
+### 로그인
+POST https://winereview-api.vercel.app/20-2/auth/signIn
+Content-Type: application/json
+
+{
+    "email": "soeun@gmail.com",
+    "password": "soeun1234"
+}
+
+### 내 리뷰 목록 가져오기
+GET https://winereview-api.vercel.app/20-2/users/me/reviews?limit=20
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAyMSwidGVhbUlkIjoiMjAtMiIsInNjb3BlIjoiYWNjZXNzIiwiaWF0IjoxNzY3NjE5Mzg5LCJleHAiOjE3Njc2MjExODksImlzcyI6InNwLWVwaWdyYW0ifQ.iZLCHfgud36VnLAUx8cbQw_lU41H1gGXIaeKR5v1BY8
+
+
+### 내 와인 추가
+POST https://winereview-api.vercel.app/20-2/wines
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAyMSwidGVhbUlkIjoiMjAtMiIsInNjb3BlIjoiYWNjZXNzIiwiaWF0IjoxNzY3NzcxNDkyLCJleHAiOjE3Njc3NzMyOTIsImlzcyI6InNwLWVwaWdyYW0ifQ.Rme5W91d5camMdVk2cYVhiDNJzeluHHpAyXpIm9yaBU
+
+{
+  "name": "내 와인2",
+  "region": "서울",
+  "image": "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/Wine/user/2021/1767620580363/%C3%A1%C2%84%C2%80%C3%A1%C2%85%C2%A9%C3%A1%C2%86%C2%B7.jpeg",
+  "price": 15000,
+  "type": "WHITE"    
+}
