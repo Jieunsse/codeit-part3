@@ -6,6 +6,7 @@ import Logo from './img/Logo.svg';
 import GoogleIcon from './img/GoogleIcon.svg';
 import KakaoIcon from './img/KakaoIcon.svg';
 import { useLoginForm } from './useLoginForm';
+import { LOGIN_ERROR_MESSAGE, EMAIL_REGEX } from './login.constants';
 import { postSocialSignIn } from './api/socialLogin.api';
 import type { SocialProvider, SocialSignInRequest } from './api/socialLogin.api';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -31,8 +32,7 @@ const KAKAO_JS_KEY = import.meta.env.VITE_KAKAO_JS_KEY;
 
 function loadScript(src: string, id: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const existing = document.getElementById(id);
-    if (existing) {
+    if (document.getElementById(id)) {
       resolve();
       return;
     }
@@ -64,16 +64,19 @@ export function Login() {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(firebaseAuth, provider);
       if (!result.user) throw new Error('Firebase 사용자 정보를 가져올 수 없습니다.');
+
       const idToken = await result.user.getIdToken();
       const signInData: SocialSignInRequest = {
         token: idToken,
         redirectUri: window.location.origin + '/oauth/google',
         state: 'google_login_verified',
       };
+
       const res = await postSocialSignIn('GOOGLE', signInData);
       if (!res || !res.accessToken || !res.refreshToken || !res.user) {
         throw new Error('서버에서 필요한 로그인 정보를 반환하지 않았습니다.');
       }
+
       localStorage.setItem('accessToken', res.accessToken);
       localStorage.setItem('refreshToken', res.refreshToken);
       localStorage.setItem('user', JSON.stringify(res.user));
@@ -86,6 +89,7 @@ export function Login() {
       } else if (err instanceof Error) {
         errorMessage = err.message;
       }
+      // ESLint 안전하게, 이메일 밑에 서버 에러 표시
       setErrors({ email: errorMessage });
     } finally {
       setSocialLoading(null);
@@ -123,32 +127,62 @@ export function Login() {
         </div>
 
         <form onSubmit={onSubmit} className="mt-14 flex flex-col gap-4 md:mt-16 md:gap-[25px]">
+          {/* 이메일 */}
           <div className="flex flex-col gap-2.5">
             <label className="text-[14px] font-medium text-gray-800 md:text-[16px]">이메일</label>
             <Input
               title=" "
               value={form.email}
               onChange={onChange('email')}
+              onBlur={() => {
+                const nextErrors = { ...errors };
+                if (!form.email.trim()) {
+                  nextErrors.email = LOGIN_ERROR_MESSAGE.EMAIL_REQUIRED;
+                } else if (!EMAIL_REGEX.test(form.email)) {
+                  nextErrors.email = LOGIN_ERROR_MESSAGE.EMAIL_INVALID;
+                } else {
+                  delete nextErrors.email;
+                }
+                setErrors(nextErrors);
+              }}
               placeholder="이메일 입력"
               type="email"
             />
-            {errors.email && (
-              <p className="text-[12px] font-semibold text-red-600">{errors.email}</p>
-            )}
+            <p
+              className={`overflow-hidden text-[12px] font-semibold text-red-600 transition-all duration-1000 ease-out ${
+                errors.email ? 'max-h-10 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              {errors.email}
+            </p>
           </div>
 
+          {/* 비밀번호 */}
           <div className="flex flex-col gap-2.5">
             <label className="text-[14px] font-medium text-gray-800 md:text-[16px]">비밀번호</label>
             <Input
               title=" "
               value={form.password}
               onChange={onChange('password')}
+              onBlur={() => {
+                const nextErrors = { ...errors };
+                if (!form.password.trim()) {
+                  nextErrors.password = LOGIN_ERROR_MESSAGE.PASSWORD_REQUIRED;
+                } else {
+                  delete nextErrors.password;
+                }
+                setErrors(nextErrors);
+              }}
               placeholder="비밀번호 입력"
               type="password"
             />
-            {errors.password && (
-              <p className="text-[12px] font-semibold text-red-600">{errors.password}</p>
-            )}
+            <p
+              className={`overflow-hidden text-[12px] font-semibold text-red-600 transition-all duration-1000 ease-out ${
+                errors.password ? 'max-h-10 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              {errors.password}
+            </p>
           </div>
 
           <div className="-mt-2.5">
