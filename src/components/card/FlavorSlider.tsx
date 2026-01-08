@@ -95,7 +95,7 @@ export function FlavorSliderModal({ value, onChange }: FlavorSliderModalProps) {
           appearance: none;
           height: 6px;
           border-radius: 9999px;
-          background: rgba(255,255,255,0.9);
+          background: var(--color-gray-100);
           outline: none;
         }
 
@@ -104,8 +104,7 @@ export function FlavorSliderModal({ value, onChange }: FlavorSliderModalProps) {
           width: 16px;
           height: 16px;
           border-radius: 9999px;
-          background: #6f45d9;
-          box-shadow: 0 8px 18px rgba(0,0,0,0.22);
+          background: var(--color-purple-700);
           cursor: pointer;
         }
 
@@ -113,9 +112,8 @@ export function FlavorSliderModal({ value, onChange }: FlavorSliderModalProps) {
           width: 16px;
           height: 16px;
           border-radius: 9999px;
-          background: #6f45d9;
+          background: var(--color-purple-700);
           border: none;
-          box-shadow: 0 8px 18px rgba(0,0,0,0.22);
           cursor: pointer;
         }
 
