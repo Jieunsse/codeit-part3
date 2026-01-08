@@ -1,4 +1,4 @@
-import { axiosInstance } from '../../../shared/apis/axios';
+import { axiosInstance } from '../../../shared/apis/basic/axios';
 
 export type SignUpRequest = {
   email: string;
