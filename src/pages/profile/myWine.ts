@@ -12,13 +12,3 @@ export interface MyWine {
   recentReview: Review;
   userId: number;
 }
-
-// {
-//   "totalCount": 0,
-//   "nextCursor": 0,
-//   "list": [
-//     {
-//
-//     }
-//   ]
-// }

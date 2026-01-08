@@ -7,7 +7,7 @@ import { convertReviewTime } from './review';
 import { DeleteConfirmModal } from '@src/components/modal/modals/DeleteConfirmModal';
 import { axiosInstance } from '@src/shared/apis/basic/axios';
 import { ReviewEditModal } from '@src/components/modal/modals/ReviewRegisterModal/ReviewEditModal';
-import { AROMA_MAP } from '@src/domain/review/utils/aroma';
+import { AROMA_MAP } from '@src/components/modal/modals/ReviewRegisterModal/ReviewRegisterModal.constants';
 
 const LIMIT_COUNT = 10;
 
@@ -23,6 +23,22 @@ export default function MyReviews() {
   const [intersecting, setIntersecting] = useState(false);
   const isLoadingRef = useRef(false);
   const [deletingItem, setDeletingItem] = useState<MyReview>();
+  const refDropdown = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (dropdownItem) {
+      document.addEventListener('mousedown', onMouseDown);
+    } else {
+      document.removeEventListener('mousedown', onMouseDown);
+    }
+    return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+    };
+  }, [dropdownItem]);
+
+  function onMouseDown(e: MouseEvent) {
+    if (!refDropdown?.current?.contains(e.target as Node)) setDropdownItem(undefined);
+  }
 
   // 첫 번째 목록 받아오기
   async function loadFirstList() {
@@ -89,7 +105,7 @@ export default function MyReviews() {
   async function onSubmitItem(values: ReviewRegisterValue) {
     const body = {
       rating: values.rating,
-      aroma: values.aromas.map((it) => AROMA_MAP[it]),
+      aroma: values.aromas,
       content: values.content,
       lightBold: values.taste['body'] ?? 0,
       smoothTannic: values.taste['tannin'] ?? 0,
@@ -108,9 +124,11 @@ export default function MyReviews() {
       const value = AROMA_MAP[it];
       map[value] = it;
     });
-    return codes.map((it) => {
+    const ret = codes.map((it) => {
       return map[it];
     });
+    console.log('ret:', codes, ret, AROMA_MAP);
+    return ret;
   }
 
   return (
@@ -154,7 +172,7 @@ export default function MyReviews() {
 
               {/* popupMenu */}
               {dropdownItem == it && (
-                <div className="absolute top-[117px] right-[40px]">
+                <div className="absolute top-[117px] right-[40px]" ref={refDropdown}>
                   <DropdownBase
                     items={[
                       { key: 'edit', label: '수정하기' },
