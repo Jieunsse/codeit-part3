@@ -120,7 +120,7 @@ export function FlavorSliderModal({ value, onChange }: FlavorSliderModalProps) {
         .rangePurpleModal::-moz-range-track {
           height: 6px;
           border-radius: 9999px;
-          background: rgba(255,255,255,0.9);
+          background: var(--color-white);
           box-shadow:
             inset 0 0 0 1px rgba(148, 163, 184, 0.35),
             0 6px 16px rgba(0,0,0,0.10);

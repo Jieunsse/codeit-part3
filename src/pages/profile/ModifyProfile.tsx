@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { axiosInstance } from '@src/shared/apis/basic/axios';
 import { useAuthStore } from '@src/domain/auth/store/authStore';
 import { mapLoginUserToUser } from '@src/domain/auth/mapper/mapLoginUserToUser';
-import type { LoginUser } from '../login/login.types';
+import type { LoginUser } from '../login/types/login.types';
 
 // 프로필 페이지 내의 내 프로필 수정 컴포넌트
 export default function ModifyProfile() {

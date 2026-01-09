@@ -3,6 +3,8 @@ import { API_BASE_URL } from './config';
 import { TEAM_ID } from './team';
 import { useAuthStore } from '@src/domain/auth/store/authStore';
 
+console.log('API_BASE_URL:', API_BASE_URL);
+
 export const axiosInstance = axios.create({
   baseURL: `${API_BASE_URL.replace(/\/$/, '')}/${TEAM_ID}`,
   timeout: 10_000,
