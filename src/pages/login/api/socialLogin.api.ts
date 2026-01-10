@@ -1,11 +1,12 @@
+// login/api/socialLogin.api.ts
 import { axiosInstance } from '@src/shared/apis/basic/axios';
 
 export type SocialProvider = 'GOOGLE' | 'KAKAO';
 
 export type SocialSignInRequest = {
-  token: string; // provider에서 받은 토큰
-  redirectUri?: string; // swagger에 있으면 같이 보냄
-  state?: string; // 있으면 같이 보냄
+  token: string; // Google / Kakao id_token
+  redirectUri?: string;
+  state?: string;
 };
 
 export type SocialSignInResponse = {
@@ -19,12 +20,11 @@ export type SocialSignInResponse = {
     image: string | null;
     createdAt: string;
     updatedAt: string;
-    state: string;
+    state?: string;
   };
 };
 
 export async function postSocialSignIn(provider: SocialProvider, body: SocialSignInRequest) {
-  // 만약 서버가 /auth/signin/KAKAO 주소를 기다린다면:
   const { data } = await axiosInstance.post<SocialSignInResponse>(`/auth/signIn/${provider}`, body);
   return data;
 }
